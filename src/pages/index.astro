@@ -1,17 +1,385 @@
 ---
+import Layout from "@/layouts/Layout.astro"
+import Button from "@/components/Button.astro"
+import Card from "@/components/Card.astro"
+import LogoLoop from "@/components/LogoLoop.astro"
+import AstroIcon from "@/assets/icons/tech/astro.svg"
+import TailwindIcon from "@/assets/icons/tech/tailwind.svg"
+import TsIcon from "@/assets/icons/tech/ts.svg"
+import MermaidIcon from "@/assets/icons/tech/mermaid.svg"
+import Logo from "@/assets/logo.svg"
 
+const techLogos = [
+  { Svg: AstroIcon, alt: "Astro", label: "Astro" },
+  { Svg: TailwindIcon, alt: "Tailwind CSS", label: "Tailwind CSS" },
+  { Svg: TsIcon, alt: "TypeScript", label: "TypeScript" },
+  { Svg: MermaidIcon, alt: "Mermaid", label: "Mermaid" },
+]
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  title="CodeInk — Markdown in your browser"
+  description="CodeInk — A real-time Markdown editor that lives entirely in your browser. Syntax highlighting, diagrams, math, and more."
+  bodyClass="bg-background text-foreground"
+>
+  <div class="min-h-screen relative overflow-x-clip">
+    <div class="hero-glow"></div>
+
+    <!-- Nav -->
+    <div class="sticky top-4 z-50 px-6">
+      <nav id="landing-nav" class="max-w-5xl mx-auto flex items-center justify-between px-4 py-2 rounded-full border border-border/50 landing-nav-glow" style="background: rgba(23, 23, 23, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+        <div class="flex items-center gap-2">
+          <Logo class="w-7 h-7" aria-hidden="true" transition:name="logo" />
+          <span class="text-base font-bold tracking-tight" transition:name="brand">CodeInk</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <Button href="/documents" size="md" id="nav-cta" class="opacity-0 transition-opacity duration-300 pointer-events-none">
+            Get started
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+          </Button>
+          <a href="https://github.com/jorgefl8/CodeInk/CodeInk" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="inline-flex items-center justify-center p-1.5 rounded-lg text-primary hover:bg-primary/10 transition-colors">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Hero -->
+    <section class="relative z-10 max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
+      <div class="animate-up delay-1 mb-6">
+        <span class="inline-flex items-center gap-1.5 text-xs font-medium font-mono uppercase text-primary/80 px-3 py-1 rounded-full border border-primary/15 bg-primary/5">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          100% Client-Side
+        </span>
+      </div>
+
+      <h1 class="animate-up delay-2 text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[0.95] mb-6">
+        Write Markdown.<br/>
+        <span class="text-primary">See it live.</span>
+      </h1>
+
+      <p class="animate-up delay-3 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+        A real-time markdown editor with syntax highlighting, diagrams and math.
+      </p>
+
+      <div class="animate-up delay-3 flex flex-wrap items-center justify-center gap-3 mb-10">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card/60 text-sm text-muted-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary/70"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+          No server
+        </span>
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card/60 text-sm text-muted-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary/70"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><path d="m2 2 20 20" stroke-width="2.5"/></svg>
+          No tracking
+        </span>
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border bg-card/60 text-sm text-muted-foreground">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary/70"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/><path d="m2 2 20 20" stroke-width="2.5"/></svg>
+          No account
+        </span>
+      </div>
+
+      <div id="hero-cta" class="animate-up delay-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <Button href="/documents" size="md">
+          Get started
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+        </Button>
+        <span class="text-xs text-muted-foreground">Free &amp; open source</span>
+      </div>
+    </section>
+
+    <!-- Code Preview Mock -->
+    <section class="relative z-10 max-w-4xl mx-auto px-6 pb-12">
+      <div class="animate-up delay-5 code-preview">
+        <!-- Mock static header -->
+        <div class="mock-header">
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <Logo class="w-5 h-5 shrink-0" aria-hidden="true" />
+            <span class="text-xs font-bold tracking-tight text-foreground/80">CodeInk</span>
+          </div>
+          <div class="flex items-center justify-center flex-1 min-w-0">
+            <div class="flex items-center rounded-md bg-muted/30 p-0.5 gap-0.5">
+              <span class="mock-view-btn">Editor</span>
+              <span class="mock-view-btn active">Split</span>
+              <span class="mock-view-btn">Preview</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-end flex-1 min-w-0">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="text-primary/50 shrink-0"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </div>
+        </div>
+
+        <!-- Panes -->
+        <div class="flex">
+          <!-- Editor pane -->
+          <div class="flex-1 border-r border-border overflow-hidden">
+            <div class="mock-pane-header">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span class="mock-pane-label">EDITOR</span>
+              </div>
+              <span class="mock-pane-meta">Markdown</span>
+            </div>
+            <div class="p-4 font-mono text-xs leading-relaxed text-muted-foreground" style="max-height: 200px;">
+              <div><span class="text-primary font-bold"># Welcome to CodeInk</span></div>
+              <div class="mt-1.5">A real-time **Markdown editor** with</div>
+              <div>syntax highlighting and diagrams.</div>
+              <div class="mt-2.5"><span class="text-primary/60">```typescript</span></div>
+              <div><span class="text-purple-400">interface</span> <span class="text-amber-400">User</span> {'{'}</div>
+              <div>&nbsp;&nbsp;id: <span class="text-green-400">string</span></div>
+              <div>&nbsp;&nbsp;name: <span class="text-green-400">string</span></div>
+              <div>{'}'}</div>
+              <div><span class="text-primary/60">```</span></div>
+            </div>
+          </div>
+
+          <!-- Resize handle mock -->
+          <div class="w-0.75 bg-border shrink-0"></div>
+
+          <!-- Preview pane -->
+          <div class="flex-1 overflow-hidden">
+            <div class="mock-pane-header">
+              <div class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full" style="background: #3fb950;"></span>
+                <span class="mock-pane-label">PREVIEW</span>
+              </div>
+              <span class="mock-pane-meta">Live</span>
+            </div>
+            <div class="p-4 overflow-hidden" style="max-height: 200px;">
+              <div class="text-base font-bold mb-1.5">Welcome to CodeInk</div>
+              <div class="text-xs text-muted-foreground mb-3">A real-time <strong>Markdown editor</strong> with syntax highlighting and diagrams.</div>
+              <div class="rounded-lg p-3 text-xs font-mono leading-relaxed" style="background: var(--muted);">
+                <div><span class="text-purple-400">interface</span> <span class="text-amber-400">User</span> {'{'}</div>
+                <div>&nbsp;&nbsp;id: <span class="text-green-400">string</span></div>
+                <div>&nbsp;&nbsp;name: <span class="text-green-400">string</span></div>
+                <div>{'}'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mock status bar -->
+        <div class="mock-status-bar">
+          <div class="flex items-center gap-3">
+            <span class="mock-status-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>
+              12 lines
+            </span>
+            <span class="mock-status-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+              24 words
+            </span>
+            <span class="mock-status-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
+              148 chars
+            </span>
+          </div>
+          <span class="mock-status-item text-primary/50">
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Saved locally
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Built with -->
+    <section class="relative z-10 max-w-5xl mx-auto px-6 pb-20">
+      <h2 class="animate-fade delay-5 text-3xl sm:text-4xl font-bold tracking-tight text-center mb-8">Built with</h2>
+      <LogoLoop
+        logos={techLogos}
+        speed={30}
+        logoHeight={32}
+        gap={64}
+        fadeOut
+        pauseOnHover
+        class="animate-fade delay-6"
+      />
+    </section>
+
+    <!-- Features -->
+    <section class="relative z-10 max-w-6xl mx-auto px-6 pb-24">
+      <h2 class="animate-fade delay-5 text-3xl sm:text-4xl font-bold tracking-tight text-center mb-8">Powered by industry-leading open source libraries.</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <Card href="https://github.com/shikijs/shiki" title="Syntax highlighting" description="TextMate-grade accuracy via Shiki. 16+ languages with One Dark Pro theme." class="animate-up delay-3">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+        </Card>
+        <Card href="https://github.com/mermaid-js/mermaid" title="Mermaid diagrams" description="Flowcharts, sequence diagrams, Gantt charts — rendered live as you type." class="animate-up delay-4">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
+        </Card>
+        <Card href="https://github.com/KaTeX/KaTeX" title="KaTeX math" description="Inline and block math with full LaTeX support. From simple equations to complex notation." class="animate-up delay-5">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><text x="4" y="18" font-size="16" font-family="serif" font-style="italic" fill="currentColor" stroke="none">&#x2211;</text></svg>
+        </Card>
+        <Card href="https://github.com/pheralb/code-blocks" title="Code blocks" description="Beautiful code block UI components by @pheralb. Copy-paste ready and customizable." class="animate-up delay-6">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8l4 4-4 4"/><path d="M13 16h4"/></svg>
+        </Card>
+        <Card href="https://github.com/codemirror/dev" title="CodeMirror editor" description="Full-featured code editing with markdown mode, bracket matching, search, and autocomplete." class="animate-up delay-7">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+        </Card>
+        <Card href="https://github.com/markedjs/marked" title="Marked" description="Fast markdown parser and compiler. Built for speed and compatibility." class="animate-up delay-8">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"/><path d="M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg>
+        </Card>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 border-t border-border bg-background py-3 px-4">
+      <div class="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-3">
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <Logo class="w-4 h-4" aria-hidden="true" />
+          CodeInk
+        </div>
+        <div class="flex items-center gap-4 flex-wrap">
+          <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <span>Built by: jorgefl8</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-primary" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <span>Github</span>
+          </a>
+          <a href="https://www.linkedin.com/in/jorge-florentino/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <svg role="img" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-primary" aria-hidden="true"><path d="M12.225 12.225h-1.778V9.44c0-.664-.012-1.519-.925-1.519-.926 0-1.068.724-1.068 1.47v2.834H6.676V6.498h1.707v.783h.024c.348-.594.996-.95 1.684-.925 1.802 0 2.135 1.185 2.135 2.728l-.001 3.14zM4.67 5.715a1.037 1.037 0 01-1.032-1.031c0-.566.466-1.032 1.032-1.032.566 0 1.031.466 1.032 1.032 0 .566-.466 1.032-1.032 1.032zm.889 6.51h-1.78V6.498h1.78v5.727zM13.11 2H2.885A.88.88 0 002 2.866v10.268a.88.88 0 00.885.866h10.226a.882.882 0 00.889-.866V2.865a.88.88 0 00-.889-.864z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <style>
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .landing-nav-glow {
+      box-shadow:
+        0 0 0 1px rgba(245, 158, 11, 0.05),
+        0 4px 24px rgba(0, 0, 0, 0.4),
+        0 0 48px rgba(245, 158, 11, 0.04);
+    }
+
+    #nav-cta.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted-foreground);
+      transition: border-color 0.2s ease;
+    }
+
+    .badge:hover {
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .code-preview {
+      position: relative;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--card);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .mock-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(23, 23, 23, 0.8);
+      backdrop-filter: blur(12px);
+    }
+
+    .mock-view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: var(--radius);
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .mock-view-btn.active {
+      color: var(--primary);
+      background: rgba(245, 158, 11, 0.1);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.12);
+    }
+
+    .mock-pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 12px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(38, 38, 38, 0.5);
+      min-height: 24px;
+    }
+
+    .mock-pane-label {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted-foreground);
+      font-family: var(--font-mono);
+    }
+
+    .mock-pane-meta {
+      font-size: 8px;
+      color: var(--muted-foreground);
+      opacity: 0.5;
+      font-family: var(--font-mono);
+    }
+
+    .mock-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      height: 22px;
+      border-top: 1px solid var(--border);
+      background: rgba(23, 23, 23, 0.8);
+    }
+
+    .mock-status-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 8px;
+      color: var(--muted-foreground);
+      font-family: var(--font-mono);
+      opacity: 0.6;
+    }
+  </style>
+
+  <script>
+    import { initLandingNavCta } from "@/scripts/landing-nav-cta"
+    import { hasDocuments } from "@/scripts/documents"
+
+    const isExplicitVisit = new URLSearchParams(window.location.search).has("home")
+
+    if (!isExplicitVisit && hasDocuments()) {
+      window.location.replace("/documents")
+    } else {
+      initLandingNavCta()
+    }
+  </script>
+</Layout>
