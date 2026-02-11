@@ -31,10 +31,10 @@ const {
     <script>
       import { initLandingNavCta } from "@/scripts/landing-nav-cta"
 
-      const windowWithFlag = window as Window & { landingNavCtaListener?: boolean }
+      const extendedWindow = window as Window & { landingNavCtaListener?: boolean }
 
-      if (!windowWithFlag.landingNavCtaListener) {
-        windowWithFlag.landingNavCtaListener = true
+      if (!extendedWindow.landingNavCtaListener) {
+        extendedWindow.landingNavCtaListener = true
         document.addEventListener("astro:page-load", () => initLandingNavCta())
       }
     </script>
