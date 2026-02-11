@@ -33,7 +33,8 @@ jobs:
           echo "Build output contents:"
           ls -la dist/ || echo "dist folder not found!"
 
-      - name: Deploy to Cloudflare Workers
+      - name: Deploy to Production
+        if: github.event_name == 'release'
         uses: cloudflare/wrangler-action@v3
         id: cloudflare
         with:
@@ -42,24 +43,32 @@ jobs:
           command: deploy
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload Preview Version
+        if: github.event_name == 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        id: cloudflare
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --preview-alias ${{ github.head_ref }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Comment PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
         with:
           script: |
-            const url = '${{ steps.cloudflare.outputs.deployment-url }}';
             const branch = context.payload.pull_request.head.ref;
-            const isPreview = '${{ github.event_name == 'pull_request' }}' === 'true';
-            const environment = isPreview ? 'Preview' : 'Production';
+            const previewUrl = `https://${branch}-codeink.jorgeflorentinomarbe.workers.dev`;
 
-            const body = `### 🚀 Cloudflare Workers ${environment} Deployment
+            const body = `### 🚀 Cloudflare Workers Preview Deployment
 
             | Name | Link |
             | :--- | :--- |
-            | **${environment} URL** | [${url}](${url}) |
+            | **Preview URL** | [${previewUrl}](${previewUrl}) |
             | **Branch** | \`${branch}\` |
 
-            *Commit: ${context.sha}*`;
+            *Commit: ${context.sha}*\n\n> Note: Preview deployments create a version without affecting production. The URL follows the pattern: \`<branch>-codeink.jorgeflorentinomarbe.workers.dev\``;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
