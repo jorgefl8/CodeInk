@@ -33,13 +33,13 @@ jobs:
           echo "Build output contents:"
           ls -la dist/ || echo "dist folder not found!"
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
-        id: cloudflare 
+        id: cloudflare
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy
+          command: deploy
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment PR
@@ -49,14 +49,14 @@ jobs:
           script: |
             const url = '${{ steps.cloudflare.outputs.deployment-url }}';
             const alias = '${{ steps.cloudflare.outputs.pages-deployment-alias-url }}';
-            
-            const body = `### Cloudflare pages deployed!
-            
+
+            const body = `### Cloudflare Workers deployed!
+
             | Name | Link |
             | :--- | :--- |
             | **Preview URL** | [${url}](${url}) |
             | **Branch Alias** | [${alias}](${alias}) |
-            
+
             *Commit: ${context.sha}*`;
 
             github.rest.issues.createComment({
