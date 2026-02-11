@@ -28,13 +28,18 @@ jobs:
       - name: Build
         run: bun run build
 
+      - name: Verify build output
+        run: |
+          echo "Build output contents:"
+          ls -la dist/ || echo "dist folder not found!"
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         id: cloudflare 
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=codeink ${{ github.event_name == 'release' && '--branch=main' || '' }}
+          command: pages deploy dist --project-name=codeink --branch=main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment PR
