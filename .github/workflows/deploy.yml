@@ -33,13 +33,13 @@ jobs:
           echo "Build output contents:"
           ls -la dist/ || echo "dist folder not found!"
 
-      - name: Deploy to Cloudflare
+      - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         id: cloudflare 
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+          command: pages deploy
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment PR
