@@ -42,7 +42,6 @@ export function initLandingNavCta() {
     ) {
       return
     }
-    isNavigating = true
     cleanup()
   }
 
