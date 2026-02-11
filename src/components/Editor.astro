@@ -4,7 +4,6 @@ import StatusBar from "@/components/StatusBar.astro"
 import Logo from "@/assets/logo.svg"
 ---
 <div id="editor-root" class="relative flex flex-col overflow-hidden editor-entrance bg-background" style="height: calc(100vh / 1.1);">
-  <!-- Loading overlay -->
   <div id="editor-loading" class="editor-loading">
     <Logo class="w-10 h-10 animate-pulse" aria-hidden="true" />
   </div>
@@ -16,9 +15,7 @@ import Logo from "@/assets/logo.svg"
     </a>
   </Header>
 
-  <!-- Pane headers + content -->
   <div class="flex flex-1 overflow-hidden">
-    <!-- Editor pane -->
     <div id="editor-pane" class="flex flex-col overflow-hidden min-w-0">
       <div class="pane-header">
         <div class="flex items-center gap-2">
@@ -30,12 +27,10 @@ import Logo from "@/assets/logo.svg"
       <div id="cm-editor" class="flex-1 min-h-0"></div>
     </div>
 
-    <!-- Resize handle -->
     <div id="resize-handle" class="resize-handle">
       <div class="resize-grip"></div>
     </div>
 
-    <!-- Preview pane -->
     <div id="preview-pane" class="flex flex-col overflow-auto min-w-0">
       <div class="pane-header">
         <div class="flex items-center gap-2">

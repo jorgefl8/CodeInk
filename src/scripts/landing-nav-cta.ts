@@ -1,7 +1,6 @@
 let destroy: (() => void) | null = null
 
 export function initLandingNavCta() {
-  // Tear down previous instance (idempotent re-init)
   if (destroy) {
     destroy()
     destroy = null

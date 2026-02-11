@@ -1,7 +1,6 @@
 import type { Diagnostic } from "@codemirror/lint"
 import type { EditorView } from "@codemirror/view"
 
-// Define action interface inline since DiagnosticAction is not exported
 interface QuickFixAction {
   name: string
   apply(view: EditorView, from: number, to: number): void
@@ -10,25 +9,16 @@ interface QuickFixAction {
 interface LinterState {
   inFencedCode: boolean
   fenceToken: string
-  inCodeSpan: boolean
   firstListMarker: string | null
   consecutiveBlanks: number
   prevHeadingLevel: number
 }
 
-function createInitialState(): LinterState {
-  return {
-    inFencedCode: false,
-    fenceToken: "",
-    inCodeSpan: false,
-    firstListMarker: null,
-    consecutiveBlanks: 0,
-    prevHeadingLevel: 0,
-  }
+function createQuickFixAction(name: string, applyFn: (view: EditorView, from: number, to: number) => void): QuickFixAction {
+  return { name, apply: applyFn }
 }
 
 function isInsideCodeBlock(line: string, state: LinterState): boolean {
-  // Check for fenced code block markers
   const fenceMatch = line.match(/^(```+|~~~+)(\w*)/)
   if (fenceMatch) {
     if (!state.inFencedCode) {
@@ -44,61 +34,25 @@ function isInsideCodeBlock(line: string, state: LinterState): boolean {
 }
 
 function isInsideInlineCode(text: string, index: number): boolean {
-  // Count backticks before this position
   let backtickCount = 0
   for (let i = 0; i < index; i++) {
-    if (text[i] === '`') {
-      // Check if it's escaped
-      let escapeCount = 0
-      for (let j = i - 1; j >= 0 && text[j] === '\\'; j--) {
-        escapeCount++
-      }
-      if (escapeCount % 2 === 0) {
-        backtickCount++
-      }
+    if (text[i] === '`' && (i === 0 || text[i - 1] !== '\\')) {
+      backtickCount++
     }
   }
   return backtickCount % 2 !== 0
 }
 
-function createHeadingFixAction(level: number): QuickFixAction {
-  return {
-    name: "Add space",
-    apply(view: EditorView, from: number, to: number) {
-      const hashMarks = "#".repeat(level)
-      view.dispatch({
-        changes: { from, to: from + level, insert: `${hashMarks} ` }
-      })
-    }
-  }
-}
-
-function createRemoveTrailingSpacesAction(): QuickFixAction {
-  return {
-    name: "Remove trailing spaces",
-    apply(view: EditorView, from: number, to: number) {
-      view.dispatch({
-        changes: { from, to, insert: "" }
-      })
-    }
-  }
-}
-
-function createCollapseBlanksAction(): QuickFixAction {
-  return {
-    name: "Remove extra blank line",
-    apply(view: EditorView, from: number, to: number) {
-      view.dispatch({
-        changes: { from, to: to + 1, insert: "\n" }
-      })
-    }
-  }
-}
-
 export function markdownLint(view: EditorView): Diagnostic[] {
   const doc = view.state.doc
   const diagnostics: Diagnostic[] = []
-  const state = createInitialState()
+  const state: LinterState = {
+    inFencedCode: false,
+    fenceToken: "",
+    firstListMarker: null,
+    consecutiveBlanks: 0,
+    prevHeadingLevel: 0,
+  }
 
   for (let i = 1; i <= doc.lines; i++) {
     const lineObj = doc.line(i)
@@ -106,44 +60,37 @@ export function markdownLint(view: EditorView): Diagnostic[] {
     const from = lineObj.from
     const to = lineObj.to
 
-    // Track fenced code blocks
     if (isInsideCodeBlock(line, state)) {
       state.consecutiveBlanks = 0
       continue
     }
 
-    // Skip if we're inside inline code at the start of line
     if (isInsideInlineCode(doc.toString(), from)) {
       state.consecutiveBlanks = 0
       continue
     }
 
-    // --- heading-space: missing space after # ---
-    // Check: starts with 1-6 #, followed immediately by non-whitespace (not space/tab)
-    // Valid:   "## Heading"  -> ## + space + H
-    // Invalid: "##Heading"   -> ## + H (missing space)
     const headingMatch = line.match(/^(#{1,6})(.+)$/)
     if (headingMatch) {
       const hashes = headingMatch[1]
       const afterHashes = headingMatch[2]
       
-      // Check if there's no space/tab after the hashes
-      // and the content after hashes is not empty
       if (afterHashes.length > 0 && !afterHashes.match(/^[ \t]/)) {
         diagnostics.push({
           from,
           to: from + hashes.length + 1,
           severity: "warning",
           message: "Missing space after heading marker",
-          actions: [createHeadingFixAction(hashes.length)]
+          actions: [createQuickFixAction("Add space", (view, from, to) => {
+            view.dispatch({
+              changes: { from, to: from + hashes.length, insert: `${hashes} ` }
+            })
+          })]
         })
       }
     }
 
-    // --- no-empty-heading: heading with no content ---
-    // Match # followed by only whitespace or nothing until end
-    const emptyHeading = line.match(/^(#{1,6})\s*$/)
-    if (emptyHeading) {
+    if (/^#{1,6}\s*$/.test(line)) {
       diagnostics.push({
         from,
         to,
@@ -152,8 +99,6 @@ export function markdownLint(view: EditorView): Diagnostic[] {
       })
     }
 
-    // --- heading-increment: no skipping levels ---
-    // Only check valid headings (with space after #)
     const validHeading = line.match(/^(#{1,6})\s+\S/)
     if (validHeading) {
       const level = validHeading[1].length
@@ -168,7 +113,6 @@ export function markdownLint(view: EditorView): Diagnostic[] {
       state.prevHeadingLevel = level
     }
 
-    // --- no-trailing-spaces ---
     const trailingMatch = line.match(/[ \t]+$/)
     if (trailingMatch) {
       const trailFrom = to - trailingMatch[0].length
@@ -177,11 +121,12 @@ export function markdownLint(view: EditorView): Diagnostic[] {
         to,
         severity: "info",
         message: "Trailing whitespace",
-        actions: [createRemoveTrailingSpacesAction()]
+        actions: [createQuickFixAction("Remove trailing spaces", (view, from, to) => {
+          view.dispatch({ changes: { from, to, insert: "" } })
+        })]
       })
     }
 
-    // --- no-multiple-blanks ---
     if (line.trim() === "") {
       state.consecutiveBlanks++
       if (state.consecutiveBlanks > 1) {
@@ -190,21 +135,20 @@ export function markdownLint(view: EditorView): Diagnostic[] {
           to: Math.max(to, from + 1),
           severity: "info",
           message: "Multiple consecutive blank lines",
-          actions: [createCollapseBlanksAction()]
+          actions: [createQuickFixAction("Remove extra blank line", (view, from, to) => {
+            view.dispatch({ changes: { from, to: to + 1, insert: "\n" } })
+          })]
         })
       }
     } else {
       state.consecutiveBlanks = 0
     }
 
-    // --- consistent-list-marker ---
-    // Check for list items (unordered lists)
     const listMatch = line.match(/^(\s*)([-*+])\s/)
     if (listMatch) {
       const marker = listMatch[2]
       const indent = listMatch[1].length
       
-      // Only enforce consistency at the same indentation level
       if (indent === 0) {
         if (state.firstListMarker === null) {
           state.firstListMarker = marker
@@ -221,7 +165,6 @@ export function markdownLint(view: EditorView): Diagnostic[] {
     }
   }
 
-  // --- fenced-code-closing: unclosed fence ---
   if (state.inFencedCode) {
     diagnostics.push({
       from: doc.length - 1,
@@ -238,12 +181,17 @@ export function fixMarkdown(text: string): string {
   const lines = text.split("\n")
   const result: string[] = []
   
-  let state = createInitialState()
+  const state: LinterState = {
+    inFencedCode: false,
+    fenceToken: "",
+    firstListMarker: null,
+    consecutiveBlanks: 0,
+    prevHeadingLevel: 0,
+  }
 
   for (let i = 0; i < lines.length; i++) {
     let line = lines[i]
 
-    // Track fenced code blocks - never modify inside them
     const fenceMatch = line.match(/^(```+|~~~+)(\w*)/)
     if (fenceMatch) {
       if (!state.inFencedCode) {
@@ -258,14 +206,12 @@ export function fixMarkdown(text: string): string {
       continue
     }
 
-    // Don't touch lines inside code blocks
     if (state.inFencedCode) {
       result.push(line)
       state.consecutiveBlanks = 0
       continue
     }
 
-    // Skip if we're inside inline code at the start of line
     const textSoFar = result.join("\n") + (result.length > 0 ? "\n" : "") + line
     if (isInsideInlineCode(textSoFar, textSoFar.length - line.length)) {
       result.push(line)
@@ -273,22 +219,17 @@ export function fixMarkdown(text: string): string {
       continue
     }
 
-    // no-trailing-spaces: trim trailing whitespace
     line = line.replace(/[ \t]+$/, "")
 
-    // heading-space: add space after # if missing (but only for actual headings)
-    // Only fix if: it's at start of line, has 1-6 #, and next char is not space/tab
     if (/^#{1,6}\S/.test(line)) {
       line = line.replace(/^(#{1,6})(\S)/, "$1 $2")
     }
 
-    // no-empty-heading: skip lines that are just # with no content
     if (/^#{1,6}\s*$/.test(line)) {
       state.consecutiveBlanks = 0
       continue
     }
 
-    // no-multiple-blanks: collapse consecutive blank lines
     if (line.trim() === "") {
       if (state.consecutiveBlanks > 0) continue
       state.consecutiveBlanks++
@@ -297,13 +238,11 @@ export function fixMarkdown(text: string): string {
     }
     state.consecutiveBlanks = 0
 
-    // consistent-list-marker: normalize to first marker found
     const listMatch = line.match(/^(\s*)([-*+])(\s)/)
     if (listMatch) {
       const marker = listMatch[2]
       const indent = listMatch[1].length
       
-      // Only normalize at root level (no indentation)
       if (indent === 0) {
         if (state.firstListMarker === null) {
           state.firstListMarker = marker
@@ -316,7 +255,6 @@ export function fixMarkdown(text: string): string {
     result.push(line)
   }
 
-  // fenced-code-closing: close unclosed fence
   if (state.inFencedCode) {
     result.push(state.fenceToken)
   }
