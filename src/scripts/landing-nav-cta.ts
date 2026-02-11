@@ -10,11 +10,12 @@ export function initLandingNavCta() {
   let flyClone: HTMLElement | null = null
   let observer: IntersectionObserver | null = null
   let hasClickListeners = false
+  const scrollOptions: AddEventListenerOptions = { passive: true }
 
   function cleanup() {
     flyClone?.remove()
     flyClone = null
-    window.removeEventListener("scroll", captureHeroRect)
+    window.removeEventListener("scroll", captureHeroRect, scrollOptions)
     observer?.disconnect()
     observer = null
     if (hasClickListeners) {
@@ -55,7 +56,7 @@ export function initLandingNavCta() {
   }
 
   captureHeroRect()
-  window.addEventListener("scroll", captureHeroRect, { passive: true })
+  window.addEventListener("scroll", captureHeroRect, scrollOptions)
   heroBtn.addEventListener("click", handleNavigationClick)
   navCta.addEventListener("click", handleNavigationClick)
   hasClickListeners = true
