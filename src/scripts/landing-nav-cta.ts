@@ -22,7 +22,7 @@ export function initLandingNavCta() {
     }
     observer?.disconnect()
     observer = null
-    if (hasClickListeners && heroBtn && navCta) {
+    if (hasClickListeners) {
       heroBtn.removeEventListener("click", handleNavigationClick)
       navCta.removeEventListener("click", handleNavigationClick)
       hasClickListeners = false
@@ -53,7 +53,7 @@ export function initLandingNavCta() {
   }
 
   function captureHeroRect() {
-    const r = heroBtn!.getBoundingClientRect()
+    const r = heroBtn.getBoundingClientRect()
     if (r.bottom > 0 && r.top < window.innerHeight) {
       lastHeroRect = { top: r.top, left: r.left, width: r.width, height: r.height }
     }
@@ -82,7 +82,7 @@ export function initLandingNavCta() {
       const dx = toCX - fromCX
       const dy = toCY - fromCY
 
-      flyClone = heroBtn!.cloneNode(true) as HTMLElement
+      flyClone = heroBtn.cloneNode(true) as HTMLElement
       flyClone.removeAttribute("id")
       Object.assign(flyClone.style, {
         position: "fixed",
