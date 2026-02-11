@@ -53,7 +53,6 @@ export function initLandingNavCta() {
   }
 
   function captureHeroRect() {
-    if (!heroBtn) return
     const r = heroBtn.getBoundingClientRect()
     if (r.bottom > 0 && r.top < window.innerHeight) {
       lastHeroRect = { top: r.top, left: r.left, width: r.width, height: r.height }
