@@ -17,7 +17,7 @@ export function initLandingNavCta() {
     flyClone?.remove()
     flyClone = null
     if (hasScrollListener) {
-      window.removeEventListener("scroll", captureHeroRect)
+      window.removeEventListener("scroll", captureHeroRect, scrollOptions)
       hasScrollListener = false
     }
     observer?.disconnect()
@@ -60,6 +60,7 @@ export function initLandingNavCta() {
     }
   }
 
+  if (!heroBtn || !navCta) return
   captureHeroRect()
   window.addEventListener("scroll", captureHeroRect, scrollOptions)
   hasScrollListener = true
