@@ -10,6 +10,7 @@ export function initLandingNavCta() {
   let flyClone: HTMLElement | null = null
   let observer: IntersectionObserver | null = null
   let isNavigating = false
+  let hasClickListeners = false
 
   function cleanup() {
     isNavigating = true
@@ -18,8 +19,11 @@ export function initLandingNavCta() {
     window.removeEventListener("scroll", captureHeroRect)
     observer?.disconnect()
     observer = null
-    heroBtn.removeEventListener("click", handleNavigationClick)
-    navCta.removeEventListener("click", handleNavigationClick)
+    if (hasClickListeners) {
+      heroBtn.removeEventListener("click", handleNavigationClick)
+      navCta.removeEventListener("click", handleNavigationClick)
+      hasClickListeners = false
+    }
     if (navCta) {
       navCta.style.transition = "none"
       navCta.classList.remove("visible")
@@ -56,6 +60,7 @@ export function initLandingNavCta() {
   window.addEventListener("scroll", captureHeroRect, { passive: true })
   heroBtn.addEventListener("click", handleNavigationClick)
   navCta.addEventListener("click", handleNavigationClick)
+  hasClickListeners = true
 
   observer = new IntersectionObserver(([entry]) => {
     if (flyClone || isNavigating) return
