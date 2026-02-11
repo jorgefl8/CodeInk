@@ -48,14 +48,16 @@ jobs:
         with:
           script: |
             const url = '${{ steps.cloudflare.outputs.deployment-url }}';
-            const alias = '${{ steps.cloudflare.outputs.pages-deployment-alias-url }}';
+            const branch = context.payload.pull_request.head.ref;
+            const isPreview = '${{ github.event_name == 'pull_request' }}' === 'true';
+            const environment = isPreview ? 'Preview' : 'Production';
 
-            const body = `### Cloudflare Workers deployed!
+            const body = `### 🚀 Cloudflare Workers ${environment} Deployment
 
             | Name | Link |
             | :--- | :--- |
-            | **Preview URL** | [${url}](${url}) |
-            | **Branch Alias** | [${alias}](${alias}) |
+            | **${environment} URL** | [${url}](${url}) |
+            | **Branch** | \`${branch}\` |
 
             *Commit: ${context.sha}*`;
 
