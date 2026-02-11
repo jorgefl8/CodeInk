@@ -5,9 +5,6 @@ export function initLandingNavCta() {
 
   if (!heroCta || !heroBtn || !navCta) return
 
-  const heroButton = heroBtn
-  const navButton = navCta
-
   let lastHeroRect = { top: 0, left: 0, width: 0, height: 0 }
   let isInNav = false
   let flyClone: HTMLElement | null = null
@@ -20,21 +17,21 @@ export function initLandingNavCta() {
     flyClone?.remove()
     flyClone = null
     if (hasScrollListener) {
-      window.removeEventListener("scroll", captureHeroRect, scrollOptions)
+      window.removeEventListener("scroll", captureHeroRect)
       hasScrollListener = false
     }
     observer?.disconnect()
     observer = null
     if (hasClickListeners) {
-      heroButton.removeEventListener("click", handleNavigationClick)
-      navButton.removeEventListener("click", handleNavigationClick)
+      heroBtn?.removeEventListener("click", handleNavigationClick)
+      navCta?.removeEventListener("click", handleNavigationClick)
       hasClickListeners = false
     }
-    if (navButton) {
-      navButton.style.transition = "none"
-      navButton.classList.remove("visible")
-      navButton.offsetHeight
-      navButton.style.transition = ""
+    if (navCta) {
+      navCta.style.transition = "none"
+      navCta.classList.remove("visible")
+      navCta.offsetHeight
+      navCta.style.transition = ""
     }
     isInNav = false
   }
@@ -56,7 +53,8 @@ export function initLandingNavCta() {
   }
 
   function captureHeroRect() {
-    const r = heroButton.getBoundingClientRect()
+    if (!heroBtn) return
+    const r = heroBtn.getBoundingClientRect()
     if (r.bottom > 0 && r.top < window.innerHeight) {
       lastHeroRect = { top: r.top, left: r.left, width: r.width, height: r.height }
     }
@@ -65,8 +63,8 @@ export function initLandingNavCta() {
   captureHeroRect()
   window.addEventListener("scroll", captureHeroRect, scrollOptions)
   hasScrollListener = true
-  heroButton.addEventListener("click", handleNavigationClick)
-  navButton.addEventListener("click", handleNavigationClick)
+  heroBtn.addEventListener("click", handleNavigationClick)
+  navCta.addEventListener("click", handleNavigationClick)
   hasClickListeners = true
 
   observer = new IntersectionObserver(([entry]) => {
@@ -74,7 +72,7 @@ export function initLandingNavCta() {
 
     if (!entry.isIntersecting && !isInNav) {
       const from = lastHeroRect
-      const to = navButton.getBoundingClientRect()
+      const to = navCta.getBoundingClientRect()
 
       const scaleX = to.width / from.width
       const scaleY = to.height / from.height
@@ -85,7 +83,8 @@ export function initLandingNavCta() {
       const dx = toCX - fromCX
       const dy = toCY - fromCY
 
-      flyClone = heroButton.cloneNode(true) as HTMLElement
+      if (!heroBtn) return
+      flyClone = heroBtn.cloneNode(true) as HTMLElement
       flyClone.removeAttribute("id")
       Object.assign(flyClone.style, {
         position: "fixed",
@@ -107,16 +106,16 @@ export function initLandingNavCta() {
       flyClone.style.transform = `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`
 
       setTimeout(() => {
-        navButton.style.transition = "none"
-        navButton.classList.add("visible")
-        navButton.offsetHeight
-        navButton.style.transition = ""
+        navCta.style.transition = "none"
+        navCta.classList.add("visible")
+        navCta.offsetHeight
+        navCta.style.transition = ""
         flyClone?.remove()
         flyClone = null
         isInNav = true
       }, 470)
     } else if (entry.isIntersecting && isInNav) {
-      navButton.classList.remove("visible")
+      navCta.classList.remove("visible")
       isInNav = false
     }
   }, { threshold: 0 })
