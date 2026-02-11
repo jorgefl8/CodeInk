@@ -1,4 +1,5 @@
-import { createEditor, destroyEditor } from "@/scripts/codemirror-setup"
+import { createEditor, destroyEditor, getEditorContent, setEditorContent } from "@/scripts/codemirror-setup"
+import { fixMarkdown } from "@/scripts/markdown-linter"
 import { initPreview, renderPreview } from "@/scripts/preview"
 import { initMermaid } from "@/scripts/mermaid-renderer"
 import {
@@ -193,6 +194,7 @@ export function initEditor() {
     let docId = hash && hash !== "new" ? hash : ""
     let initialContent = DEFAULT_MARKDOWN
     let createdAt = Date.now()
+    let customTitle: string | undefined
 
     if (!docId) {
       docId = crypto.randomUUID()
@@ -212,6 +214,7 @@ export function initEditor() {
       if (existing) {
         initialContent = existing.content
         createdAt = existing.createdAt
+        customTitle = existing.customTitle
       }
     }
 
@@ -220,8 +223,9 @@ export function initEditor() {
     initMermaid(previewEl)
     initResizeHandle()
 
-    renderPreview(initialContent, previewEl)
+    await renderPreview(initialContent, previewEl)
     updateStatusBar(initialContent)
+    editorRoot.classList.add("loaded")
 
     const saveEl = document.getElementById("status-save")
     const saveLabel = saveEl?.querySelector(".save-label")
@@ -243,6 +247,42 @@ export function initEditor() {
       }
     }
 
+    const fixBtn = document.getElementById("lint-fix")
+
+    function updateLintStatus(count: number) {
+      const lintEl = document.getElementById("status-lint")
+      if (!lintEl) return
+      const countEl = lintEl.querySelector(".lint-count")
+      const svg = lintEl.querySelector("svg")!
+      if (count > 0) {
+        lintEl.classList.add("has-issues")
+        lintEl.classList.remove("no-issues")
+        svg.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`
+        if (countEl) countEl.textContent = `${count} issue${count === 1 ? "" : "s"}`
+        fixBtn?.classList.remove("hidden")
+      } else {
+        lintEl.classList.remove("has-issues")
+        lintEl.classList.add("no-issues")
+        svg.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`
+        if (countEl) countEl.textContent = "0 issues"
+        fixBtn?.classList.add("hidden")
+      }
+    }
+
+    window.addEventListener("lint-update", ((e: CustomEvent<{ count: number }>) => {
+      updateLintStatus(e.detail.count)
+    }) as EventListener, { signal })
+
+    updateLintStatus(0)
+
+    fixBtn?.addEventListener("click", () => {
+      const content = getEditorContent()
+      const fixed = fixMarkdown(content)
+      if (fixed !== content) {
+        setEditorContent(fixed)
+      }
+    }, { signal })
+
     window.addEventListener("editor-change", ((e: CustomEvent<{ content: string }>) => {
       const content = e.detail.content
       updateStatusBar(content)
@@ -255,6 +295,7 @@ export function initEditor() {
         const doc: Document = {
           id: docId,
           title: extractTitle(content),
+          ...(customTitle ? { customTitle } : {}),
           content,
           createdAt,
           updatedAt: now,
@@ -283,6 +324,35 @@ export function initEditor() {
   viewEditorBtn?.addEventListener("click", () => setViewMode("editor"), { signal })
   viewSplitBtn?.addEventListener("click", () => setViewMode("split"), { signal })
   viewPreviewBtn?.addEventListener("click", () => setViewMode("preview"), { signal })
+
+  // Export Markdown functionality
+  const exportMdBtn = document.getElementById("export-md")
+
+  function downloadMarkdown(content: string, filename: string) {
+    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  function generateMarkdownFilename(): string {
+    const content = getEditorContent()
+    const titleMatch = content.match(/^#\s+(.+)$/m)
+    const title = titleMatch ? titleMatch[1].trim() : "document"
+    const sanitized = title.replace(/[^a-z0-9\u00e1\u00e9\u00ed\u00f3\u00fa\u00fc\u00f1\s-]/gi, "").replace(/\s+/g, "-")
+    return `${sanitized}.md`
+  }
+
+  exportMdBtn?.addEventListener("click", () => {
+    const content = getEditorContent()
+    const filename = generateMarkdownFilename()
+    downloadMarkdown(content, filename)
+  }, { signal })
 
   setViewMode("split")
 }
