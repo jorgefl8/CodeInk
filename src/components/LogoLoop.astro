@@ -1,0 +1,204 @@
+---
+import type { SvgComponent } from "astro/types";
+
+export interface Logo {
+  Svg: SvgComponent;
+  alt: string;
+  label?: string;
+  href?: string;
+}
+
+interface Props {
+  logos: Logo[];
+  speed?: number;
+  direction?: 'left' | 'right';
+  logoHeight?: number;
+  gap?: number;
+  pauseOnHover?: boolean;
+  fadeOut?: boolean;
+  class?: string;
+}
+
+const {
+  logos,
+  speed = 80,
+  direction = 'left',
+  logoHeight = 28,
+  gap = 48,
+  pauseOnHover = true,
+  fadeOut = true,
+  class: className,
+} = Astro.props;
+
+const COPIES = Math.max(8, Math.ceil(24 / logos.length));
+---
+
+<div
+  class:list={["logo-loop relative overflow-x-hidden", className]}
+  data-speed={speed}
+  data-direction={direction}
+  data-pause={pauseOnHover}
+  style={`--ll-gap: ${gap}px; --ll-h: ${logoHeight}px;`}
+  role="region"
+  aria-label="Technologies used"
+>
+  {fadeOut && (
+    <>
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-y-0 left-0 z-10 w-[clamp(24px,10%,140px)] bg-linear-to-r from-background to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-y-0 right-0 z-10 w-[clamp(24px,10%,140px)] bg-linear-to-l from-background to-transparent"
+      />
+    </>
+  )}
+
+  <div class="logo-loop-track flex will-change-transform select-none">
+    {Array.from({ length: COPIES }).map((_, copyIdx) => (
+      <ul
+        class:list={[
+          "logo-loop-seq flex items-center shrink-0",
+          copyIdx === 0 && "logo-loop-measure",
+        ]}
+        style={`gap: var(--ll-gap); padding-right: var(--ll-gap);`}
+        role="list"
+        aria-hidden={copyIdx > 0 ? "true" : undefined}
+      >
+        {logos.map((logo) => {
+          const Svg = logo.Svg;
+          return (
+            <li class="flex-none" role="listitem">
+              {logo.href ? (
+                <a
+                  href={logo.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2.5 no-underline opacity-50 hover:opacity-100 transition-opacity duration-200 focus-visible:outline focus-visible:outline-current focus-visible:outline-offset-2 rounded"
+                >
+                  <Svg
+                    width={logoHeight}
+                    height={logoHeight}
+                    class="block object-contain pointer-events-none [-webkit-user-drag:none] shrink-0"
+                    style={`height: var(--ll-h);`}
+                    role="img"
+                    aria-label={logo.alt}
+                  />
+                  {logo.label && (
+                    <span class="text-base font-medium font-mono text-muted-foreground whitespace-nowrap">
+                      {logo.label}
+                    </span>
+                  )}
+                </a>
+              ) : (
+                <span class="inline-flex items-center gap-2.5 opacity-50">
+                  <Svg
+                    width={logoHeight}
+                    height={logoHeight}
+                    class="block object-contain pointer-events-none [-webkit-user-drag:none] shrink-0"
+                    style={`height: var(--ll-h);`}
+                    role="img"
+                    aria-label={logo.alt}
+                  />
+                  {logo.label && (
+                    <span class="text-base font-medium font-mono text-muted-foreground whitespace-nowrap">
+                      {logo.label}
+                    </span>
+                  )}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    ))}
+  </div>
+</div>
+
+<script>
+  const SMOOTH_TAU = 0.25;
+
+  function initLogoLoop(root: HTMLElement) {
+    const track = root.querySelector<HTMLDivElement>('.logo-loop-track');
+    const seq = root.querySelector<HTMLElement>('.logo-loop-measure');
+    if (!track || !seq) return;
+
+    const prefersReduced =
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    const speed = parseFloat(root.dataset.speed ?? '80');
+    const dir = root.dataset.direction ?? 'left';
+    const shouldPause = root.dataset.pause === 'true';
+    const targetSpeed = dir === 'left' ? speed : -speed;
+
+    let velocity = 0;
+    let offset = 0;
+    let seqWidth = 0;
+    let hovered = false;
+    let lastTs: number | null = null;
+    let raf: number | null = null;
+
+    function measure() {
+      seqWidth = seq!.getBoundingClientRect().width;
+    }
+
+    function animate(ts: number) {
+      if (lastTs === null) lastTs = ts;
+      const dt = Math.max(0, ts - lastTs) / 1000;
+      lastTs = ts;
+
+      const target = hovered ? 0 : targetSpeed;
+      const ease = 1 - Math.exp(-dt / SMOOTH_TAU);
+      velocity += (target - velocity) * ease;
+
+      if (seqWidth > 0) {
+        offset = ((offset + velocity * dt) % seqWidth + seqWidth) % seqWidth;
+        track!.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      }
+
+      raf = requestAnimationFrame(animate);
+    }
+
+    function start() {
+      measure();
+      if (prefersReduced) {
+        track!.style.transform = 'translate3d(0, 0, 0)';
+        return;
+      }
+      if (!raf) raf = requestAnimationFrame(animate);
+    }
+
+    const imgs = seq.querySelectorAll('img');
+    let pending = imgs.length;
+
+    if (pending === 0) {
+      requestAnimationFrame(() => start());
+    } else {
+      const onLoad = () => { if (--pending === 0) start(); };
+      imgs.forEach((img) => {
+        if ((img as HTMLImageElement).complete) {
+          onLoad();
+        } else {
+          img.addEventListener('load', onLoad, { once: true });
+          img.addEventListener('error', onLoad, { once: true });
+        }
+      });
+    }
+
+    if (window.ResizeObserver) {
+      new ResizeObserver(measure).observe(root);
+    }
+
+    if (shouldPause) {
+      track.addEventListener('mouseenter', () => { hovered = true; });
+      track.addEventListener('mouseleave', () => { hovered = false; });
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('.logo-loop').forEach(initLogoLoop);
+
+  document.addEventListener('astro:after-swap', () => {
+    document.querySelectorAll<HTMLElement>('.logo-loop').forEach(initLogoLoop);
+  });
+</script>

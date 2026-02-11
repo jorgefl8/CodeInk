@@ -1,0 +1,62 @@
+---
+interface Props {
+  href: string
+  title: string
+  description: string
+  class?: string
+}
+
+const { href, title, description, class: className = "" } = Astro.props
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={["corner-accent card", className]}
+>
+  <span class="corner-accent-inner card-inner">
+    <div class="card-icon">
+      <slot name="icon" />
+    </div>
+    <h3 class="text-base font-semibold mb-1.5">{title}</h3>
+    <p class="text-sm text-muted-foreground leading-relaxed font-mono">{description}</p>
+  </span>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    text-decoration: none;
+    color: var(--foreground);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .card-inner {
+    flex: 1;
+    display: block;
+    padding: 2rem 1.75rem;
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 20px;
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--primary);
+  }
+
+  .card-icon :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+interface Props {
+  href?: string
+  type?: "button" | "submit" | "reset"
+  class?: string
+  size?: "sm" | "md" | "lg"
+  id?: string
+}
+
+const { href, type = "button", class: className = "", size = "md", id, ...rest } = Astro.props
+
+const Tag = href ? "a" : "button"
+
+const sizeClasses = {
+  sm: "px-3 py-1.5 text-xs gap-1.5",
+  md: "px-4 py-2 text-sm gap-2",
+  lg: "px-5 py-2.5 text-sm gap-2",
+}
+---
+
+<Tag
+  {...href ? { href } : { type }}
+  {...id ? { id } : {}}
+  class:list={["corner-accent corner-btn", className]}
+  {...rest}
+>
+  <span class:list={["corner-accent-inner corner-btn-inner", sizeClasses[size]]}>
+    <slot />
+  </span>
+</Tag>
+
+<style>
+  .corner-btn {
+    display: inline-flex;
+    font-weight: 600;
+    color: var(--foreground);
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .corner-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+</style>
