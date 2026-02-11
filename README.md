@@ -1,43 +1,41 @@
-# Astro Starter Kit: Minimal
+<div align="center">
+  <a href="https://code-ink.florencloud.com">
+    <img
+      src="https://code-ink.florencloud.com/favicon.svg"
+      alt="App screenshot"
+      height="60"
+    />
+  </a>
+  <p />
+  <p>
+    <b>
+      A real-time markdown editor with syntax highlighting, diagrams and math.
+    </b>
+  </p>
 
-```sh
-bun create astro@latest -- --template minimal
-```
+<a href="http://code-ink.florencloud.com">Get Started</a>
+<span>&nbsp;&nbsp;✦&nbsp;&nbsp;</span>
+<a href="#-license">License</a>
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+<img
+  src="https://code-ink.florencloud.com/images/screenshot-2.png"
+  alt="App screenshot"
+/>
 
-## 🚀 Project Structure
+</div>
 
-Inside of your Astro project, you'll see the following folders and files:
+<div align="center">
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+![Astro Badge](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=fff&style=flat)
+![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
+![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat)
+![Bun Badge](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=fff&style=flat)
+[![Build Status](https://github.com/jorgefl8/codeink/actions/workflows/deploy.yml/badge.svg)](https://github.com/jorgefl8/codeink/actions/workflows/deploy.yml)
+![GitHub stars](https://img.shields.io/github/stars/jorgefl8/codeink)
+![GitHub issues](https://img.shields.io/github/issues/jorgefl8/codeink)
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+</div>
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## License
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/jorgeifl8/codeink/blob/main/LICENSE) file for details.
