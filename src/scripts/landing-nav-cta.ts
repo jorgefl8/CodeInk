@@ -8,10 +8,18 @@ export function initLandingNavCta() {
   let lastHeroRect = { top: 0, left: 0, width: 0, height: 0 }
   let isInNav = false
   let flyClone: HTMLElement | null = null
+  let observer: IntersectionObserver | null = null
+  let isNavigating = false
 
   function cleanup() {
+    isNavigating = true
     flyClone?.remove()
     flyClone = null
+    window.removeEventListener("scroll", captureHeroRect)
+    observer?.disconnect()
+    observer = null
+    heroBtn.removeEventListener("click", handleNavigationClick)
+    navCta.removeEventListener("click", handleNavigationClick)
     if (navCta) {
       navCta.style.transition = "none"
       navCta.classList.remove("visible")
@@ -23,6 +31,21 @@ export function initLandingNavCta() {
 
   document.addEventListener("astro:before-preparation", cleanup)
 
+  function handleNavigationClick(event: MouseEvent) {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return
+    }
+    isNavigating = true
+    cleanup()
+  }
+
   function captureHeroRect() {
     const r = heroBtn!.getBoundingClientRect()
     if (r.bottom > 0 && r.top < window.innerHeight) {
@@ -32,9 +55,11 @@ export function initLandingNavCta() {
 
   captureHeroRect()
   window.addEventListener("scroll", captureHeroRect, { passive: true })
+  heroBtn.addEventListener("click", handleNavigationClick)
+  navCta.addEventListener("click", handleNavigationClick)
 
-  const observer = new IntersectionObserver(([entry]) => {
-    if (flyClone) return
+  observer = new IntersectionObserver(([entry]) => {
+    if (flyClone || isNavigating) return
 
     if (!entry.isIntersecting && !isInNav) {
       const from = lastHeroRect
