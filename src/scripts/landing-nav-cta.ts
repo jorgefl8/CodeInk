@@ -9,11 +9,9 @@ export function initLandingNavCta() {
   let isInNav = false
   let flyClone: HTMLElement | null = null
   let observer: IntersectionObserver | null = null
-  let isNavigating = false
   let hasClickListeners = false
 
   function cleanup() {
-    isNavigating = true
     flyClone?.remove()
     flyClone = null
     window.removeEventListener("scroll", captureHeroRect)
@@ -63,7 +61,7 @@ export function initLandingNavCta() {
   hasClickListeners = true
 
   observer = new IntersectionObserver(([entry]) => {
-    if (flyClone || isNavigating) return
+    if (flyClone) return
 
     if (!entry.isIntersecting && !isInNav) {
       const from = lastHeroRect
