@@ -1,5 +1,6 @@
 name = "codeink"
 compatibility_date = "2026-02-11"
+preview_urls = true
 
 [assets]
 directory = "./dist"
