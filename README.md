@@ -36,6 +36,35 @@
 
 </div>
 
+## Development
+
+### Prerequisites
+
+- [Bun](https://bun.sh) installed on your system
+- Node.js 18+ (optional)
+
+### Local Development
+
+```bash
+# Clone the repository
+git clone https://github.com/jorgefl8/codeink.git
+cd codeink
+
+# Install dependencies
+bun install
+
+# Start development server
+bun dev
+```
+
+The development server will start at `http://localhost:4321`
+
+### Build for Production
+
+```bash
+bun run build
+```
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](https://github.com/jorgeifl8/codeink/blob/main/LICENSE) file for details.
