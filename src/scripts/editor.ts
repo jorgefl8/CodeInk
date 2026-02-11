@@ -1,4 +1,5 @@
-import { createEditor, destroyEditor } from "@/scripts/codemirror-setup"
+import { createEditor, destroyEditor, getEditorContent, setEditorContent } from "@/scripts/codemirror-setup"
+import { fixMarkdown } from "@/scripts/markdown-linter"
 import { initPreview, renderPreview } from "@/scripts/preview"
 import { initMermaid } from "@/scripts/mermaid-renderer"
 import {
@@ -7,104 +8,11 @@ import {
   extractTitle,
   type Document,
 } from "@/lib/db"
-
+import DEFAULT_MARKDOWN from "@/lib/default-markdown.md?raw"
 
 let editorAbort: AbortController | null = null
-
-const DEFAULT_MARKDOWN = `# Welcome to CodeInk
-
-A real-time **Markdown editor** with syntax highlighting, diagrams, and math.
-
----
-
-## Code Highlighting
-
-\`\`\`typescript
-interface User {
-  id: string
-  name: string
-  email: string
-}
-
-async function fetchUser(id: string): Promise<User> {
-  const res = await fetch(\`/api/users/\${id}\`)
-  if (!res.ok) throw new Error("User not found")
-  return res.json()
-}
-\`\`\`
-
-\`\`\`python
-def fibonacci(n: int) -> list[int]:
-    """Generate fibonacci sequence"""
-    fib = [0, 1]
-    for i in range(2, n):
-        fib.append(fib[i-1] + fib[i-2])
-    return fib
-
-print(fibonacci(10))
-\`\`\`
-
-## Mermaid Diagrams
-
-\`\`\`mermaid
-graph TD
-    A[Write Markdown] --> B[Live Preview]
-    B --> C{Looks good?}
-    C -->|Yes| D[Share it!]
-    C -->|No| A
-\`\`\`
-
-## Math with KaTeX
-
-Inline math: $E = mc^2$
-
-Block math:
-
-$$
-\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}
-$$
-
-## GitHub Alerts
-
-> [!TIP]
-> Use keyboard shortcuts to speed up your workflow.
-
-> [!WARNING]
-> This is a client-side only application. Your content is not saved to any server.
-
-> [!NOTE]
-> CodeInk supports all GitHub Flavored Markdown features.
-
-## Tables
-
-| Feature | Status |
-|---------|--------|
-| Syntax Highlighting | Shiki |
-| Diagrams | Mermaid |
-| Math | KaTeX |
-| Alerts | GitHub-style |
-| Footnotes | Supported |
-
-## Task List
-
-- [x] Markdown rendering
-- [x] Shiki syntax highlighting
-- [x] Mermaid diagrams
-- [x] KaTeX math
-- [ ] Export to PDF
-- [ ] Collaborative editing
-
-## Footnotes
-
-CodeInk uses marked[^1] for parsing and Shiki[^2] for syntax highlighting.
-
-[^1]: [marked](https://marked.js.org/) - A markdown parser built for speed.
-[^2]: [Shiki](https://shiki.style/) - A beautiful syntax highlighter.
-`
-
-type ViewMode = "split" | "editor" | "preview"
-
 const AUTO_SAVE_DEBOUNCE_MS = 1000
+type ViewMode = "split" | "editor" | "preview"
 
 function updateStatusBar(content: string) {
   const lines = content.split("\n").length
@@ -167,6 +75,153 @@ function initResizeHandle() {
   })
 }
 
+function getLintIcon(type: "error" | "success"): string {
+  if (type === "error") {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`
+}
+
+async function createNewDocument(): Promise<{ docId: string; createdAt: number }> {
+  const docId = crypto.randomUUID()
+  const now = Date.now()
+  const doc: Document = {
+    id: docId,
+    title: extractTitle(DEFAULT_MARKDOWN),
+    content: DEFAULT_MARKDOWN,
+    createdAt: now,
+    updatedAt: now,
+  }
+  await saveDoc(doc)
+  window.history.replaceState(null, "", `/editor#${docId}`)
+  return { docId, createdAt: now }
+}
+
+async function loadExistingDocument(docId: string): Promise<{ content: string; createdAt: number; customTitle?: string } | null> {
+  const existing = await getDoc(docId)
+  if (!existing) return null
+  return {
+    content: existing.content,
+    createdAt: existing.createdAt,
+    customTitle: existing.customTitle,
+  }
+}
+
+function setupSaveStateManager(saveEl: HTMLElement | null, saveLabel: Element | null | undefined) {
+  return function setSaveState(state: "idle" | "saving" | "saved") {
+    if (!saveEl || !saveLabel) return
+    saveEl.classList.remove("saving", "saved")
+    if (state === "saving") {
+      saveEl.classList.add("saving")
+      saveLabel.textContent = "Saving..."
+    } else if (state === "saved") {
+      saveEl.classList.add("saved")
+      saveLabel.textContent = "Saved locally"
+      setTimeout(() => saveEl.classList.remove("saved"), 1500)
+    } else {
+      saveLabel.textContent = "Saved locally"
+    }
+  }
+}
+
+function setupLintStatusManager(lintEl: HTMLElement | null, fixBtn: HTMLElement | null) {
+  return function updateLintStatus(count: number) {
+    if (!lintEl) return
+    const countEl = lintEl.querySelector(".lint-count")
+    const svg = lintEl.querySelector("svg")!
+    
+    if (count > 0) {
+      lintEl.classList.add("has-issues")
+      lintEl.classList.remove("no-issues")
+      svg.outerHTML = getLintIcon("error")
+      if (countEl) countEl.textContent = `${count} issue${count === 1 ? "" : "s"}`
+      fixBtn?.classList.remove("hidden")
+    } else {
+      lintEl.classList.remove("has-issues")
+      lintEl.classList.add("no-issues")
+      svg.outerHTML = getLintIcon("success")
+      if (countEl) countEl.textContent = "0 issues"
+      fixBtn?.classList.add("hidden")
+    }
+  }
+}
+
+function setupAutoSave(
+  docId: string,
+  createdAt: number,
+  customTitle: string | undefined,
+  setSaveState: (state: "idle" | "saving" | "saved") => void,
+  signal: AbortSignal
+): () => void {
+  let autoSaveTimer: ReturnType<typeof setTimeout> | null = null
+  
+  const handleChange = ((e: CustomEvent<{ content: string }>) => {
+    const content = e.detail.content
+    updateStatusBar(content)
+    setSaveState("saving")
+
+    if (autoSaveTimer) clearTimeout(autoSaveTimer)
+    autoSaveTimer = setTimeout(async () => {
+      autoSaveTimer = null
+      const now = Date.now()
+      const doc: Document = {
+        id: docId,
+        title: extractTitle(content),
+        ...(customTitle ? { customTitle } : {}),
+        content,
+        createdAt,
+        updatedAt: now,
+      }
+      await saveDoc(doc)
+      setSaveState("saved")
+    }, AUTO_SAVE_DEBOUNCE_MS)
+  }) as EventListener
+
+  window.addEventListener("editor-change", handleChange, { signal })
+  
+  return () => {
+    if (autoSaveTimer) clearTimeout(autoSaveTimer)
+  }
+}
+
+function setupMarkdownExport(signal: AbortSignal) {
+  const exportMdBtn = document.getElementById("export-md")
+  if (!exportMdBtn) return
+
+  exportMdBtn.addEventListener("click", () => {
+    const content = getEditorContent()
+    const titleMatch = content.match(/^#\s+(.+)$/m)
+    const title = titleMatch ? titleMatch[1].trim() : "document"
+    const sanitized = title.replace(/[^a-z0-9\u00e1\u00e9\u00ed\u00f3\u00fa\u00fc\u00f1\s-]/gi, "").replace(/\s+/g, "-")
+    const filename = `${sanitized}.md`
+    
+    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = filename
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }, { signal })
+}
+
+async function initializeEditor(
+  cmMount: HTMLElement,
+  previewEl: HTMLElement,
+  editorRoot: HTMLElement,
+  initialContent: string
+) {
+  createEditor(cmMount, initialContent)
+  initPreview(previewEl)
+  initMermaid(previewEl)
+  initResizeHandle()
+  await renderPreview(initialContent, previewEl)
+  updateStatusBar(initialContent)
+  editorRoot.classList.add("loaded")
+}
+
 export function initEditor() {
   if (editorAbort) editorAbort.abort()
   editorAbort = new AbortController()
@@ -186,88 +241,58 @@ export function initEditor() {
     return
   }
 
-  let autoSaveTimer: ReturnType<typeof setTimeout> | null = null
-
   async function loadAndInit() {
     const hash = window.location.hash.replace("#", "")
     let docId = hash && hash !== "new" ? hash : ""
     let initialContent = DEFAULT_MARKDOWN
     let createdAt = Date.now()
+    let customTitle: string | undefined
 
     if (!docId) {
-      docId = crypto.randomUUID()
-      const now = Date.now()
-      const doc: Document = {
-        id: docId,
-        title: extractTitle(DEFAULT_MARKDOWN),
-        content: DEFAULT_MARKDOWN,
-        createdAt: now,
-        updatedAt: now,
-      }
-      await saveDoc(doc)
-      createdAt = now
-      window.history.replaceState(null, "", `/editor#${docId}`)
+      const newDoc = await createNewDocument()
+      docId = newDoc.docId
+      createdAt = newDoc.createdAt
     } else {
-      const existing = await getDoc(docId)
+      const existing = await loadExistingDocument(docId)
       if (existing) {
         initialContent = existing.content
         createdAt = existing.createdAt
+        customTitle = existing.customTitle
       }
     }
 
-    createEditor(cmMount, initialContent)
-    initPreview(previewEl)
-    initMermaid(previewEl)
-    initResizeHandle()
-
-    renderPreview(initialContent, previewEl)
-    updateStatusBar(initialContent)
+    if (editorRoot && cmMount && previewEl) {
+      await initializeEditor(cmMount, previewEl, editorRoot, initialContent)
+    }
 
     const saveEl = document.getElementById("status-save")
     const saveLabel = saveEl?.querySelector(".save-label")
+    const setSaveState = setupSaveStateManager(saveEl, saveLabel)
 
-    function setSaveState(state: "idle" | "saving" | "saved") {
-      if (!saveEl || !saveLabel) return
-      saveEl.classList.remove("saving", "saved")
-      if (state === "saving") {
-        saveEl.classList.add("saving")
-        saveLabel.textContent = "Saving..."
-      } else if (state === "saved") {
-        saveEl.classList.add("saved")
-        saveLabel.textContent = "Saved locally"
-        setTimeout(() => {
-          saveEl.classList.remove("saved")
-        }, 1500)
-      } else {
-        saveLabel.textContent = "Saved locally"
-      }
-    }
+    const lintEl = document.getElementById("status-lint")
+    const fixBtn = document.getElementById("lint-fix")
+    const updateLintStatus = setupLintStatusManager(lintEl, fixBtn)
 
-    window.addEventListener("editor-change", ((e: CustomEvent<{ content: string }>) => {
-      const content = e.detail.content
-      updateStatusBar(content)
-      setSaveState("saving")
+    updateLintStatus(0)
 
-      if (autoSaveTimer) clearTimeout(autoSaveTimer)
-      autoSaveTimer = setTimeout(async () => {
-        autoSaveTimer = null
-        const now = Date.now()
-        const doc: Document = {
-          id: docId,
-          title: extractTitle(content),
-          content,
-          createdAt,
-          updatedAt: now,
-        }
-        await saveDoc(doc)
-        setSaveState("saved")
-      }, AUTO_SAVE_DEBOUNCE_MS)
+    window.addEventListener("lint-update", ((e: CustomEvent<{ count: number }>) => {
+      updateLintStatus(e.detail.count)
     }) as EventListener, { signal })
+
+    fixBtn?.addEventListener("click", () => {
+      const content = getEditorContent()
+      const fixed = fixMarkdown(content)
+      if (fixed !== content) setEditorContent(fixed)
+    }, { signal })
+
+    const cleanupAutoSave = setupAutoSave(docId, createdAt, customTitle, setSaveState, signal)
+    signal.addEventListener("abort", cleanupAutoSave)
   }
 
   loadAndInit()
 
   function setViewMode(mode: ViewMode) {
+    if (!editorRoot) return
     editorRoot.setAttribute("data-view", mode)
     viewEditorBtn?.classList.toggle("active", mode === "editor")
     viewSplitBtn?.classList.toggle("active", mode === "split")
@@ -283,6 +308,8 @@ export function initEditor() {
   viewEditorBtn?.addEventListener("click", () => setViewMode("editor"), { signal })
   viewSplitBtn?.addEventListener("click", () => setViewMode("split"), { signal })
   viewPreviewBtn?.addEventListener("click", () => setViewMode("preview"), { signal })
+
+  setupMarkdownExport(signal)
 
   setViewMode("split")
 }

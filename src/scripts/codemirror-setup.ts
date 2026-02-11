@@ -4,6 +4,8 @@ import { basicSetup } from "codemirror"
 import { markdown } from "@codemirror/lang-markdown"
 import { languages } from "@codemirror/language-data"
 import { oneDark } from "@codemirror/theme-one-dark"
+import { linter, lintGutter, diagnosticCount } from "@codemirror/lint"
+import { markdownLint } from "@/scripts/markdown-linter"
 
 let editorView: EditorView | null = null
 
@@ -26,12 +28,21 @@ export function createEditor(parent: HTMLElement, initialDoc: string) {
         addKeymap: true,
       }),
       oneDark,
+      lintGutter(),
+      linter(markdownLint, { delay: 500 }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
           window.dispatchEvent(
             new CustomEvent("editor-change", {
               detail: { content: update.state.doc.toString() },
             })
+          )
+        }
+        const prevCount = diagnosticCount(update.startState)
+        const currCount = diagnosticCount(update.state)
+        if (prevCount !== currCount) {
+          window.dispatchEvent(
+            new CustomEvent("lint-update", { detail: { count: currCount } })
           )
         }
       }),

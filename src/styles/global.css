@@ -101,6 +101,7 @@
     font-family: var(--font-sans);
     font-size: 16px;
     color-scheme: dark;
+    zoom: 1.1;
   }
   body {
     @apply bg-background text-foreground;
@@ -251,7 +252,8 @@
 
 /* Markdown prose styles */
 .markdown-prose {
-  line-height: 1.75;
+  font-size: 14px;
+  line-height: 1.65;
   color: var(--foreground);
   font-family: var(--font-sans);
   background: var(--background);
@@ -447,10 +449,10 @@
 /* Shiki Syntax Highlighting */
 pre.shiki {
   overflow-x: auto;
-  padding: 1em;
+  padding: 0.25em 1em;
   border-radius: var(--radius);
   font-size: 0.875rem;
-  line-height: 1.7;
+  line-height: 1.5;
   font-family: var(--font-mono), ui-monospace, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -646,7 +648,7 @@ pre.shiki {
 }
 
 .markdown-prose .code-block .code-block-header {
-  @apply flex items-center justify-between px-3.5 py-2;
+  @apply flex items-center justify-between px-3.5 py-1.5;
   border-bottom: 1px solid var(--border);
   background: rgba(38, 38, 38, 0.6);
 }
@@ -672,7 +674,13 @@ pre.shiki {
   border: none !important;
   border-radius: 0 !important;
   margin: 0 !important;
+  padding: 0 1em 0.25em 1em !important;
   background: transparent !important;
+}
+
+.markdown-prose .code-block pre code {
+  padding-top: 0 !important;
+  display: block;
 }
 
 /* Copy button in code blocks */
@@ -759,8 +767,8 @@ pre.shiki {
 
 .cm-editor {
   height: 100%;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .cm-scroller {
@@ -800,4 +808,66 @@ pre.shiki {
 
 .cm-editor.cm-focused .cm-selectionBackground {
   background: rgba(245, 158, 11, 0.15) !important;
+}
+
+/* Lint gutter markers */
+.cm-editor .cm-lint-marker-error {
+  content: "●";
+  color: var(--error, #ef4444);
+}
+
+.cm-editor .cm-lint-marker-warning {
+  content: "●";
+  color: var(--warning, #f59e0b);
+}
+
+.cm-editor .cm-lint-marker-info {
+  content: "●";
+  color: var(--info, #3b82f6);
+}
+
+/* Lint tooltip panel */
+.cm-tooltip.cm-tooltip-lint {
+  background: var(--secondary, #262626);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--foreground);
+  padding: 0;
+}
+
+.cm-tooltip.cm-tooltip-lint ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cm-tooltip.cm-tooltip-lint ul li {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cm-tooltip.cm-tooltip-lint ul li:last-child {
+  border-bottom: none;
+}
+
+.cm-lint-marker {
+  cursor: pointer;
+}
+
+/* Lint underlines */
+.cm-lintRange-error {
+  background: none;
+  border-bottom: 2px wavy var(--error, #ef4444);
+}
+
+.cm-lintRange-warning {
+  background: none;
+  border-bottom: 2px wavy var(--warning, #f59e0b);
+}
+
+.cm-lintRange-info {
+  background: none;
+  border-bottom: 2px dotted var(--info, #3b82f6);
 }

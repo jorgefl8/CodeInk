@@ -4,6 +4,7 @@ const STORE_NAME = "documents"
 export interface Document {
   id: string
   title: string
+  customTitle?: string
   content: string
   createdAt: number
   updatedAt: number
