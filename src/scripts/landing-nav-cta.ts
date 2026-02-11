@@ -60,7 +60,6 @@ export function initLandingNavCta() {
     }
   }
 
-  if (!heroBtn || !navCta) return
   captureHeroRect()
   window.addEventListener("scroll", captureHeroRect, scrollOptions)
   hasScrollListener = true
@@ -84,7 +83,6 @@ export function initLandingNavCta() {
       const dx = toCX - fromCX
       const dy = toCY - fromCY
 
-      if (!heroBtn) return
       flyClone = heroBtn.cloneNode(true) as HTMLElement
       flyClone.removeAttribute("id")
       Object.assign(flyClone.style, {
