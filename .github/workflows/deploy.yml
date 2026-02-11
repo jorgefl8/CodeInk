@@ -52,7 +52,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --tag ${{ github.head_ref }}
+          command: versions upload --tag ${{ github.head_ref }} --assets ./dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment PR
