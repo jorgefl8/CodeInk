@@ -45,7 +45,7 @@ const techLogos = [
     </div>
 
     <!-- Hero -->
-    <section class="relative z-10 max-w-4xl mx-auto px-6 pt-16 pb-12 text-center">
+    <section class="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-12 text-center">
       <div class="animate-up delay-1 mb-6">
         <span class="inline-flex items-center gap-1.5 text-xs font-medium font-mono uppercase text-primary/80 px-3 py-1 rounded-full border border-primary/15 bg-primary/5">
           <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
@@ -372,6 +372,6 @@ const techLogos = [
 
   <script>
     import { initLandingNavCta } from "@/scripts/landing-nav-cta"
-    initLandingNavCta()
+    document.addEventListener("astro:page-load", () => initLandingNavCta())
   </script>
 </Layout>
