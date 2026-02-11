@@ -5,6 +5,8 @@ on:
     types: [published]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -12,7 +14,7 @@ jobs:
     permissions:
       contents: read
       deployments: write
-      pull-requests: write 
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +38,7 @@ jobs:
       - name: Deploy to Production
         if: github.event_name == 'release'
         uses: cloudflare/wrangler-action@v3
-        id: cloudflare
+        id: deploy-prod
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -46,7 +48,7 @@ jobs:
       - name: Upload Preview Version
         if: github.event_name == 'pull_request'
         uses: cloudflare/wrangler-action@v3
-        id: cloudflare
+        id: deploy-preview
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -68,7 +70,9 @@ jobs:
             | **Preview URL** | [${previewUrl}](${previewUrl}) |
             | **Branch** | \`${branch}\` |
 
-            *Commit: ${context.sha}*\n\n> Note: Preview deployments create a version without affecting production. The URL follows the pattern: \`<branch>-codeink.jorgeflorentinomarbe.workers.dev\``;
+            *Commit: ${context.sha}*
+
+            > Note: Preview deployments create a version without affecting production. The URL follows the pattern: \`<branch>-codeink.jorgeflorentinomarbe.workers.dev\``;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
