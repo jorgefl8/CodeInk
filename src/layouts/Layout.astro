@@ -35,7 +35,11 @@ const {
 
       if (!extendedWindow.landingNavCtaListener) {
         extendedWindow.landingNavCtaListener = true
-        document.addEventListener("astro:page-load", () => initLandingNavCta())
+        document.addEventListener("astro:page-load", () => {
+          if (document.getElementById("hero-cta")) {
+            initLandingNavCta()
+          }
+        })
       }
     </script>
   </body>
