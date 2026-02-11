@@ -41,6 +41,7 @@
 ### Prerequisites
 
 - [Bun](https://bun.sh) installed on your system
+- Node.js 18+ (optional)
 
 ### Local Development
 
