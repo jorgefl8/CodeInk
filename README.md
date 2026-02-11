@@ -1,8 +1,8 @@
 <div align="center">
   <a href="https://code-ink.florencloud.com">
     <img
-      src="https://code-ink.florencloud.com/favicon.svg"
-      alt="App screenshot"
+      src="https://cdn.jsdelivr.net/gh/jorgefl8/codeink@main/public/favicon.svg"
+      alt="Code Ink Logo"
       height="60"
     />
   </a>
@@ -18,7 +18,7 @@
 <a href="#-license">License</a>
 
 <img
-  src="https://code-ink.florencloud.com/images/screenshot-2.png"
+  src="https://cdn.jsdelivr.net/gh/jorgefl8/codeink@main/public/images/screenshot.png"
   alt="App screenshot"
 />
 
@@ -30,7 +30,6 @@
 ![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
 ![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=flat)
 ![Bun Badge](https://img.shields.io/badge/Bun-000000?logo=bun&logoColor=fff&style=flat)
-[![Build Status](https://github.com/jorgefl8/codeink/actions/workflows/deploy.yml/badge.svg)](https://github.com/jorgefl8/codeink/actions/workflows/deploy.yml)
 ![GitHub stars](https://img.shields.io/github/stars/jorgefl8/codeink)
 ![GitHub issues](https://img.shields.io/github/issues/jorgefl8/codeink)
 

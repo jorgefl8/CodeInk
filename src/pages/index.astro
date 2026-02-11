@@ -372,14 +372,6 @@ const techLogos = [
 
   <script>
     import { initLandingNavCta } from "@/scripts/landing-nav-cta"
-    import { hasDocuments } from "@/scripts/documents"
-
-    const isExplicitVisit = new URLSearchParams(window.location.search).has("home")
-
-    if (!isExplicitVisit && hasDocuments()) {
-      window.location.replace("/documents")
-    } else {
-      initLandingNavCta()
-    }
+    initLandingNavCta()
   </script>
 </Layout>

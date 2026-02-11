@@ -7,7 +7,7 @@ import {
   extractTitle,
   type Document,
 } from "@/lib/db"
-import { setHasDocuments } from "@/scripts/documents"
+
 
 let editorAbort: AbortController | null = null
 
@@ -205,7 +205,6 @@ export function initEditor() {
         updatedAt: now,
       }
       await saveDoc(doc)
-      setHasDocuments(true)
       createdAt = now
       window.history.replaceState(null, "", `/editor#${docId}`)
     } else {

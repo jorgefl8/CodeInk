@@ -1,15 +1,5 @@
 import { getAllDocs, deleteDoc } from "@/lib/db"
 
-const HAS_DOCS_KEY = "codeink-has-docs"
-
-export function setHasDocuments(value: boolean) {
-  localStorage.setItem(HAS_DOCS_KEY, value ? "1" : "")
-}
-
-export function hasDocuments(): boolean {
-  return localStorage.getItem(HAS_DOCS_KEY) === "1"
-}
-
 function formatRelativeTime(ts: number): string {
   const diff = Date.now() - ts
   if (diff < 60000) return "Just now"
@@ -38,14 +28,12 @@ async function renderDocs() {
   const docs = await getAllDocs()
 
   if (docs.length === 0) {
-    setHasDocuments(false)
     grid.classList.add("hidden")
     emptyState.classList.remove("hidden")
     emptyState.classList.add("flex")
     return
   }
 
-  setHasDocuments(true)
   grid.classList.remove("hidden")
   emptyState.classList.add("hidden")
   emptyState.classList.remove("flex")
