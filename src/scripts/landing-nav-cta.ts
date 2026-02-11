@@ -60,6 +60,7 @@ export function initLandingNavCta() {
     }
   }
 
+  if (!heroBtn || !navCta) return
   captureHeroRect()
   window.addEventListener("scroll", captureHeroRect, scrollOptions)
   hasScrollListener = true
