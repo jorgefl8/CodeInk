@@ -23,8 +23,10 @@ export function initLandingNavCta() {
     observer?.disconnect()
     observer = null
     if (hasClickListeners) {
-      heroBtn.removeEventListener("click", handleNavigationClick)
-      navCta.removeEventListener("click", handleNavigationClick)
+      if (heroBtn && navCta) {
+        heroBtn.removeEventListener("click", handleNavigationClick)
+        navCta.removeEventListener("click", handleNavigationClick)
+      }
       hasClickListeners = false
     }
     if (navCta) {
