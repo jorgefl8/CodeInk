@@ -7,6 +7,7 @@ import AstroIcon from "@/assets/icons/tech/astro.svg"
 import TailwindIcon from "@/assets/icons/tech/tailwind.svg"
 import TsIcon from "@/assets/icons/tech/ts.svg"
 import MermaidIcon from "@/assets/icons/tech/mermaid.svg"
+import BunIcon from "@/assets/icons/tech/bun.svg"
 import Logo from "@/assets/logo.svg"
 
 const techLogos = [
@@ -14,6 +15,7 @@ const techLogos = [
   { Svg: TailwindIcon, alt: "Tailwind CSS", label: "Tailwind CSS" },
   { Svg: TsIcon, alt: "TypeScript", label: "TypeScript" },
   { Svg: MermaidIcon, alt: "Mermaid", label: "Mermaid" },
+  { Svg: BunIcon, alt: "Bun", label: "Bun" },
 ]
 ---
 
@@ -25,8 +27,8 @@ const techLogos = [
   <div class="min-h-screen relative overflow-x-clip">
     <div class="hero-glow"></div>
 
-    <div class="sticky top-4 z-50 px-6">
-      <nav id="landing-nav" class="max-w-5xl mx-auto flex items-center justify-between px-4 py-2 rounded-full border border-border/50 landing-nav-glow" style="background: rgba(23, 23, 23, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+    <div class="sticky top-4 z-50 px-6" style="will-change: transform;">
+      <nav id="landing-nav" class="max-w-5xl mx-auto flex items-center justify-between px-4 py-2 rounded-full border border-border/50 landing-nav-glow" style="background: rgba(23, 23, 23, 0.4); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transform: translateZ(0);">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" aria-hidden="true" transition:name="logo" />
           <span class="text-base font-bold tracking-tight" transition:name="brand">CodeInk</span>
@@ -210,7 +212,7 @@ const techLogos = [
     </section>
 
     <footer class="relative z-10 border-t border-border bg-background py-3 px-4">
-      <div class="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-3">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center sm:justify-between gap-3">
         <div class="flex items-center gap-2 text-sm text-muted-foreground">
           <Logo class="w-4 h-4" aria-hidden="true" />
           CodeInk

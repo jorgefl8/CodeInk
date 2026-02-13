@@ -23,9 +23,14 @@ function updateStatusBar(content: string) {
   const wordsEl = document.getElementById("status-words")
   const charsEl = document.getElementById("status-chars")
 
-  if (linesEl) linesEl.innerHTML = linesEl.querySelector("svg")!.outerHTML + ` ${lines} lines`
-  if (wordsEl) wordsEl.innerHTML = wordsEl.querySelector("svg")!.outerHTML + ` ${words} words`
-  if (charsEl) charsEl.innerHTML = charsEl.querySelector("svg")!.outerHTML + ` ${chars} chars`
+  const mobile = window.innerWidth < 640
+  const lLabel = mobile ? "l" : "lines"
+  const wLabel = mobile ? "w" : "words"
+  const cLabel = mobile ? "c" : "chars"
+
+  if (linesEl) linesEl.innerHTML = linesEl.querySelector("svg")!.outerHTML + ` ${lines} ${lLabel}`
+  if (wordsEl) wordsEl.innerHTML = wordsEl.querySelector("svg")!.outerHTML + ` ${words} ${wLabel}`
+  if (charsEl) charsEl.innerHTML = charsEl.querySelector("svg")!.outerHTML + ` ${chars} ${cLabel}`
 }
 
 function initResizeHandle() {
@@ -129,7 +134,7 @@ function setupLintStatusManager(lintEl: HTMLElement | null, fixBtn: HTMLElement 
     if (!lintEl) return
     const countEl = lintEl.querySelector(".lint-count")
     const svg = lintEl.querySelector("svg")!
-    
+
     if (count > 0) {
       lintEl.classList.add("has-issues")
       lintEl.classList.remove("no-issues")
@@ -154,7 +159,7 @@ function setupAutoSave(
   signal: AbortSignal
 ): () => void {
   let autoSaveTimer: ReturnType<typeof setTimeout> | null = null
-  
+
   const handleChange = ((e: CustomEvent<{ content: string }>) => {
     const content = e.detail.content
     updateStatusBar(content)
@@ -178,7 +183,7 @@ function setupAutoSave(
   }) as EventListener
 
   window.addEventListener("editor-change", handleChange, { signal })
-  
+
   return () => {
     if (autoSaveTimer) clearTimeout(autoSaveTimer)
   }
@@ -194,7 +199,7 @@ function setupMarkdownExport(signal: AbortSignal) {
     const title = titleMatch ? titleMatch[1].trim() : "document"
     const sanitized = title.replace(/[^a-z0-9\u00e1\u00e9\u00ed\u00f3\u00fa\u00fc\u00f1\s-]/gi, "").replace(/\s+/g, "-")
     const filename = `${sanitized}.md`
-    
+
     const blob = new Blob([content], { type: "text/markdown;charset=utf-8" })
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
@@ -311,5 +316,6 @@ export function initEditor() {
 
   setupMarkdownExport(signal)
 
-  setViewMode("split")
+  const isMobile = window.innerWidth < 640
+  setViewMode(isMobile ? "editor" : "split")
 }

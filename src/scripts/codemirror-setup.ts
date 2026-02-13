@@ -28,7 +28,6 @@ export function createEditor(parent: HTMLElement, initialDoc: string) {
         addKeymap: true,
       }),
       oneDark,
-      lintGutter(),
       linter(markdownLint, { delay: 500 }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
