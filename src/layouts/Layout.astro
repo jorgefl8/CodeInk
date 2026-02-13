@@ -13,6 +13,9 @@ const {
   description = "CodeInk — Real-time Markdown editor with syntax highlighting, Mermaid diagrams, KaTeX math, and more.",
   bodyClass = "h-screen overflow-hidden",
 } = Astro.props
+
+const siteURL = "https://code-ink.florencloud.com"
+const canonicalURL = new URL(Astro.url.pathname, siteURL).href
 ---
 
 <!doctype html>
@@ -21,7 +24,34 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteURL}/og-image.png`} />
+    <meta property="og:site_name" content="CodeInk" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteURL}/og-image.png`} />
+    <meta name="twitter:domain" content="code-ink.florencloud.com" />
+
+    <!-- Sitemap discovery -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
     <ClientRouter />
     <title>{title}</title>
     <slot name="head" />
@@ -30,3 +60,4 @@ const {
     <slot />
   </body>
 </html>
+
