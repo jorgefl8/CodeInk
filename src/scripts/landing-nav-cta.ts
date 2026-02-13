@@ -46,6 +46,13 @@ export function initLandingNavCta() {
     if (flyClone || navigating) return
 
     if (!entry.isIntersecting && !isInNav) {
+      // Skip fly animation on mobile — just show the nav CTA directly
+      if (window.innerWidth < 640) {
+        navCta.classList.add("visible")
+        isInNav = true
+        return
+      }
+
       // Compensate for CSS zoom on <html> — getBoundingClientRect() returns
       // screen pixels (already zoomed), but position:fixed inside the zoomed
       // container expects layout pixels.

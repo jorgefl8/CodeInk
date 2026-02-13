@@ -26,9 +26,23 @@ export function initPreview(target: HTMLElement) {
     }, DEBOUNCE_MS)
   }
 
+  // Intercept footnote anchor clicks to scroll within preview instead of changing URL hash
+  const handleAnchorClick = (e: MouseEvent) => {
+    const link = (e.target as HTMLElement).closest("a[href^='#']")
+    if (!link) return
+    e.preventDefault()
+    const id = (link as HTMLAnchorElement).getAttribute("href")!.slice(1)
+    const targetEl = target.querySelector(`[id="${id}"]`)
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth", block: "nearest" })
+    }
+  }
+
+  target.addEventListener("click", handleAnchorClick)
   window.addEventListener("editor-change", handleEditorChange as EventListener)
 
   return () => {
+    target.removeEventListener("click", handleAnchorClick)
     window.removeEventListener("editor-change", handleEditorChange as EventListener)
     if (debounceTimer) clearTimeout(debounceTimer)
     if (cleanupCopy) cleanupCopy()

@@ -103,6 +103,11 @@
     color-scheme: dark;
     zoom: 1.1;
   }
+  @media (max-width: 639px), (max-height: 500px) {
+    html {
+      zoom: 1;
+    }
+  }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
@@ -257,11 +262,12 @@
   color: var(--foreground);
   font-family: var(--font-sans);
   background: var(--background);
+  font-weight: 400;
 }
 
 .markdown-prose strong {
-  color: var(--foreground);
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 700;
 }
 
 .markdown-prose em {
@@ -787,7 +793,29 @@ pre.shiki {
 .cm-editor .cm-gutters {
   background: rgba(23, 23, 23, 0.6);
   border-right: 1px solid var(--border);
-  padding: 0 4px;
+  padding: 0;
+}
+
+.cm-editor .cm-lineNumbers {
+  min-width: 0 !important;
+  width: auto !important;
+}
+
+.cm-editor .cm-lineNumbers .cm-gutterElement {
+  font-size: 11px;
+  padding: 0 3px 0 4px !important;
+  min-width: 20px !important;
+}
+
+.cm-editor .cm-foldGutter {
+  width: 8px !important;
+  min-width: 0 !important;
+}
+
+@media (max-width: 639px) {
+  .cm-editor .cm-content {
+    padding: 1rem 0.5rem;
+  }
 }
 
 .cm-editor .cm-activeLineGutter {

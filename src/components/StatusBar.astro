@@ -1,5 +1,5 @@
 <div id="status-bar" class="status-bar">
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-2 sm:gap-4">
     <span class="status-item" id="status-lines">
       <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>
       0 lines
@@ -35,11 +35,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 8px;
     height: 32px;
     border-top: 1px solid var(--border);
     background: rgb(23, 23, 23);
     flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    .status-bar {
+      padding: 0 16px;
+    }
   }
 
   .status-item {
