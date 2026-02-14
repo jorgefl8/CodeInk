@@ -59,6 +59,10 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
   </head>
   <body class:list={["antialiased grid-bg", bodyClass]}>
     <slot />
+    <script>
+      import { initPullToRefreshBlocker } from "@/scripts/pull-to-refresh-blocker"
+      document.addEventListener("astro:page-load", () => initPullToRefreshBlocker(), { once: true })
+    </script>
   </body>
 </html>
 
