@@ -11,7 +11,7 @@ interface Props {
 const {
   title,
   description = "CodeInk — Real-time Markdown editor with syntax highlighting, Mermaid diagrams, KaTeX math, and more.",
-  bodyClass = "h-screen overflow-hidden",
+  bodyClass = "h-dvh overflow-hidden",
 } = Astro.props
 
 const siteURL = "https://code-ink.florencloud.com"
@@ -22,7 +22,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="0hb4M721vGuZTd59TPpHg_F26uKPsCyBILsWls5Ut04" />
