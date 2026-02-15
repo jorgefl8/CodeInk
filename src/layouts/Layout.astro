@@ -53,6 +53,14 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <!-- Sitemap discovery -->
     <link rel="sitemap" href="/sitemap-index.xml" />
 
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CodeInk",
+      "url": "https://code-ink.florencloud.com"
+    })} />
+
     <ClientRouter />
     <title>{title}</title>
     <slot name="head" />
