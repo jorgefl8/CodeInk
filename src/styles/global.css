@@ -751,7 +751,7 @@ pre.shiki {
 }
 
 .cm-editor .cm-content {
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.25rem 1rem 0.5rem;
   caret-color: #f59e0b;
 }
 
@@ -783,7 +783,7 @@ pre.shiki {
 
 @media (max-width: 639px) {
   .cm-editor .cm-content {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.5rem 1rem 0.25rem;
   }
 }
 
