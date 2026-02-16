@@ -2,6 +2,7 @@ import { marked, type Token, type Tokens } from "marked"
 import markedAlert from "marked-alert"
 import markedFootnote from "marked-footnote"
 import markedKatex from "marked-katex-extension"
+import { gfmHeadingId } from "marked-gfm-heading-id"
 import { highlightCode } from "@/lib/shiki/highlight"
 
 let highlightMap = new Map<string, string>()
@@ -73,6 +74,7 @@ marked.use(
   markedAlert(),
   markedFootnote(),
   markedKatex({ throwOnError: false }),
+  gfmHeadingId(),
   {
     renderer,
     async: true,
