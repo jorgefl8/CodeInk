@@ -602,10 +602,11 @@ pre.shiki {
 
 /* Code block structure */
 .markdown-prose .code-block {
-  @apply relative overflow-clip rounded-lg mb-4;
+  @apply relative rounded-lg mb-4;
   border: 1px solid var(--border);
   background: var(--muted);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-width: fit-content;
 }
 
 .markdown-prose .code-block .code-block-header {
@@ -637,11 +638,13 @@ pre.shiki {
   margin: 0 !important;
   padding: 0 1em 0.25em 1em !important;
   background: transparent !important;
+  min-width: fit-content;
 }
 
 .markdown-prose .code-block pre code {
   padding-top: 0 !important;
   display: block;
+  white-space: pre;
 }
 
 /* Copy button in code blocks */

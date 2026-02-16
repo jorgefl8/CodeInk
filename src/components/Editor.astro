@@ -31,15 +31,17 @@ import Logo from "@/assets/logo.svg"
       <div class="resize-grip"></div>
     </div>
 
-    <div id="preview-pane" class="flex flex-col overflow-auto min-w-0">
-      <div class="pane-header">
-        <div class="flex items-center gap-2">
-          <span class="pane-dot" style="background: var(--success-accent);"></span>
-          <span class="pane-label">PREVIEW</span>
+    <div id="preview-pane" class="flex flex-col overflow-hidden">
+      <div class="preview-scroll-container">
+        <div class="pane-header">
+          <div class="flex items-center gap-2">
+            <span class="pane-dot" style="background: var(--success-accent);"></span>
+            <span class="pane-label">PREVIEW</span>
+          </div>
+          <span class="pane-meta" id="preview-meta">Live</span>
         </div>
-        <span class="pane-meta" id="preview-meta">Live</span>
+        <div id="preview" class="markdown-prose flex-1 p-6 max-w-none min-w-fit"></div>
       </div>
-      <div id="preview" class="markdown-prose flex-1 p-6 max-w-none"></div>
     </div>
   </div>
 
@@ -76,6 +78,20 @@ import Logo from "@/assets/logo.svg"
   }
 
   /* Pane headers */
+  .preview-scroll-container > .pane-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    min-height: 32px;
+    position: sticky;
+    left: 0;
+    width: 100%;
+    min-width: fit-content;
+  }
+
   .pane-header {
     display: flex;
     align-items: center;
@@ -106,6 +122,15 @@ import Logo from "@/assets/logo.svg"
     color: var(--muted-foreground);
     opacity: 0.6;
     font-family: var(--font-mono);
+  }
+
+  /* Preview scroll container for horizontal scroll */
+  .preview-scroll-container {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    flex: 1;
+    min-height: 0;
   }
 
   /* Resize handle */
@@ -174,7 +199,7 @@ import Logo from "@/assets/logo.svg"
   }
   #editor-root[data-view="preview"] #preview-pane {
     flex: 1;
-    min-width: 0;
+    width: 100%;
   }
 </style>
 
