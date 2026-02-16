@@ -1,18 +1,13 @@
 <div id="status-bar" class="status-bar">
   <div class="flex items-center gap-2 sm:gap-4">
-    <span class="status-item" id="status-lines">
-      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>
-      0 lines
-    </span>
-    <span class="status-item" id="status-words">
-      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
-      0 words
-    </span>
-    <span class="status-item" id="status-chars">
-      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
-      0 chars
-    </span>
+    <!-- Info button - visible on all screen sizes -->
+    <button class="status-btn info-btn" id="info-btn" title="Document info">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <span>Info</span>
+    </button>
   </div>
+
+  <!-- Right side: lint + save -->
   <div class="flex items-center gap-3">
     <button class="status-btn lint-fix-btn" id="lint-fix" title="Fix lint issues">
       <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
@@ -29,6 +24,70 @@
     </span>
   </div>
 </div>
+
+<!-- Mobile Info Popup -->
+<div id="info-popup" class="info-popup hidden" role="dialog" aria-label="Document information">
+  <div class="info-popup-content">
+    <div class="info-popup-header">
+      <span class="info-popup-title">Document Info</span>
+      <button class="info-popup-close" id="info-popup-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <div class="info-popup-stats">
+      <div class="info-stat" id="info-lines">
+        <span class="info-stat-label">Lines</span>
+        <span class="info-stat-value">0</span>
+      </div>
+      <div class="info-stat" id="info-words">
+        <span class="info-stat-label">Words</span>
+        <span class="info-stat-value">0</span>
+      </div>
+      <div class="info-stat" id="info-chars">
+        <span class="info-stat-label">Chars</span>
+        <span class="info-stat-value">0</span>
+      </div>
+      <div class="info-stat" id="info-tokens">
+        <span class="info-stat-label">Tokens</span>
+        <span class="info-stat-value">0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const infoBtn = document.getElementById("info-btn")
+  const infoPopup = document.getElementById("info-popup")
+  const infoPopupClose = document.getElementById("info-popup-close")
+
+  function togglePopup() {
+    if (!infoPopup) return
+    const isHidden = infoPopup.classList.contains("hidden")
+    if (isHidden) {
+      infoPopup.classList.remove("hidden")
+    } else {
+      infoPopup.classList.add("hidden")
+    }
+  }
+
+  function closePopup() {
+    infoPopup?.classList.add("hidden")
+  }
+
+  infoBtn?.addEventListener("click", togglePopup)
+  infoPopupClose?.addEventListener("click", closePopup)
+
+  document.addEventListener("click", (e) => {
+    if (!infoPopup || !infoBtn) return
+    if (!infoPopup.contains(e.target as Node) && !infoBtn.contains(e.target as Node)) {
+      closePopup()
+    }
+  })
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePopup()
+  })
+</script>
 
 <style>
   .status-bar {
@@ -137,5 +196,95 @@
   @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+  }
+
+  /* Info popup styles */
+  .info-popup {
+    position: fixed;
+    bottom: 40px;
+    left: 8px;
+    z-index: 1000;
+    animation: slideUp 0.2s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .info-popup.hidden {
+    display: none;
+  }
+
+  .info-popup-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    min-width: 180px;
+    overflow: hidden;
+  }
+
+  .info-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .info-popup-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  .info-popup-close {
+    background: none;
+    border: none;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .info-popup-close:hover {
+    color: var(--foreground);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .info-popup-stats {
+    padding: 8px 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+  }
+
+  .info-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .info-stat-label {
+    font-size: 11px;
+    color: var(--muted-foreground);
+    opacity: 0.7;
+  }
+
+  .info-stat-value {
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--foreground);
+    font-weight: 500;
   }
 </style>
