@@ -35,7 +35,7 @@ CodeInk is a real-time **Markdown** editor with instant rendering, designed for 
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    Editor (textarea)                    │
-│              • Markdown source input                      │
+│              • Markdown source input                    │
 └──────────────────────────┬──────────────────────────────┘
                            │ parse
                            ▼
@@ -49,7 +49,7 @@ CodeInk is a real-time **Markdown** editor with instant rendering, designed for 
 │                   Transformers                          │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐  │
 │  │   Shiki  │  │  KaTeX   │  │  Mermaid │  │  Alerts │  │
-│  │  (code)  │  │  (math)  │  │(diagrams)│  │(callouts)│  │
+│  │  (code)  │  │  (math)  │  │(diagrams)│  │(callouts)│ │
 │  └──────────┘  └──────────┘  └──────────┘  └─────────┘  │
 └──────────────────────────┬──────────────────────────────┘
                            │ render
