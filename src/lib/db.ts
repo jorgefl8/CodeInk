@@ -21,62 +21,46 @@ function openDB(): Promise<IDBDatabase> {
   })
 }
 
-export async function getAllDocs(): Promise<Document[]> {
-  const db = await openDB()
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, "readonly")
-    const req = tx.objectStore(STORE_NAME).getAll()
-    req.onerror = () => reject(req.error)
-    req.onsuccess = () => {
-      const docs = (req.result as Document[]).sort(
-        (a, b) => b.updatedAt - a.updatedAt
-      )
-      db.close()
-      resolve(docs)
-    }
-  })
+function withStore<T>(
+  mode: IDBTransactionMode,
+  operation: (store: IDBObjectStore) => IDBRequest,
+  transform?: (result: unknown) => T,
+): Promise<T> {
+  return openDB().then(
+    (db) =>
+      new Promise<T>((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, mode)
+        const req = operation(tx.objectStore(STORE_NAME))
+        req.onerror = () => {
+          db.close()
+          reject(req.error)
+        }
+        req.onsuccess = () => {
+          db.close()
+          resolve(transform ? transform(req.result) : (req.result as T))
+        }
+      }),
+  )
 }
 
-export async function getDoc(id: string): Promise<Document | null> {
-  const db = await openDB()
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, "readonly")
-    const req = tx.objectStore(STORE_NAME).get(id)
-    req.onerror = () => reject(req.error)
-    req.onsuccess = () => {
-      db.close()
-      resolve(req.result ?? null)
-    }
-  })
+export function getAllDocs(): Promise<Document[]> {
+  return withStore("readonly", (store) => store.getAll(), (result) =>
+    (result as Document[]).sort((a, b) => b.updatedAt - a.updatedAt),
+  )
 }
 
-export async function saveDoc(doc: Document): Promise<void> {
-  const db = await openDB()
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, "readwrite")
-    const req = tx.objectStore(STORE_NAME).put(doc)
-    req.onerror = () => reject(req.error)
-    req.onsuccess = () => {
-      db.close()
-      resolve()
-    }
-  })
+export function getDoc(id: string): Promise<Document | null> {
+  return withStore("readonly", (store) => store.get(id), (result) =>
+    (result as Document | undefined) ?? null,
+  )
 }
 
-export async function deleteDoc(id: string): Promise<void> {
-  const db = await openDB()
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, "readwrite")
-    const req = tx.objectStore(STORE_NAME).delete(id)
-    req.onerror = () => reject(req.error)
-    req.onsuccess = () => {
-      db.close()
-      resolve()
-    }
-  })
+export function saveDoc(doc: Document): Promise<void> {
+  return withStore("readwrite", (store) => store.put(doc))
 }
 
-export function extractTitle(content: string): string {
-  const match = content.match(/^#\s+(.+)$/m)
-  return match ? match[1].trim() : "Untitled"
+export function deleteDoc(id: string): Promise<void> {
+  return withStore("readwrite", (store) => store.delete(id))
 }
+
+

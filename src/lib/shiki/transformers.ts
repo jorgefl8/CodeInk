@@ -1,47 +1,41 @@
 import type { ShikiTransformer } from "shiki"
 
-const showLineNumbers = (): ShikiTransformer => {
+type HastNode = { properties: Record<string, unknown> }
+
+function appendClass(node: HastNode, className: string) {
+  const existing = node.properties.class
+  if (Array.isArray(existing)) {
+    existing.push(className)
+  } else if (typeof existing === "string") {
+    node.properties.class = `${existing} ${className}`
+  } else {
+    node.properties.class = className
+  }
+}
+
+function addClassTransformer(name: string, className: string): ShikiTransformer {
   return {
-    name: "AddLineNumbers",
+    name,
     pre(node) {
-      const shikiStyles = node.properties.class
-      if (Array.isArray(shikiStyles)) {
-        shikiStyles.push("shiki-line-numbers")
-      } else if (typeof shikiStyles === "string") {
-        node.properties.class = `${shikiStyles} shiki-line-numbers`
-      } else {
-        node.properties.class = "shiki-line-numbers"
-      }
+      appendClass(node, className)
     },
   }
 }
 
-const wordWrapContent = (): ShikiTransformer => {
-  return {
-    name: "WordWrap",
-    pre(node) {
-      const existingClass = node.properties.class
-      if (Array.isArray(existingClass)) {
-        existingClass.push("shiki-word-wrap")
-      } else if (typeof existingClass === "string") {
-        node.properties.class = `${existingClass} shiki-word-wrap`
-      } else {
-        node.properties.class = "shiki-word-wrap"
-      }
-    },
-  }
-}
+const showLineNumbers = (): ShikiTransformer =>
+  addClassTransformer("AddLineNumbers", "shiki-line-numbers")
 
-const addLanguageProperty = (): ShikiTransformer => {
-  return {
-    name: "AddLanguageProperty",
-    pre(node) {
-      const lang = this.options.lang
-      if (lang) {
-        node.properties["data-language"] = lang
-      }
-    },
-  }
-}
+const wordWrapContent = (): ShikiTransformer =>
+  addClassTransformer("WordWrap", "shiki-word-wrap")
+
+const addLanguageProperty = (): ShikiTransformer => ({
+  name: "AddLanguageProperty",
+  pre(node) {
+    const lang = this.options.lang
+    if (lang) {
+      node.properties["data-language"] = lang
+    }
+  },
+})
 
 export { showLineNumbers, wordWrapContent, addLanguageProperty }

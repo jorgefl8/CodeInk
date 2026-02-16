@@ -6,6 +6,19 @@ import { highlightCode } from "@/lib/shiki/highlight"
 
 let highlightMap = new Map<string, string>()
 
+const LANG_ICON_MAP: Record<string, string> = {
+  typescript: "ts",
+  javascript: "js",
+  tsx: "ts",
+  jsx: "js",
+  bash: "bash",
+  sh: "bash",
+  shell: "bash",
+  yml: "yaml",
+  dockerfile: "dockerfile",
+  docker: "dockerfile",
+}
+
 const renderer = {
   code({ text, lang }: Tokens.Code) {
     if (lang === "mermaid") {
@@ -14,22 +27,20 @@ const renderer = {
 
     const highlighted = highlightMap.get(text) ?? text
     const label = lang || "text"
-    const langIconMap: Record<string, string> = {
-      typescript: "ts",
-      javascript: "js",
-      tsx: "ts",
-      jsx: "js",
-      bash: "bash",
-      sh: "bash",
-      shell: "bash",
-      yml: "yaml",
-      dockerfile: "dockerfile",
-      docker: "dockerfile",
-    }
-    const iconLang = langIconMap[label] ?? label
+    const iconLang = LANG_ICON_MAP[label] ?? label
     const iconPath = `/icons/lang/${iconLang}.svg`
     const fallbackIcon = `/icons/lang/default.svg`
-    const displayLabel = label.charAt(0).toUpperCase() + label.slice(1)
+
+    const LANG_LABEL_MAP: Record<string, string> = {
+      js: "Javascript",
+      ts: "TypeScript",
+      tsx: "React (TS)",
+      jsx: "React (JS)",
+      sh: "Bash",
+      yml: "YAML",
+    }
+
+    const displayLabel = LANG_LABEL_MAP[label] ?? label.charAt(0).toUpperCase() + label.slice(1)
 
     return `
       <div class="code-block group" data-language="${label}">
@@ -76,6 +87,11 @@ marked.use(
     },
   },
 )
+
+export function extractTitle(content: string): string {
+  const match = content.match(/^#\s+(.+)$/m)
+  return match ? match[1].trim() : "Untitled"
+}
 
 export async function renderMarkdown(content: string): Promise<string> {
   highlightMap = new Map()
