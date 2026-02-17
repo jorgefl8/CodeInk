@@ -72,7 +72,7 @@ const techLogos = [
       }
     ]
   })} />
-  <div class="max-sm:h-dvh max-sm:overflow-y-auto overflow-x-clip relative" style="overscroll-behavior: none;">
+  <div class="max-sm:min-h-dvh max-sm:overflow-y-auto overflow-x-clip relative" style="overscroll-behavior: none;">
     <div class="hero-glow"></div>
 
     <div class="sticky top-4 z-50 px-6" style="will-change: transform;">
@@ -352,7 +352,9 @@ const techLogos = [
       </div>
     </section>
 
-    <Footer />
+    <div class="max-sm:pb-24">
+      <Footer />
+    </div>
   </div>
 
   <style>
