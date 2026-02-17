@@ -1,0 +1,332 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro"
+import GitHubIcon from "@/components/GitHubIcon.astro"
+
+const techStack = [
+  { name: "Astro", desc: "Web framework", href: "https://astro.build" },
+  { name: "CodeMirror 6", desc: "Code editor engine", href: "https://codemirror.net" },
+  { name: "Shiki", desc: "Syntax highlighting", href: "https://shiki.style" },
+  { name: "Marked", desc: "Markdown parser", href: "https://marked.js.org" },
+  { name: "Mermaid", desc: "Diagram rendering", href: "https://mermaid.js.org" },
+  { name: "KaTeX", desc: "Math rendering", href: "https://katex.org" },
+  { name: "remark-lint", desc: "Markdown linting", href: "https://github.com/remarkjs/remark-lint" },
+  { name: "Tailwind CSS", desc: "Styling", href: "https://tailwindcss.com" },
+  { name: "TypeScript", desc: "Type safety", href: "https://typescriptlang.org" },
+]
+---
+
+<ContentLayout
+  title="About CodeInk — Free open source Markdown editor | CodeInk"
+  description="Learn about CodeInk, a free open-source online Markdown editor built for developers. Zero tracking, no accounts. Built with Astro, CodeMirror 6, and Tailwind CSS."
+>
+
+<h1>About CodeInk</h1>
+
+<p>CodeInk is a free, open-source Markdown editor built for developers and technical writers. A clean, professional interface with real-time preview, Mermaid diagrams, KaTeX math, syntax highlighting, and markdown linting — all running in your browser with zero server-side processing.</p>
+
+<h2>Why I built CodeInk</h2>
+
+<p>I wanted a Markdown editor that was fast, private, and had the features I actually use: diagrams, math, and proper syntax highlighting. Most online editors either require an account, track you with analytics, or lack modern features like Mermaid support. CodeInk is the editor I wanted to use — it gets out of your way and lets you write.</p>
+
+<!-- Privacy callout -->
+<div class="about-callout">
+  <div class="about-callout-glow"></div>
+  <div class="about-callout-content">
+    <div class="about-callout-header">
+      <div class="about-callout-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+      </div>
+      <div>
+        <span class="about-callout-label">Privacy by design</span>
+        <p class="about-callout-subtitle">Private by architecture, not just by policy</p>
+      </div>
+    </div>
+    <div class="about-callout-body">
+      <p>There is no server that processes your documents. There are no analytics scripts. There are no cookies. Your documents are saved in IndexedDB in your browser and never transmitted anywhere. The editor simply cannot access your data from a server, because there is no server-side document processing.</p>
+    </div>
+    <div class="about-callout-badges">
+      <span class="about-badge">Zero tracking</span>
+      <span class="about-badge">Zero cookies</span>
+      <span class="about-badge">Zero accounts</span>
+      <span class="about-badge">Local storage only</span>
+    </div>
+  </div>
+</div>
+
+<!-- Tech stack grid -->
+<div class="about-section-header">
+  <span class="about-section-mono">Stack</span>
+  <h2 class="about-section-title">Technology</h2>
+</div>
+
+<div class="about-tech-grid">
+  {techStack.map((tech) => (
+    <a href={tech.href} target="_blank" rel="noopener noreferrer" class="about-tech-card">
+      <span class="about-tech-name">{tech.name}</span>
+      <span class="about-tech-desc">{tech.desc}</span>
+    </a>
+  ))}
+</div>
+
+<!-- Open source -->
+<div class="about-section-header">
+  <span class="about-section-mono">License</span>
+  <h2 class="about-section-title">Open source</h2>
+</div>
+
+<p>CodeInk is fully open source under the MIT license. View the source, report issues, or contribute on <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+
+<!-- Author -->
+<div class="about-author">
+  <div class="about-author-inner">
+    <img src="https://github.com/jorgefl8.png" alt="Jorge Florentino" width="50" height="50" class="about-author-avatar" loading="lazy" />
+    <div>
+      <p class="about-author-name">Jorge Florentino</p>
+      <p class="about-author-role">Software/DevOps Engineer</p>
+    </div>
+    <a href="https://github.com/jorgefl8" target="_blank" rel="noopener noreferrer" class="about-author-link" aria-label="GitHub profile">
+      <GitHubIcon size={18} />
+    </a>
+  </div>
+</div>
+
+</ContentLayout>
+
+<style>
+  /* Privacy callout */
+  .about-callout {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--background);
+    overflow: hidden;
+    margin: 2.5rem 0;
+  }
+
+  .about-callout::before,
+  .about-callout::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+  }
+
+  .about-callout::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--primary);
+    border-left: 2px solid var(--primary);
+  }
+
+  .about-callout::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+  }
+
+  .about-callout-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+    top: -120px;
+    right: -80px;
+    pointer-events: none;
+  }
+
+  .about-callout-content {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem;
+  }
+
+  .about-callout-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-callout-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    background: rgba(245, 158, 11, 0.08);
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+
+  .about-callout-label {
+    display: block;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+  }
+
+  .about-callout-subtitle {
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .about-callout-body {
+    margin-bottom: 1rem;
+  }
+
+  .about-callout-body p {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .about-callout-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .about-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--primary);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    background: rgba(245, 158, 11, 0.05);
+    letter-spacing: 0.02em;
+  }
+
+  /* Section headers */
+  .about-section-header {
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-section-mono {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary);
+    opacity: 0.6;
+    margin-bottom: 0.375rem;
+  }
+
+  .about-section-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* Tech grid */
+  .about-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .about-tech-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .about-tech-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.125rem;
+    border: 0.5px solid var(--border);
+    margin: -0.25px;
+    text-decoration: none;
+    background: var(--background);
+    transition: background 0.2s ease;
+  }
+
+  .about-tech-card:hover {
+    background: rgba(245, 158, 11, 0.04);
+  }
+
+  .about-tech-name {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--foreground);
+    margin-bottom: 0.125rem;
+  }
+
+  .about-tech-desc {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--muted-foreground);
+    opacity: 0.7;
+  }
+
+  /* Author */
+  .about-author {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-author-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    background: var(--card);
+  }
+
+  .about-author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+  }
+
+  .about-author-name {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--foreground);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .about-author-role {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0;
+  }
+
+  .about-author-link {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: var(--primary);
+    border: 1px solid var(--border);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .about-author-link:hover {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+</style>
