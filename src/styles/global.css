@@ -104,6 +104,7 @@
     font-size: 16px;
     color-scheme: dark;
     zoom: 1.1;
+    overscroll-behavior-y: none;
   }
   @media (max-width: 639px), (max-height: 500px) {
     html {
@@ -113,7 +114,19 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: none;
+  }
+
+  /* Prevent pull-to-refresh on iOS WebKit browsers (Safari, Brave, Chrome iOS).
+     Adding a tiny extra height ensures the scroll position never truly reaches
+     the document boundary, which prevents WKWebView from triggering its native
+     pull-to-refresh gesture. Only applied on touch devices to avoid affecting desktop. */
+  @media screen and (pointer: coarse) {
+    @supports (-webkit-backdrop-filter: blur(1px)) and (overscroll-behavior-y: none) {
+      html {
+        min-height: 100.3%;
+      }
+    }
   }
 }
 
