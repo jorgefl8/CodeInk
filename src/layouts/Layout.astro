@@ -79,7 +79,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <title>{title}</title>
     <slot name="head" />
   </head>
-  <body class:list={["antialiased grid-bg", bodyClass]}>
+  <body class:list={["antialiased grid-bg overscroll-y-none", bodyClass]}>
     <slot />
   </body>
 </html>
