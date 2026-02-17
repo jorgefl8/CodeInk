@@ -1,0 +1,258 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Header from "@/components/Header.astro"
+import Footer from "@/components/Footer.astro"
+import Button from "@/components/Button.astro"
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<Layout title={title} description={description} bodyClass="bg-background text-foreground">
+  <slot name="head" slot="head" />
+  <div class="min-h-screen flex flex-col">
+    <Header logoHref="/" />
+
+    <main class="flex-1 w-full">
+      <!-- Hero area with subtle glow -->
+      <div class="content-hero relative overflow-hidden">
+        <div class="content-hero-glow"></div>
+        <div class="relative z-10 max-w-3xl mx-auto px-6 pt-12 pb-8">
+          <slot name="badge" />
+        </div>
+      </div>
+
+      <article class="content-prose max-w-3xl mx-auto w-full px-6 pb-12">
+        <slot />
+      </article>
+
+      <!-- CTA Banner -->
+      <div class="max-w-3xl mx-auto px-6">
+        <div class="cta-banner">
+          <div class="cta-banner-glow"></div>
+          <div class="relative z-10 text-center py-10 px-6">
+            <p class="font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-3">Try it yourself</p>
+            <p class="text-lg text-muted-foreground mb-6">Ready to write Markdown with real-time preview, diagrams and math?</p>
+            <Button href="/documents" size="md">
+              Open CodeInk editor
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-16"></div>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<script>
+  import { initCopyButtons } from "@/scripts/copy-handler"
+
+  const article = document.querySelector(".content-prose")
+  if (article) {
+    initCopyButtons(article as HTMLElement)
+  }
+</script>
+
+<style>
+  .content-hero-glow {
+    position: absolute;
+    width: 500px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  /* CTA banner with corner accents */
+  .cta-banner {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--background);
+    overflow: hidden;
+  }
+
+  .cta-banner::before,
+  .cta-banner::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+  }
+
+  .cta-banner::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--primary);
+    border-left: 2px solid var(--primary);
+  }
+
+  .cta-banner::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+  }
+
+  .cta-banner-glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, transparent 70%);
+    top: -100px;
+    right: -50px;
+    pointer-events: none;
+  }
+
+  /* Content prose */
+  .content-prose :global(h1) {
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--foreground);
+  }
+
+  .content-prose :global(h2) {
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: var(--foreground);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content-prose :global(h3) {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+  }
+
+  .content-prose :global(p) {
+    color: var(--muted-foreground);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .content-prose :global(a) {
+    color: var(--primary);
+    text-decoration: none;
+    text-underline-offset: 3px;
+  }
+
+  .content-prose :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  .content-prose :global(ul),
+  .content-prose :global(ol) {
+    color: var(--muted-foreground);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+
+  .content-prose :global(ul) {
+    list-style-type: disc;
+  }
+
+  .content-prose :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .content-prose :global(li) {
+    margin-bottom: 0.375rem;
+  }
+
+  .content-prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    background: var(--muted);
+    color: #e5c07b;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .content-prose :global(pre) {
+    background: var(--muted);
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+  }
+
+  .content-prose :global(pre code) {
+    background: none;
+    padding: 0;
+    border: none;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--foreground);
+  }
+
+  .content-prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .content-prose :global(th),
+  .content-prose :global(td) {
+    border: 1px solid var(--border);
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    color: var(--muted-foreground);
+    background: var(--background);
+  }
+
+  .content-prose :global(th) {
+    background: var(--muted);
+    font-weight: 600;
+    color: var(--foreground);
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+  }
+
+  .content-prose :global(tr:hover td) {
+    background: rgba(245, 158, 11, 0.02);
+  }
+
+  .content-prose :global(blockquote) {
+    border-left: 3px solid rgba(245, 158, 11, 0.3);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--muted-foreground);
+    background: rgba(245, 158, 11, 0.02);
+  }
+
+  .content-prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+
+  .content-prose :global(strong) {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+</style>
