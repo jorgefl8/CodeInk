@@ -14,15 +14,7 @@ export function initPreview(target: HTMLElement) {
     if (debounceTimer) clearTimeout(debounceTimer)
     debounceTimer = setTimeout(async () => {
       debounceTimer = null
-      try {
-        const html = await renderMarkdown(content)
-        target.innerHTML = html
-        await renderMermaidDiagrams(target)
-        if (cleanupCopy) cleanupCopy()
-        cleanupCopy = initCopyButtons(target)
-      } catch (err) {
-        console.error("[CodeInk] Preview render error:", err)
-      }
+      await renderPreview(content, target)
     }, DEBOUNCE_MS)
   }
 

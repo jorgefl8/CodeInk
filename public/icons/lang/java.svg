@@ -4,18 +4,18 @@
     viewBox="0 0 25 24">
     <path
       stroke="#F87171"
-      strokeWidth="2"
+      stroke-width="2"
       d="M5.334 3.75c-.965 0-1.748.781-1.748 1.746v4.554a7.201 7.201 0 0014.322 1.078c.035-4.128.035-2.128.035-6.029a1.748 1.748 0 00-1.702-1.35H5.334z"
     ></path>
     <path
       stroke="#F87171"
-      strokeLinecap="round"
-      strokeWidth="2"
+      stroke-linecap="round"
+      stroke-width="2"
       d="M4.086 20.251L20.086 20.251"
     ></path>
     <mask
       id="mask0_20565_673"
-      style={{ maskType: "alpha" }}
+      style="mask-type:alpha"
       width="4"
       height="7"
       x="20"
@@ -34,7 +34,7 @@
         cy="8"
         r="2"
         stroke="#F87171"
-        strokeWidth="2"
+        stroke-width="2"
       ></circle>
     </g>
   </svg>

@@ -1,0 +1,19 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Button from "@/components/Button.astro"
+import Logo from "@/assets/logo.svg"
+---
+
+<Layout title="404 — Page Not Found" bodyClass="h-dvh overflow-hidden grid place-items-center">
+  <main class="flex flex-col items-center gap-6 text-center px-6">
+    <Logo class="w-12 h-12 opacity-40" aria-hidden="true" />
+    <div class="space-y-2">
+      <h1 class="text-4xl font-bold tracking-tight">404</h1>
+      <p class="text-muted-foreground text-sm">This page doesn't exist.</p>
+    </div>
+    <div class="flex gap-3">
+      <Button href="/" size="sm">Home</Button>
+      <Button href="/editor" size="sm">Editor</Button>
+    </div>
+  </main>
+</Layout>

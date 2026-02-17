@@ -2,9 +2,23 @@ import { marked, type Token, type Tokens } from "marked"
 import markedAlert from "marked-alert"
 import markedFootnote from "marked-footnote"
 import markedKatex from "marked-katex-extension"
+import { gfmHeadingId } from "marked-gfm-heading-id"
 import { highlightCode } from "@/lib/shiki/highlight"
 
 let highlightMap = new Map<string, string>()
+
+const LANG_ICON_MAP: Record<string, string> = {
+  typescript: "ts",
+  javascript: "js",
+  tsx: "ts",
+  jsx: "js",
+  bash: "bash",
+  sh: "bash",
+  shell: "bash",
+  yml: "yaml",
+  dockerfile: "dockerfile",
+  docker: "dockerfile",
+}
 
 const renderer = {
   code({ text, lang }: Tokens.Code) {
@@ -14,29 +28,32 @@ const renderer = {
 
     const highlighted = highlightMap.get(text) ?? text
     const label = lang || "text"
-    const langIconMap: Record<string, string> = {
-      typescript: "ts",
-      javascript: "js",
-      tsx: "ts",
-      jsx: "js",
-      bash: "bash",
-      sh: "bash",
-      shell: "bash",
-      yml: "yaml",
-      dockerfile: "dockerfile",
-      docker: "dockerfile",
-    }
-    const iconLang = langIconMap[label] ?? label
+    
+    // Handle "text" fallback - don't try to load text.svg, use default directly
+    const iconLang = label === "text" ? "default" : (LANG_ICON_MAP[label] ?? label)
     const iconPath = `/icons/lang/${iconLang}.svg`
     const fallbackIcon = `/icons/lang/default.svg`
-    const displayLabel = label.charAt(0).toUpperCase() + label.slice(1)
+
+    const LANG_LABEL_MAP: Record<string, string> = {
+      js: "Javascript",
+      ts: "TypeScript",
+      tsx: "React (TS)",
+      jsx: "React (JS)",
+      sh: "Bash",
+      yml: "YAML",
+    }
+
+    const displayLabel = LANG_LABEL_MAP[label] ?? label.charAt(0).toUpperCase() + label.slice(1)
+    
+    // Only show label if it's not the generic "text" fallback
+    const showLabel = label !== "text"
 
     return `
       <div class="code-block group" data-language="${label}">
         <div class="code-block-header">
           <div class="code-block-lang-info">
             <img src="${iconPath}" onerror="this.src='${fallbackIcon}'" width="18" height="18" alt="" class="code-block-lang-icon" />
-            <span class="code-block-lang">${displayLabel}</span>
+            ${showLabel ? `<span class="code-block-lang">${displayLabel}</span>` : ""}
           </div>
           <button class="copy-code-btn" type="button" data-copy-code="true" aria-label="Copy code">
             <span class="copy-code-icon copy-code-icon--copy" aria-hidden="true">
@@ -62,6 +79,7 @@ marked.use(
   markedAlert(),
   markedFootnote(),
   markedKatex({ throwOnError: false }),
+  gfmHeadingId(),
   {
     renderer,
     async: true,
@@ -76,6 +94,11 @@ marked.use(
     },
   },
 )
+
+export function extractTitle(content: string): string {
+  const match = content.match(/^#\s+(.+)$/m)
+  return match ? match[1].trim() : "Untitled"
+}
 
 export async function renderMarkdown(content: string): Promise<string> {
   highlightMap = new Map()

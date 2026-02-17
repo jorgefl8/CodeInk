@@ -4,7 +4,7 @@ import { basicSetup } from "codemirror"
 import { markdown } from "@codemirror/lang-markdown"
 import { languages } from "@codemirror/language-data"
 import { oneDark } from "@codemirror/theme-one-dark"
-import { linter, lintGutter, diagnosticCount } from "@codemirror/lint"
+import { linter, diagnosticCount } from "@codemirror/lint"
 import { markdownLint } from "@/scripts/markdown-linter"
 
 let editorView: EditorView | null = null
