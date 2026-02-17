@@ -10,11 +10,11 @@ interface Props {
 
 const {
   title,
-  description = "CodeInk — Real-time Markdown editor with syntax highlighting, Mermaid diagrams, KaTeX math, and more.",
+  description = "CodeInk is a free online Markdown editor. 100% client-side, no account needed. Real-time preview with syntax highlighting, Mermaid diagrams, and KaTeX math support.",
   bodyClass = "h-dvh overflow-hidden",
 } = Astro.props
 
-const siteURL = "https://code-ink.florencloud.com"
+const siteURL = "https://codeink.app"
 const canonicalURL = new URL(Astro.url.pathname, siteURL).href
 ---
 
@@ -48,7 +48,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={`${siteURL}/og-image.png`} />
-    <meta name="twitter:domain" content="code-ink.florencloud.com" />
+    <meta name="twitter:domain" content="codeink.app" />
 
     <!-- Sitemap discovery -->
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -56,9 +56,23 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "WebSite",
+      "@type": "SoftwareApplication",
       "name": "CodeInk",
-      "url": "https://code-ink.florencloud.com"
+      "url": "https://codeink.app",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free online Markdown editor with real-time preview, Mermaid diagrams, KaTeX math, and syntax highlighting. 100% client-side, no account required.",
+      "screenshot": "https://codeink.app/og-image.png",
+      "softwareVersion": "1.0",
+      "author": {
+        "@type": "Person",
+        "name": "Jorge"
+      }
     })} />
 
     <ClientRouter />
