@@ -114,6 +114,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+    min-height: 100vh;
+    min-height: 100dvh;
   }
 }
 
