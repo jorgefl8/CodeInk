@@ -24,7 +24,7 @@ const techLogos = [
 <Layout
   title="CodeInk — Free online Markdown editor with Mermaid diagrams & KaTeX math"
   description="CodeInk is a free online Markdown editor with a clean, professional UI. 100% client-side, no account needed. Real-time preview with syntax highlighting, Mermaid diagrams, and KaTeX math support. Your documents never leave your browser."
-  bodyClass="bg-background text-foreground max-sm:h-dvh max-sm:overflow-hidden"
+  bodyClass="bg-background text-foreground"
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -72,7 +72,7 @@ const techLogos = [
       }
     ]
   })} />
-  <div class="min-h-screen max-sm:h-dvh max-sm:overflow-y-auto overflow-x-clip relative" style="overscroll-behavior: none;">
+  <div class="relative overflow-x-clip">
     <div class="hero-glow"></div>
 
     <div class="sticky top-4 z-50 px-6" style="will-change: transform;">
@@ -298,7 +298,7 @@ const techLogos = [
     </section>
 
     <!-- FAQ Section -->
-    <section class="relative z-10 max-w-4xl mx-auto px-6 pb-28">
+    <section class="relative z-10 max-w-4xl mx-auto px-6 pb-16">
       <div class="text-center mb-14">
         <span class="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-4">FAQ</span>
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Frequently asked questions</h2>
