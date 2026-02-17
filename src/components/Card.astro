@@ -59,4 +59,19 @@ const { href, title, description, class: className = "" } = Astro.props
     width: 20px;
     height: 20px;
   }
+
+  :global(.card-compact) .card-inner {
+    padding: 1.25rem 1.5rem;
+  }
+
+  :global(.card-compact) .card-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0.875rem;
+  }
+
+  :global(.card-compact) .card-icon :global(svg) {
+    width: 17px;
+    height: 17px;
+  }
 </style>

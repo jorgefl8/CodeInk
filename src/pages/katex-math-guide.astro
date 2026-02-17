@@ -1,0 +1,143 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro"
+import CodeBlock from "@/components/CodeBlock.astro"
+
+const codeInline = 'The equation $E = mc^2$ changed physics forever.\n\nThe quadratic formula is $x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$.'
+const codeDisplay = '$$\n\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}\n$$\n\n$$\n\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}\n$$'
+const codeFractions = '$\\frac{a}{b}$             — simple fraction\n$\\dfrac{a}{b}$            — display-style fraction (larger)\n$\\tfrac{a}{b}$            — text-style fraction (smaller)'
+const codeExponents = '$x^2$               — superscript\n$x_i$               — subscript\n$x_i^2$             — both\n$x^{2n+1}$          — grouped superscript\n$a_{ij}$             — grouped subscript'
+const codeRoots = '$\\sqrt{x}$           — square root\n$\\sqrt[3]{x}$        — cube root\n$\\sqrt[n]{x}$        — nth root'
+const codeGreek = '$\\alpha$ $\\beta$ $\\gamma$ $\\delta$ $\\epsilon$\n$\\zeta$ $\\eta$ $\\theta$ $\\iota$ $\\kappa$\n$\\lambda$ $\\mu$ $\\nu$ $\\xi$ $\\pi$\n$\\rho$ $\\sigma$ $\\tau$ $\\upsilon$ $\\phi$\n$\\chi$ $\\psi$ $\\omega$'
+const codeSums = '$$\\sum_{i=1}^{n} x_i$$          — summation\n\n$$\\prod_{i=1}^{n} x_i$$         — product\n\n$$\\int_a^b f(x)\\,dx$$           — definite integral\n\n$$\\iint_D f(x,y)\\,dA$$          — double integral\n\n$$\\oint_C \\vec{F} \\cdot d\\vec{r}$$  — line integral'
+const codeLimits = '$$\\lim_{x \\to \\infty} \\frac{1}{x} = 0$$\n\n$$\\lim_{x \\to 0^+} \\ln(x) = -\\infty$$'
+const codeMatrix = '$$\n\\begin{pmatrix}\na & b \\\\\nc & d\n\\end{pmatrix}\n$$'
+const codeMatrix3 = '$$\nA = \\begin{bmatrix}\n1 & 2 & 3 \\\\\n4 & 5 & 6 \\\\\n7 & 8 & 9\n\\end{bmatrix}\n$$'
+const codeAligned = '$$\n\\begin{aligned}\nf(x) &= (x+1)^2 \\\\\n     &= x^2 + 2x + 1\n\\end{aligned}\n$$'
+const codeEuler = '$$e^{i\\pi} + 1 = 0$$'
+const codeBinomial = '$$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^{n-k} y^k$$'
+const codeMaxwell = '$$\\nabla \\cdot \\vec{E} = \\frac{\\rho}{\\epsilon_0}$$\n\n$$\\nabla \\times \\vec{B} = \\mu_0 \\vec{J} + \\mu_0 \\epsilon_0 \\frac{\\partial \\vec{E}}{\\partial t}$$'
+---
+
+<ContentLayout
+  title="Writing math in Markdown with KaTeX | CodeInk"
+  description="Learn how to write math equations in Markdown using KaTeX. Complete guide covering inline math, display math, fractions, matrices, Greek letters, and more. Try live in CodeInk."
+>
+
+<h1>Writing math in Markdown with KaTeX</h1>
+
+<p><a href="/documents">CodeInk</a> supports KaTeX for rendering LaTeX math expressions directly in Markdown. KaTeX is fast, lightweight, and renders math with the same quality as LaTeX. This guide covers everything you need to write math in your Markdown documents.</p>
+
+<h2>Inline math</h2>
+
+<p>Use single dollar signs to write math inline with your text. The expression renders on the same line as the surrounding text.</p>
+
+<CodeBlock lang="latex" code={codeInline} />
+
+<p>Inline math is perfect for referencing variables, simple formulas, or notation within a sentence.</p>
+
+<h2>Display math</h2>
+
+<p>Use double dollar signs for standalone equations that appear centered on their own line. Display math is ideal for important formulas that deserve visual emphasis.</p>
+
+<CodeBlock lang="latex" code={codeDisplay} />
+
+<h2>Basic operations</h2>
+
+<h3>Fractions</h3>
+
+<CodeBlock lang="latex" code={codeFractions} />
+
+<h3>Exponents and subscripts</h3>
+
+<CodeBlock lang="latex" code={codeExponents} />
+
+<h3>Roots</h3>
+
+<CodeBlock lang="latex" code={codeRoots} />
+
+<h2>Greek letters</h2>
+
+<p>Greek letters are frequently used in math, science, and engineering. KaTeX supports all Greek letters.</p>
+
+<CodeBlock lang="latex" code={codeGreek} />
+
+<p>Capitalize the first letter for uppercase: <code>$\Gamma$</code>, <code>$\Delta$</code>, <code>$\Theta$</code>, <code>$\Lambda$</code>, <code>$\Pi$</code>, <code>$\Sigma$</code>, <code>$\Phi$</code>, <code>$\Psi$</code>, <code>$\Omega$</code>.</p>
+
+<h2>Common operators</h2>
+
+<h3>Sums, products, and integrals</h3>
+
+<CodeBlock lang="latex" code={codeSums} />
+
+<h3>Limits</h3>
+
+<CodeBlock lang="latex" code={codeLimits} />
+
+<h2>Matrices</h2>
+
+<p>KaTeX supports several matrix environments with different bracket styles.</p>
+
+<CodeBlock lang="latex" code={codeMatrix} />
+
+<ul>
+  <li><code>pmatrix</code> — parentheses <code>( )</code></li>
+  <li><code>bmatrix</code> — square brackets <code>[ ]</code></li>
+  <li><code>Bmatrix</code> — curly braces</li>
+  <li><code>vmatrix</code> — vertical bars (determinant)</li>
+  <li><code>matrix</code> — no brackets</li>
+</ul>
+
+<h3>Example: 3x3 Matrix</h3>
+
+<CodeBlock lang="latex" code={codeMatrix3} />
+
+<h2>Alignment and multi-line equations</h2>
+
+<p>Use the <code>aligned</code> environment to align equations at the <code>&amp;</code> sign.</p>
+
+<CodeBlock lang="latex" code={codeAligned} />
+
+<h2>Common symbols</h2>
+
+<table>
+  <thead>
+    <tr><th>Symbol</th><th>Code</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>+/-</td><td><code>\pm</code></td><td>Plus-minus</td></tr>
+    <tr><td>x</td><td><code>\times</code></td><td>Multiplication</td></tr>
+    <tr><td>/</td><td><code>\div</code></td><td>Division</td></tr>
+    <tr><td>!=</td><td><code>\neq</code></td><td>Not equal</td></tr>
+    <tr><td>&lt;=</td><td><code>\leq</code></td><td>Less than or equal</td></tr>
+    <tr><td>&gt;=</td><td><code>\geq</code></td><td>Greater than or equal</td></tr>
+    <tr><td>~</td><td><code>\approx</code></td><td>Approximately</td></tr>
+    <tr><td>inf</td><td><code>\infty</code></td><td>Infinity</td></tr>
+    <tr><td>in</td><td><code>\in</code></td><td>Element of</td></tr>
+    <tr><td>not in</td><td><code>\notin</code></td><td>Not element of</td></tr>
+    <tr><td>subset</td><td><code>\subset</code></td><td>Subset</td></tr>
+    <tr><td>forall</td><td><code>\forall</code></td><td>For all</td></tr>
+    <tr><td>exists</td><td><code>\exists</code></td><td>There exists</td></tr>
+    <tr><td>-&gt;</td><td><code>\to</code> or <code>\rightarrow</code></td><td>Right arrow</td></tr>
+    <tr><td>=&gt;</td><td><code>\Rightarrow</code></td><td>Implies</td></tr>
+  </tbody>
+</table>
+
+<h2>Practical examples</h2>
+
+<h3>Euler's Identity</h3>
+
+<CodeBlock lang="latex" code={codeEuler} />
+
+<h3>Binomial theorem</h3>
+
+<CodeBlock lang="latex" code={codeBinomial} />
+
+<h3>Maxwell's Equations</h3>
+
+<CodeBlock lang="latex" code={codeMaxwell} />
+
+<hr />
+
+<p>All KaTeX expressions above work in <a href="/documents">CodeInk</a> with real-time rendering. For more Markdown syntax, check our <a href="/markdown-cheat-sheet">Markdown Cheat Sheet</a>. To add diagrams to your documents, see the <a href="/mermaid-diagrams-guide">Mermaid Diagrams Guide</a>.</p>
+
+</ContentLayout>

@@ -601,7 +601,8 @@ pre.shiki {
 }
 
 /* Code block structure */
-.markdown-prose .code-block {
+.markdown-prose .code-block,
+.content-prose .code-block {
   @apply relative rounded-lg mb-4;
   border: 1px solid var(--border);
   background: var(--muted);
@@ -609,30 +610,35 @@ pre.shiki {
   min-width: fit-content;
 }
 
-.markdown-prose .code-block .code-block-header {
+.markdown-prose .code-block .code-block-header,
+.content-prose .code-block .code-block-header {
   @apply flex items-center justify-between px-3.5 py-1.5;
   border-bottom: 1px solid var(--border);
   background: rgba(38, 38, 38, 0.6);
 }
 
-.markdown-prose .code-block .code-block-lang-info {
+.markdown-prose .code-block .code-block-lang-info,
+.content-prose .code-block .code-block-lang-info {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.markdown-prose .code-block .code-block-lang-icon {
+.markdown-prose .code-block .code-block-lang-icon,
+.content-prose .code-block .code-block-lang-icon {
   flex-shrink: 0;
   object-fit: contain;
 }
 
-.markdown-prose .code-block .code-block-lang {
+.markdown-prose .code-block .code-block-lang,
+.content-prose .code-block .code-block-lang {
   font-size: 0.8rem;
   font-family: var(--font-mono);
   color: var(--muted-foreground);
 }
 
-.markdown-prose .code-block pre {
+.markdown-prose .code-block pre,
+.content-prose .code-block pre {
   border: none !important;
   border-radius: 0 !important;
   margin: 0 !important;
@@ -641,14 +647,16 @@ pre.shiki {
   min-width: fit-content;
 }
 
-.markdown-prose .code-block pre code {
+.markdown-prose .code-block pre code,
+.content-prose .code-block pre code {
   padding-top: 0 !important;
   display: block;
   white-space: pre;
 }
 
 /* Copy button in code blocks */
-.markdown-prose .copy-code-btn {
+.markdown-prose .copy-code-btn,
+.content-prose .copy-code-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -664,40 +672,49 @@ pre.shiki {
   transition: opacity 0.2s ease, color 0.15s ease, background 0.15s ease;
 }
 
-.markdown-prose .copy-code-btn:hover {
+.markdown-prose .copy-code-btn:hover,
+.content-prose .copy-code-btn:hover {
   color: var(--primary);
   background: rgba(245, 158, 11, 0.1);
 }
 
-.markdown-prose .copy-code-btn[data-copied="true"] {
+.markdown-prose .copy-code-btn[data-copied="true"],
+.content-prose .copy-code-btn[data-copied="true"] {
   color: var(--success-accent);
 }
 
-.markdown-prose .copy-code-btn .copy-code-icon--copy {
+.markdown-prose .copy-code-btn .copy-code-icon--copy,
+.content-prose .copy-code-btn .copy-code-icon--copy {
   display: inline-flex;
   align-items: center;
 }
 
-.markdown-prose .copy-code-btn .copy-code-icon--check {
+.markdown-prose .copy-code-btn .copy-code-icon--check,
+.content-prose .copy-code-btn .copy-code-icon--check {
   display: none;
   align-items: center;
 }
 
-.markdown-prose .copy-code-btn[data-copied="true"] .copy-code-icon--copy {
+.markdown-prose .copy-code-btn[data-copied="true"] .copy-code-icon--copy,
+.content-prose .copy-code-btn[data-copied="true"] .copy-code-icon--copy {
   display: none;
 }
 
-.markdown-prose .copy-code-btn[data-copied="true"] .copy-code-icon--check {
+.markdown-prose .copy-code-btn[data-copied="true"] .copy-code-icon--check,
+.content-prose .copy-code-btn[data-copied="true"] .copy-code-icon--check {
   display: inline-flex;
 }
 
 .markdown-prose .code-block:hover .copy-code-btn,
-.markdown-prose .copy-code-btn:focus {
+.markdown-prose .copy-code-btn:focus,
+.content-prose .code-block:hover .copy-code-btn,
+.content-prose .copy-code-btn:focus {
   opacity: 1;
 }
 
 @media (hover: none) {
-  .markdown-prose .copy-code-btn {
+  .markdown-prose .copy-code-btn,
+  .content-prose .copy-code-btn {
     opacity: 1;
   }
 }

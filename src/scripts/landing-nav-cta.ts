@@ -46,8 +46,10 @@ export function initLandingNavCta() {
     if (flyClone || navigating) return
 
     if (!entry.isIntersecting && !isInNav) {
-      // Skip fly animation on mobile — just show the nav CTA directly
-      if (window.innerWidth < 640) {
+      // Skip fly animation on mobile or when hero rect was never captured
+      // (e.g. page reloaded while scrolled past the hero)
+      if (window.innerWidth < 640 || lastHeroRect.width === 0) {
+        navCta.style.opacity = ""
         navCta.classList.add("visible")
         isInNav = true
         return
@@ -93,6 +95,7 @@ export function initLandingNavCta() {
 
       setTimeout(() => {
         navCta.style.transition = "none"
+        navCta.style.opacity = ""
         navCta.classList.add("visible")
         navCta.offsetHeight
         navCta.style.transition = ""

@@ -1,0 +1,133 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro"
+import CodeBlock from "@/components/CodeBlock.astro"
+
+const codeBasic = '```mermaid\ngraph TD\n    A[Start] --> B[End]\n```'
+const codeFlowchart = '```mermaid\ngraph TD\n    A[Start] --> B{Is it working?}\n    B -->|Yes| C[Great!]\n    B -->|No| D[Debug]\n    D --> B\n    C --> E[Ship it]\n```'
+const codeSequence = '```mermaid\nsequenceDiagram\n    participant U as User\n    participant C as Client\n    participant S as Server\n    participant DB as Database\n\n    U->>C: Click login\n    C->>S: POST /auth/login\n    S->>DB: Query user\n    DB-->>S: User record\n    S-->>C: JWT token\n    C-->>U: Redirect to dashboard\n```'
+const codeClass = '```mermaid\nclassDiagram\n    class Animal {\n        +String name\n        +int age\n        +makeSound()\n    }\n    class Dog {\n        +String breed\n        +fetch()\n    }\n    class Cat {\n        +boolean indoor\n        +purr()\n    }\n    Animal <|-- Dog\n    Animal <|-- Cat\n```'
+const codeER = '```mermaid\nerDiagram\n    USER ||--o{ POST : writes\n    USER {\n        string id PK\n        string username\n        string email\n        date created_at\n    }\n    POST ||--o{ COMMENT : has\n    POST {\n        string id PK\n        string title\n        text content\n        date published_at\n    }\n    COMMENT {\n        string id PK\n        text body\n        date created_at\n    }\n    USER ||--o{ COMMENT : writes\n```'
+const codeGantt = '```mermaid\ngantt\n    title Project Timeline\n    dateFormat YYYY-MM-DD\n    axisFormat %b %d\n\n    section Design\n    Wireframes       :done, d1, 2026-01-01, 7d\n    UI Mockups       :done, d2, after d1, 5d\n\n    section Development\n    Frontend         :active, dev1, after d2, 14d\n    Backend          :dev2, after d2, 14d\n    Integration      :dev3, after dev1, 7d\n\n    section Launch\n    Testing          :test, after dev3, 5d\n    Deploy           :milestone, after test, 0d\n```'
+const codePie = '```mermaid\npie title Languages Used\n    "TypeScript" : 45\n    "Python" : 25\n    "Rust" : 15\n    "Go" : 10\n    "Other" : 5\n```'
+const codeState = '```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Review : Submit\n    Review --> Published : Approve\n    Review --> Draft : Request changes\n    Published --> Archived : Archive\n    Archived --> [*]\n```'
+---
+
+<ContentLayout
+  title="How to write Mermaid diagrams in Markdown | CodeInk"
+  description="Learn how to create Mermaid diagrams in Markdown. Step-by-step guide covering flowcharts, sequence diagrams, ER diagrams, Gantt charts, and more. Try live in CodeInk."
+>
+
+<h1>How to write Mermaid diagrams in Markdown</h1>
+
+<p>Mermaid is a JavaScript library that lets you create diagrams and charts using a simple text-based syntax inside Markdown. <a href="/documents">CodeInk</a> renders Mermaid diagrams in real-time directly in the preview pane — no plugins or external tools required.</p>
+
+<p>To create a Mermaid diagram, use a fenced code block with <code>mermaid</code> as the language identifier:</p>
+
+<CodeBlock lang="mermaid" code={codeBasic} />
+
+<h2>Flowcharts</h2>
+
+<p>Flowcharts are the most common Mermaid diagram type. They visualize processes, decision trees, and workflows. Use <code>graph TD</code> for top-down or <code>graph LR</code> for left-right direction.</p>
+
+<CodeBlock lang="mermaid" code={codeFlowchart} />
+
+<h3>Node shapes</h3>
+
+<ul>
+  <li><code>[Text]</code> — rectangle</li>
+  <li><code>(Text)</code> — rounded rectangle</li>
+  <li><code>&#123;&#123;Text&#125;&#125;</code> — rhombus (diamond/decision)</li>
+  <li><code>((Text))</code> — circle</li>
+  <li><code>[/Text/]</code> — parallelogram</li>
+  <li><code>[[Text]]</code> — subroutine</li>
+</ul>
+
+<h3>Arrow types</h3>
+
+<ul>
+  <li><code>--&gt;</code> — solid arrow</li>
+  <li><code>---</code> — solid line (no arrow)</li>
+  <li><code>-.-&gt;</code> — dotted arrow</li>
+  <li><code>==&gt;</code> — thick arrow</li>
+  <li><code>--&gt;|Label|</code> — arrow with label</li>
+</ul>
+
+<h2>Sequence diagrams</h2>
+
+<p>Sequence diagrams show how different parts of a system interact over time. They are ideal for documenting API flows, authentication processes, and message passing.</p>
+
+<CodeBlock lang="mermaid" code={codeSequence} />
+
+<h3>Message types</h3>
+
+<ul>
+  <li><code>-&gt;&gt;</code> — solid line with arrowhead</li>
+  <li><code>--&gt;&gt;</code> — dashed line with arrowhead</li>
+  <li><code>-&gt;&gt;+</code> — activate participant</li>
+  <li><code>--&gt;&gt;-</code> — deactivate participant</li>
+</ul>
+
+<h2>Class diagrams</h2>
+
+<p>Class diagrams represent the structure of object-oriented code. They show classes, their attributes, methods, and relationships.</p>
+
+<CodeBlock lang="mermaid" code={codeClass} />
+
+<h3>Relationship types</h3>
+
+<ul>
+  <li><code>&lt;|--</code> — inheritance</li>
+  <li><code>*--</code> — composition</li>
+  <li><code>o--</code> — aggregation</li>
+  <li><code>--&gt;</code> — association</li>
+  <li><code>..&gt;</code> — dependency</li>
+</ul>
+
+<h2>Entity relationship (ER) diagrams</h2>
+
+<p>ER diagrams are essential for database design. They show entities, their attributes, and the relationships between them.</p>
+
+<CodeBlock lang="mermaid" code={codeER} />
+
+<h3>Relationship notation</h3>
+
+<ul>
+  <li><code>||--||</code> — one to one</li>
+  <li><code>||--o&#123;</code> — one to many</li>
+  <li><code>o&#123;--o&#123;</code> — many to many</li>
+  <li><code>||--o|</code> — one to zero or one</li>
+</ul>
+
+<h2>Gantt charts</h2>
+
+<p>Gantt charts are used for project planning and scheduling. They show tasks, durations, and dependencies on a timeline.</p>
+
+<CodeBlock lang="mermaid" code={codeGantt} />
+
+<h2>Pie charts</h2>
+
+<p>Pie charts visualize proportional data with a simple syntax.</p>
+
+<CodeBlock lang="mermaid" code={codePie} />
+
+<h2>State diagrams</h2>
+
+<p>State diagrams model the behavior of a system by showing states and transitions.</p>
+
+<CodeBlock lang="mermaid" code={codeState} />
+
+<h2>Tips for writing Mermaid diagrams</h2>
+
+<ol>
+  <li><strong>Start simple</strong> — begin with a few nodes and add complexity gradually.</li>
+  <li><strong>Use descriptive labels</strong> — node labels should be clear and concise.</li>
+  <li><strong>Choose the right direction</strong> — <code>TD</code> (top-down) works for hierarchies, <code>LR</code> (left-right) works for flows.</li>
+  <li><strong>Add comments</strong> — use <code>%%</code> for comments inside Mermaid blocks.</li>
+  <li><strong>Test incrementally</strong> — CodeInk renders in real-time, so you can see errors as you type.</li>
+</ol>
+
+<hr />
+
+<p>All diagram types above are supported in <a href="/documents">CodeInk</a> with real-time rendering. Open the editor, paste any of these examples, and see them rendered instantly. For a complete Markdown reference, check out our <a href="/markdown-cheat-sheet">Markdown Cheat Sheet</a>.</p>
+
+</ContentLayout>

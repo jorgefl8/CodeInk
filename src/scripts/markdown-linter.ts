@@ -3,6 +3,7 @@ import type { EditorView } from "@codemirror/view"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
 import remarkPresetLintRecommended from "remark-preset-lint-recommended"
+import remarkLintNoUndefinedReferences from "remark-lint-no-undefined-references"
 import remarkStringify from "remark-stringify"
 import { visit } from "unist-util-visit"
 
@@ -86,6 +87,9 @@ const processor = unified()
   // If we run before lint, lint will see a valid heading (good!).
   // If we run it, 'fixMarkdown' (stringify) will print "# Heading" (good!).
   .use(remarkPresetLintRecommended)
+  .use(remarkLintNoUndefinedReferences, {
+    allow: [/^!/, "x", "X", " "],
+  })
   .use(remarkStringify, {
     bullet: "-",
     emphasis: "_",

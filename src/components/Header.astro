@@ -1,7 +1,6 @@
 ---
 import Logo from "@/assets/logo.svg"
 import ViewTabs from "@/components/ViewTabs.astro"
-import GitHubIcon from "@/components/GitHubIcon.astro"
 
 interface Props {
   logoHref?: string
@@ -26,8 +25,5 @@ const { logoHref = "/", showTabs = false } = Astro.props
 
   <div class="flex items-center justify-end gap-3">
     <slot />
-    <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hidden sm:inline-flex items-center justify-center p-2 rounded-lg text-primary hover:bg-primary/10 transition-colors">
-      <GitHubIcon size={20} />
-    </a>
   </div>
 </nav>
