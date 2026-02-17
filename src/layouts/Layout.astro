@@ -11,7 +11,7 @@ interface Props {
 const {
   title,
   description = "CodeInk is a free online Markdown editor. 100% client-side, no account needed. Real-time preview with syntax highlighting, Mermaid diagrams, and KaTeX math support.",
-  bodyClass = "min-h-screen overflow-y-auto",
+  bodyClass = "h-dvh overflow-hidden",
 } = Astro.props
 
 const siteURL = "https://codeink.app"
@@ -79,7 +79,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <title>{title}</title>
     <slot name="head" />
   </head>
-  <body class:list={["antialiased grid-bg overscroll-y-none", bodyClass]}>
+  <body class:list={["antialiased grid-bg", bodyClass]}>
     <slot />
   </body>
 </html>
