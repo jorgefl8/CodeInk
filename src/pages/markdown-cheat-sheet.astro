@@ -1,0 +1,154 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro"
+import CodeBlock from "@/components/CodeBlock.astro"
+
+const codeJS = '```javascript\nfunction greet(name) {\n  return `Hello, ${name}!`;\n}\n```\n\n```python\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b\n```'
+const codeMermaid = '```mermaid\ngraph TD\n    A[Start] --> B{Decision}\n    B -->|Yes| C[Do something]\n    B -->|No| D[Do something else]\n```'
+const codeMath = 'Inline: $E = mc^2$\n\nDisplay:\n$$\n\\int_0^\\infty e^{-x} dx = 1\n$$'
+const codeHeadings = '# Heading 1\n## Heading 2\n### Heading 3\n#### Heading 4\n##### Heading 5\n###### Heading 6'
+const codeFormatting = '**Bold text**\n*Italic text*\n***Bold and italic***\n~~Strikethrough~~\n`Inline code`'
+const codeParagraphs = 'This is the first paragraph.\n\nThis is the second paragraph.\n\nThis line has a break\nright here.'
+const codeUnordered = '- Item one\n- Item two\n  - Nested item\n  - Another nested item\n- Item three'
+const codeOrdered = '1. First item\n2. Second item\n3. Third item\n   1. Sub-item\n   2. Sub-item'
+const codeTasks = '- [x] Write the draft\n- [x] Review the content\n- [ ] Publish the article'
+const codeLinks = '[Visit CodeInk](https://codeink.app)\n[Link with title](https://codeink.app "CodeInk Editor")\n[Relative link to a section](#headings)'
+const codeImages = '![Alt text](https://example.com/image.png)\n![Alt text](https://example.com/image.png "Optional title")'
+const codeBlockquotes = '> This is a blockquote.\n>\n> It can span multiple lines.\n>\n>> This is a nested blockquote.'
+const codeTables = '| Feature     | Supported | Notes           |\n|-------------|:---------:|----------------:|\n| Headings    |    Yes    |    H1 through H6 |\n| Bold/Italic |    Yes    |    Standard MD   |\n| Tables      |    Yes    |    GFM syntax    |\n| Diagrams    |    Yes    |    Via Mermaid   |'
+const codeHR = '---\n***\n___'
+const codeFootnotes = 'Here is a sentence with a footnote[^1].\n\n[^1]: This is the footnote content.'
+const codeAlerts = '> [!NOTE]\n> Useful information.\n\n> [!TIP]\n> Helpful advice.\n\n> [!IMPORTANT]\n> Key information.\n\n> [!WARNING]\n> Urgent information.\n\n> [!CAUTION]\n> Negative potential consequences.'
+---
+
+<ContentLayout
+  title="Markdown cheat sheet — Complete syntax guide | CodeInk"
+  description="A complete Markdown syntax cheat sheet with examples. Learn headings, emphasis, lists, links, images, code blocks, tables, and more. Try it live in CodeInk's free online editor."
+>
+
+<h1>Markdown cheat sheet — Complete syntax guide</h1>
+
+<p>This is a comprehensive reference for Markdown syntax. Every example below works in <a href="/documents">CodeInk's editor</a> with real-time preview. Bookmark this page and come back whenever you need a quick refresher.</p>
+
+<h2>Headings</h2>
+
+<p>Use <code>#</code> symbols to create headings. The number of <code>#</code> symbols determines the heading level, from H1 (largest) to H6 (smallest).</p>
+
+<CodeBlock lang="markdown" code={codeHeadings} />
+
+<p>Best practice: use only one H1 per document (as the main title) and use H2-H4 for subsections. This improves accessibility and readability.</p>
+
+<h2>Text formatting</h2>
+
+<p>Markdown supports several inline text styles for emphasis and decoration.</p>
+
+<CodeBlock lang="markdown" code={codeFormatting} />
+
+<ul>
+  <li><strong>Bold</strong> — wrap text with double asterisks or double underscores</li>
+  <li><em>Italic</em> — wrap text with single asterisks or single underscores</li>
+  <li><strong><em>Bold and italic</em></strong> — wrap text with triple asterisks</li>
+  <li><s>Strikethrough</s> — wrap text with double tildes</li>
+  <li><code>Inline code</code> — wrap text with backticks</li>
+</ul>
+
+<h2>Paragraphs and line breaks</h2>
+
+<p>To create a new paragraph, leave a blank line between text blocks. For a line break within the same paragraph, end a line with two spaces or use <code>&lt;br&gt;</code>.</p>
+
+<CodeBlock lang="markdown" code={codeParagraphs} />
+
+<h2>Lists</h2>
+
+<h3>Unordered lists</h3>
+
+<p>Use <code>-</code>, <code>*</code>, or <code>+</code> followed by a space. Indent with two or four spaces for nested lists.</p>
+
+<CodeBlock lang="markdown" code={codeUnordered} />
+
+<h3>Ordered lists</h3>
+
+<p>Use numbers followed by a period. Markdown auto-numbers, so you can use <code>1.</code> for every item.</p>
+
+<CodeBlock lang="markdown" code={codeOrdered} />
+
+<h3>Task lists</h3>
+
+<p>Task lists (checkboxes) are created with <code>- [ ]</code> for unchecked and <code>- [x]</code> for checked items.</p>
+
+<CodeBlock lang="markdown" code={codeTasks} />
+
+<h2>Links</h2>
+
+<p>Create links with <code>[text](url)</code> syntax. You can add an optional title that appears on hover.</p>
+
+<CodeBlock lang="markdown" code={codeLinks} />
+
+<h2>Images</h2>
+
+<p>Images use the same syntax as links but with a <code>!</code> prefix. The text inside brackets becomes the alt text.</p>
+
+<CodeBlock lang="markdown" code={codeImages} />
+
+<p>Always include descriptive alt text for accessibility. The alt text describes the image for screen readers and when the image fails to load.</p>
+
+<h2>Code blocks</h2>
+
+<p>For multi-line code, use triple backticks with an optional language identifier for <a href="/documents">syntax highlighting in CodeInk</a>.</p>
+
+<CodeBlock lang="markdown" code={codeJS} />
+
+<p>CodeInk supports syntax highlighting for 16+ languages including TypeScript, JavaScript, Python, Rust, Go, Java, C++, HTML, CSS, SQL, Bash, and more.</p>
+
+<h2>Blockquotes</h2>
+
+<p>Use <code>&gt;</code> to create blockquotes. Nest them for multi-level quotes.</p>
+
+<CodeBlock lang="markdown" code={codeBlockquotes} />
+
+<h2>Tables</h2>
+
+<p>Create tables using pipes <code>|</code> and hyphens <code>-</code>. Align columns with colons.</p>
+
+<CodeBlock lang="markdown" code={codeTables} />
+
+<ul>
+  <li><code>:---</code> — left-aligned (default)</li>
+  <li><code>:---:</code> — center-aligned</li>
+  <li><code>---:</code> — right-aligned</li>
+</ul>
+
+<h2>Horizontal rules</h2>
+
+<p>Create horizontal dividers with three or more hyphens, asterisks, or underscores on their own line.</p>
+
+<CodeBlock lang="markdown" code={codeHR} />
+
+<h2>Footnotes</h2>
+
+<p>Footnotes allow you to add references without cluttering the main text. CodeInk supports GFM footnotes.</p>
+
+<CodeBlock lang="markdown" code={codeFootnotes} />
+
+<h2>GitHub-style alerts</h2>
+
+<p>CodeInk supports GitHub-style alert blocks for callouts and admonitions.</p>
+
+<CodeBlock lang="markdown" code={codeAlerts} />
+
+<h2>Mermaid diagrams</h2>
+
+<p>CodeInk renders <a href="/mermaid-diagrams-guide">Mermaid diagrams</a> directly in the preview. Use a fenced code block with the <code>mermaid</code> language identifier.</p>
+
+<CodeBlock lang="markdown" code={codeMermaid} />
+
+<h2>Math with KaTeX</h2>
+
+<p>CodeInk supports <a href="/katex-math-guide">KaTeX math</a> expressions. Use single dollar signs for inline math and double dollar signs for display math.</p>
+
+<CodeBlock lang="markdown" code={codeMath} />
+
+<hr />
+
+<p>All syntax above works in <a href="/documents">CodeInk</a> with real-time preview. Open the editor to try any of these examples live.</p>
+
+</ContentLayout>
