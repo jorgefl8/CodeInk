@@ -1,0 +1,60 @@
+@layer base {
+  @font-face {
+    font-family: 'OpenRunde';
+    src: url('/fonts/web/OpenRunde-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'OpenRunde';
+    src: url('/fonts/web/OpenRunde-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'OpenRunde';
+    src: url('/fonts/web/OpenRunde-Semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'OpenRunde';
+    src: url('/fonts/web/OpenRunde-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Inconsolata';
+    src: url('/fonts/Inconsolata-VariableFont_wdth,wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color-scheme: light;
+    zoom: 1.1;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  @media (max-width: 639px), (max-height: 500px) {
+    html {
+      zoom: 1;
+    }
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    overscroll-behavior-y: contain;
+  }
+}

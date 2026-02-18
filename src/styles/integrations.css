@@ -1,0 +1,204 @@
+.katex {
+  font-size: 1.1em;
+  color: var(--foreground);
+}
+
+.katex-display {
+  margin: 1.5em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.katex-display > .katex {
+  color: var(--foreground);
+}
+
+.katex .katex-html {
+  color: var(--foreground);
+}
+
+.katex .mord,
+.katex .mrel,
+.katex .mbin,
+.katex .mopen,
+.katex .mclose,
+.katex .mpunct,
+.katex .minner,
+.katex .mop {
+  color: var(--foreground);
+}
+
+.katex .katex-mathml {
+  color: var(--foreground);
+}
+
+
+/* Mermaid diagrams */
+.mermaid {
+  display: block;
+  width: 100%;
+  margin: 1.5em 0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mermaid[data-processed="true"] {
+  opacity: 1;
+}
+
+.mermaid svg {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid.mermaid--gantt {
+  display: block;
+  text-align: center;
+}
+
+.mermaid.mermaid--gantt svg {
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+/* CodeMirror overrides */
+.cm-editor,
+.cm-editor .cm-scroller,
+.cm-editor .cm-content,
+.cm-editor .cm-line,
+.cm-editor .cm-line span {
+  font-family: 'Inconsolata', var(--font-mono), ui-monospace, Menlo, Monaco, Consolas, monospace !important;
+}
+
+.cm-editor {
+  height: 100%;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.cm-scroller {
+  overflow: auto;
+}
+
+.cm-editor .cm-content {
+  padding: 1rem 1.25rem 1rem 0.5rem;
+  caret-color: #f59e0b;
+}
+
+.cm-editor.cm-focused {
+  outline: none;
+}
+
+.cm-editor .cm-gutters {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  border-right: 1px solid var(--border);
+  padding: 0;
+}
+
+.cm-editor .cm-lineNumbers {
+  min-width: 0 !important;
+  width: auto !important;
+}
+
+.cm-editor .cm-lineNumbers .cm-gutterElement {
+  font-size: 11px;
+  padding: 0 3px 0 4px !important;
+  min-width: 20px !important;
+}
+
+.cm-editor .cm-foldGutter {
+  width: 8px !important;
+  min-width: 0 !important;
+}
+
+@media (max-width: 639px) {
+  .cm-editor .cm-content {
+    padding: 1rem 0.5rem 1rem 0.25rem;
+  }
+}
+
+.cm-editor .cm-activeLineGutter {
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.cm-editor .cm-activeLine {
+  background: rgba(245, 158, 11, 0.03);
+}
+
+.cm-editor .cm-cursor {
+  border-left-color: #f59e0b;
+}
+
+.cm-editor .cm-selectionBackground {
+  background: rgba(245, 158, 11, 0.12) !important;
+}
+
+.cm-editor.cm-focused .cm-selectionBackground {
+  background: rgba(245, 158, 11, 0.15) !important;
+}
+
+/* Lint gutter markers */
+.cm-editor .cm-lint-marker-error {
+  content: "●";
+  color: var(--error, #ef4444);
+}
+
+.cm-editor .cm-lint-marker-warning {
+  content: "●";
+  color: var(--warning, #f59e0b);
+}
+
+.cm-editor .cm-lint-marker-info {
+  content: "●";
+  color: var(--info, #3b82f6);
+}
+
+/* Lint tooltip panel */
+.cm-tooltip.cm-tooltip-lint {
+  background: var(--secondary, #262626);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--foreground);
+  padding: 0;
+}
+
+.cm-tooltip.cm-tooltip-lint ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cm-tooltip.cm-tooltip-lint ul li {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cm-tooltip.cm-tooltip-lint ul li:last-child {
+  border-bottom: none;
+}
+
+.cm-lint-marker {
+  cursor: pointer;
+}
+
+/* Lint underlines */
+.cm-lintRange-error {
+  background: none;
+  border-bottom: 2px wavy var(--error, #ef4444);
+}
+
+.cm-lintRange-warning {
+  background: none;
+  border-bottom: 2px wavy var(--warning, #f59e0b);
+}
+
+.cm-lintRange-info {
+  background: none;
+  border-bottom: 2px dotted var(--info, #3b82f6);
+}

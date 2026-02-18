@@ -1,0 +1,178 @@
+/* Shiki Syntax Highlighting */
+pre.shiki {
+  overflow-x: auto;
+  padding: 0.25em 1em;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-family: var(--font-mono), ui-monospace, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Shiki Line Numbers */
+.shiki-line-numbers code {
+  counter-reset: line;
+}
+
+.shiki-line-numbers .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2.5em;
+  margin-right: 1em;
+  text-align: right;
+  color: var(--muted-foreground);
+  opacity: 0.4;
+  font-size: 0.85em;
+}
+
+/* Shiki Word Wrap */
+.shiki-word-wrap code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Code block structure */
+.markdown-prose .code-block,
+.content-prose .code-block {
+  @apply relative rounded-lg mb-4;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 2px 8px color-mix(in srgb, #000 14%, transparent);
+  min-width: fit-content;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .markdown-prose .code-block,
+html[data-theme="light"] .content-prose .code-block {
+  box-shadow: 0 1px 4px color-mix(in srgb, #000 8%, transparent);
+}
+
+html[data-theme="light"] .site-header {
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.04), 0 2px 10px color-mix(in srgb, #000 10%, transparent), 0 0 20px rgba(245, 158, 11, 0.02) !important;
+}
+
+html[data-theme="light"] #landing-nav {
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.04), 0 3px 14px color-mix(in srgb, #000 10%, transparent), 0 0 24px rgba(245, 158, 11, 0.02) !important;
+}
+
+.markdown-prose .code-block .code-block-header,
+.content-prose .code-block .code-block-header {
+  @apply flex items-center justify-between px-3.5 py-1.5;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--muted) 84%, var(--background));
+  border-top-left-radius: calc(var(--radius) - 1px);
+  border-top-right-radius: calc(var(--radius) - 1px);
+}
+
+.markdown-prose .code-block .code-block-lang-info,
+.content-prose .code-block .code-block-lang-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.markdown-prose .code-block .code-block-lang-icon,
+.content-prose .code-block .code-block-lang-icon {
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.markdown-prose .code-block .code-block-lang,
+.content-prose .code-block .code-block-lang {
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--muted-foreground);
+}
+
+.markdown-prose .code-block pre,
+.content-prose .code-block pre {
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 1em 0.25em 1em !important;
+  background: transparent !important;
+  min-width: fit-content;
+}
+
+.markdown-prose .code-block pre code,
+.content-prose .code-block pre code {
+  padding-top: 0 !important;
+  display: block;
+  white-space: pre;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-theme="light"] .markdown-prose .code-block[data-language="text"] pre,
+html[data-theme="light"] .markdown-prose .code-block[data-language="text"] pre code,
+html[data-theme="light"] .markdown-prose .code-block[data-language="text"] pre .line,
+html[data-theme="light"] .content-prose .code-block[data-language="text"] pre,
+html[data-theme="light"] .content-prose .code-block[data-language="text"] pre code,
+html[data-theme="light"] .content-prose .code-block[data-language="text"] pre .line {
+  color: var(--primary) !important;
+}
+
+/* Copy button in code blocks */
+.markdown-prose .copy-code-btn,
+.content-prose .copy-code-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.markdown-prose .copy-code-btn:hover,
+.content-prose .copy-code-btn:hover {
+  color: var(--primary);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.markdown-prose .copy-code-btn[data-copied="true"],
+.content-prose .copy-code-btn[data-copied="true"] {
+  color: var(--success-accent);
+}
+
+.markdown-prose .copy-code-btn .copy-code-icon--copy,
+.content-prose .copy-code-btn .copy-code-icon--copy {
+  display: inline-flex;
+  align-items: center;
+}
+
+.markdown-prose .copy-code-btn .copy-code-icon--check,
+.content-prose .copy-code-btn .copy-code-icon--check {
+  display: none;
+  align-items: center;
+}
+
+.markdown-prose .copy-code-btn[data-copied="true"] .copy-code-icon--copy,
+.content-prose .copy-code-btn[data-copied="true"] .copy-code-icon--copy {
+  display: none;
+}
+
+.markdown-prose .copy-code-btn[data-copied="true"] .copy-code-icon--check,
+.content-prose .copy-code-btn[data-copied="true"] .copy-code-icon--check {
+  display: inline-flex;
+}
+
+.markdown-prose .code-block:hover .copy-code-btn,
+.markdown-prose .copy-code-btn:focus,
+.content-prose .code-block:hover .copy-code-btn,
+.content-prose .copy-code-btn:focus {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .markdown-prose .copy-code-btn,
+  .content-prose .copy-code-btn {
+    opacity: 1;
+  }
+}
