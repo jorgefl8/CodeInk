@@ -1,7 +1,7 @@
 <div align="center">
   <a href="https://codeink.app">
     <img
-      src="https://cdn.jsdelivr.net/gh/jorgefl8/codeink@main/public/favicon.svg"
+      src="https://codeink.app/favicon.svg"
       alt="CodeInk Logo"
       height="60"
     />
@@ -20,7 +20,7 @@
 <a href="#-license">License</a>
 
 <img
-  src="https://cdn.jsdelivr.net/gh/jorgefl8/codeink@main/public/images/screenshot.png"
+  src="https://codeink.app/images/screenshot.png"
   alt="CodeInk — Free online Markdown editor screenshot"
 />
 

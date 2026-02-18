@@ -24,7 +24,7 @@ const techLogos = [
 <Layout
   title="CodeInk — Free online Markdown editor with Mermaid diagrams & KaTeX math"
   description="CodeInk is a free online Markdown editor with a clean, professional UI. 100% client-side, no account needed. Real-time preview with syntax highlighting, Mermaid diagrams, and KaTeX math support. Your documents never leave your browser."
-  bodyClass="bg-background text-foreground max-sm:h-dvh max-sm:overflow-hidden"
+  bodyClass="bg-background text-foreground"
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -72,7 +72,7 @@ const techLogos = [
       }
     ]
   })} />
-  <div class="min-h-screen max-sm:h-dvh max-sm:overflow-y-auto overflow-x-clip relative" style="overscroll-behavior: none;">
+  <div class="min-h-dvh flex flex-col overflow-x-clip relative">
     <div class="hero-glow"></div>
 
     <div class="sticky top-4 z-50 px-6" style="will-change: transform;">
@@ -221,36 +221,36 @@ const techLogos = [
       </div>
     </section>
 
-    <section class="relative z-10 max-w-5xl mx-auto px-6 pb-20">
-      <h2 class="animate-fade delay-5 text-3xl sm:text-4xl font-bold tracking-tight text-center mb-8">Built with</h2>
-      <LogoLoop
-        logos={techLogos}
-        speed={30}
-        logoHeight={32}
-        gap={64}
-        fadeOut
-        pauseOnHover
-        class="animate-fade delay-6"
-      />
+    <section class="relative z-10 pb-20">
+      <h2 class="scroll-fade text-3xl sm:text-4xl font-bold tracking-tight text-center mb-8 px-6">Built with</h2>
+      <div class="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
+        <LogoLoop
+          logos={techLogos}
+          speed={30}
+          logoHeight={28}
+          gap={32}
+          class="scroll-fade"
+        />
+      </div>
     </section>
 
     <section class="relative z-10 max-w-4xl mx-auto px-6 pb-24">
-      <div class="animate-fade delay-5 text-center mb-10">
+      <div class="scroll-fade text-center mb-10">
         <span class="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-4">Features</span>
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Everything you need to write technical Markdown</h2>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
-        <Card href="https://github.com/shikijs/shiki" title="Syntax highlighting" description="16+ languages via Shiki with One Dark Pro theme. Same engine as VS Code." class="animate-up delay-3 card-compact">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto stagger-children">
+        <Card href="https://github.com/shikijs/shiki" title="Syntax highlighting" description="16+ languages via Shiki with One Dark Pro theme. Same engine as VS Code." class="scroll-fade-up card-compact">
           <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
         </Card>
-        <Card href="https://github.com/mermaid-js/mermaid" title="Mermaid diagrams" description="Flowcharts, sequence, ER, Gantt, class diagrams and more — rendered live." class="animate-up delay-4 card-compact">
+        <Card href="https://github.com/mermaid-js/mermaid" title="Mermaid diagrams" description="Flowcharts, sequence, ER, Gantt, class diagrams and more — rendered live." class="scroll-fade-up card-compact">
           <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
         </Card>
-        <Card href="https://github.com/KaTeX/KaTeX" title="KaTeX math" description="Inline and display LaTeX math. Equations, matrices, integrals and more." class="animate-up delay-5 card-compact">
+        <Card href="https://github.com/KaTeX/KaTeX" title="KaTeX math" description="Inline and display LaTeX math. Equations, matrices, integrals and more." class="scroll-fade-up card-compact">
           <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><text x="4" y="18" font-size="16" font-family="serif" font-style="italic" fill="currentColor" stroke="none">&#x2211;</text></svg>
         </Card>
-        <Card href="https://github.com/remarkjs/remark-lint" title="Markdown linting" description="Real-time diagnostics via remark-lint with one-click auto-fix." class="animate-up delay-6 card-compact">
+        <Card href="https://github.com/remarkjs/remark-lint" title="Markdown linting" description="Real-time diagnostics via remark-lint with one-click auto-fix." class="scroll-fade-up card-compact">
           <svg slot="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>
         </Card>
       </div>
@@ -298,7 +298,7 @@ const techLogos = [
     </section>
 
     <!-- FAQ Section -->
-    <section class="relative z-10 max-w-4xl mx-auto px-6 pb-28">
+    <section class="relative z-10 max-w-4xl mx-auto px-6 pb-16">
       <div class="text-center mb-14">
         <span class="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-4">FAQ</span>
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Frequently asked questions</h2>
@@ -623,5 +623,25 @@ const techLogos = [
   <script>
     import { initLandingNavCta } from "@/scripts/landing-nav-cta"
     document.addEventListener("astro:page-load", () => initLandingNavCta())
+  </script>
+
+  <script>
+    function initScrollAnimations() {
+      const els = document.querySelectorAll('.scroll-fade, .scroll-fade-up')
+      if (!els.length) return
+
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        }
+      }, { threshold: 0.15 })
+
+      for (const el of els) observer.observe(el)
+    }
+    initScrollAnimations()
+    document.addEventListener("astro:page-load", initScrollAnimations)
   </script>
 </Layout>
