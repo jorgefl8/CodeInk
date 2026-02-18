@@ -10,6 +10,7 @@ import MermaidIcon from "@/assets/icons/tech/mermaid.svg"
 import BunIcon from "@/assets/icons/tech/bun.svg"
 import Logo from "@/assets/logo.svg"
 import GitHubIcon from "@/components/GitHubIcon.astro"
+import ThemeToggle from "@/components/ThemeToggle.astro"
 import Footer from "@/components/Footer.astro"
 
 const techLogos = [
@@ -26,7 +27,7 @@ const techLogos = [
   description="CodeInk is a free online Markdown editor with a clean, professional UI. 100% client-side, no account needed. Real-time preview with syntax highlighting, Mermaid diagrams, and KaTeX math support. Your documents never leave your browser."
   bodyClass="bg-background text-foreground"
 >
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
@@ -73,10 +74,10 @@ const techLogos = [
     ]
   })} />
   <div class="min-h-dvh flex flex-col overflow-x-clip relative">
-    <div class="hero-glow"></div>
+    <div class="pointer-events-none absolute left-1/2 top-[-200px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.08)_0%,transparent_70%)]"></div>
 
-    <div class="sticky top-4 z-50 px-6" style="will-change: transform;">
-      <nav id="landing-nav" class="max-w-5xl mx-auto flex items-center justify-between px-4 py-2 rounded-full border border-border/50 landing-nav-glow" style="background: color-mix(in srgb, var(--surface) 40%, transparent); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transform: translateZ(0);">
+    <div class="sticky top-4 z-50 px-6 [will-change:transform]">
+      <nav id="landing-nav" class="max-w-5xl mx-auto flex items-center justify-between px-4 py-2 rounded-full border border-border/50 [background:color-mix(in_srgb,var(--surface)_40%,transparent)] backdrop-blur-[16px] [-webkit-backdrop-filter:blur(16px)] [transform:translateZ(0)] [box-shadow:0_0_0_1px_rgba(245,158,11,0.05),0_4px_24px_color-mix(in_srgb,#000_24%,transparent),0_0_48px_rgba(245,158,11,0.04)]">
         <div class="flex items-center gap-2">
           <Logo class="w-7 h-7" aria-hidden="true" transition:name="logo" />
           <span class="text-base font-bold tracking-tight" transition:name="brand">CodeInk</span>
@@ -89,6 +90,7 @@ const techLogos = [
           <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="inline-flex items-center justify-center p-1.5 rounded-lg text-primary hover:bg-primary/10 transition-colors">
             <GitHubIcon size={18} />
           </a>
+          <ThemeToggle />
         </div>
       </nav>
     </div>
@@ -135,17 +137,17 @@ const techLogos = [
     </section>
 
     <section class="relative z-10 max-w-4xl mx-auto px-6 pb-12">
-      <div class="animate-up delay-5 code-preview">
-        <div class="mock-header">
+      <div class="animate-up delay-5 relative overflow-hidden rounded-[var(--radius)] border border-border bg-card shadow-[0_20px_60px_color-mix(in_srgb,#000_24%,transparent)]">
+        <div class="flex items-center justify-between border-b border-border bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] px-[14px] py-2 backdrop-blur-[12px]">
           <div class="flex items-center gap-2 flex-1 min-w-0">
             <Logo class="w-5 h-5 shrink-0" aria-hidden="true" />
             <span class="text-xs font-bold tracking-tight text-foreground/80">CodeInk</span>
           </div>
           <div class="flex items-center justify-center flex-1 min-w-0">
             <div class="flex items-center rounded-md bg-muted/30 p-0.5 gap-0.5">
-              <span class="mock-view-btn">Editor</span>
-              <span class="mock-view-btn active">Split</span>
-              <span class="mock-view-btn">Preview</span>
+              <span class="inline-flex items-center gap-1 rounded-[var(--radius)] px-2 py-[3px] text-[9px] font-medium text-muted-foreground">Editor</span>
+              <span class="inline-flex items-center gap-1 rounded-[var(--radius)] bg-primary/10 px-2 py-[3px] text-[9px] font-medium text-primary shadow-[0_0_10px_rgba(245,158,11,0.12)]">Split</span>
+              <span class="inline-flex items-center gap-1 rounded-[var(--radius)] px-2 py-[3px] text-[9px] font-medium text-muted-foreground">Preview</span>
             </div>
           </div>
           <div class="flex items-center justify-end flex-1 min-w-0">
@@ -155,14 +157,14 @@ const techLogos = [
 
         <div class="flex">
           <div class="flex-1 border-r border-border overflow-hidden">
-            <div class="mock-pane-header">
+            <div class="flex min-h-6 items-center justify-between border-b border-border bg-[color-mix(in_srgb,var(--muted)_84%,var(--background))] px-3 py-1">
               <div class="flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                <span class="mock-pane-label">EDITOR</span>
+                <span class="font-mono text-[8px] font-semibold tracking-[0.1em] text-muted-foreground">EDITOR</span>
               </div>
-              <span class="mock-pane-meta">Markdown</span>
+              <span class="font-mono text-[8px] text-muted-foreground/50">Markdown</span>
             </div>
-            <div class="p-4 font-mono text-xs leading-relaxed text-muted-foreground" style="max-height: 200px;">
+            <div class="p-4 font-mono text-xs leading-relaxed text-muted-foreground max-h-[200px]">
               <div><span class="text-primary font-bold"># Welcome to CodeInk</span></div>
               <div class="mt-1.5">A real-time **Markdown editor** with</div>
               <div>syntax highlighting and diagrams.</div>
@@ -178,17 +180,17 @@ const techLogos = [
           <div class="w-0.75 bg-border shrink-0"></div>
 
           <div class="flex-1 overflow-hidden">
-            <div class="mock-pane-header">
+            <div class="flex min-h-6 items-center justify-between border-b border-border bg-[color-mix(in_srgb,var(--muted)_84%,var(--background))] px-3 py-1">
               <div class="flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full" style="background: var(--success-accent);"></span>
-                <span class="mock-pane-label">PREVIEW</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-[var(--success-accent)]"></span>
+                <span class="font-mono text-[8px] font-semibold tracking-[0.1em] text-muted-foreground">PREVIEW</span>
               </div>
-              <span class="mock-pane-meta">Live</span>
+              <span class="font-mono text-[8px] text-muted-foreground/50">Live</span>
             </div>
-            <div class="p-4 overflow-hidden" style="max-height: 200px;">
+            <div class="p-4 overflow-hidden max-h-[200px]">
               <div class="text-base font-bold mb-1.5">Welcome to CodeInk</div>
               <div class="text-xs text-muted-foreground mb-3">A real-time <strong>Markdown editor</strong> with syntax highlighting and diagrams.</div>
-              <div class="rounded-lg p-3 text-xs font-mono leading-relaxed" style="background: var(--muted);">
+              <div class="rounded-lg p-3 text-xs font-mono leading-relaxed bg-[var(--muted)]">
                 <div><span class="text-purple-400">interface</span> <span class="text-amber-400">User</span> {'{'}</div>
                 <div>&nbsp;&nbsp;id: <span class="text-green-400">string</span></div>
                 <div>&nbsp;&nbsp;name: <span class="text-green-400">string</span></div>
@@ -198,22 +200,22 @@ const techLogos = [
           </div>
         </div>
 
-        <div class="mock-status-bar">
+        <div class="flex h-[22px] items-center justify-between border-t border-border bg-[color-mix(in_srgb,var(--surface)_80%,transparent)] px-2.5">
           <div class="flex items-center gap-3">
-            <span class="mock-status-item">
+            <span class="inline-flex items-center gap-[3px] font-mono text-[8px] text-muted-foreground opacity-60">
               <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H3"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H3"/></svg>
               12 lines
             </span>
-            <span class="mock-status-item">
+            <span class="inline-flex items-center gap-[3px] font-mono text-[8px] text-muted-foreground opacity-60">
               <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
               24 words
             </span>
-            <span class="mock-status-item">
+            <span class="inline-flex items-center gap-[3px] font-mono text-[8px] text-muted-foreground opacity-60">
               <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg>
               148 chars
             </span>
           </div>
-          <span class="mock-status-item text-primary/50">
+          <span class="inline-flex items-center gap-[3px] font-mono text-[8px] text-primary/50 opacity-60">
             <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             Saved locally
           </span>
@@ -236,7 +238,7 @@ const techLogos = [
 
     <section class="relative z-10 max-w-4xl mx-auto px-6 pb-24">
       <div class="scroll-fade text-center mb-10">
-        <span class="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-4">Features</span>
+        <span class="section-kicker inline-block mb-4">Features</span>
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Everything you need to write technical Markdown</h2>
       </div>
 
@@ -258,10 +260,10 @@ const techLogos = [
 
     <!-- Why CodeInk Section -->
     <section class="relative z-10 max-w-5xl mx-auto px-6 pb-24">
-      <div class="why-codeink-container">
-        <div class="why-codeink-glow"></div>
+      <div class="corner-accent corner-accent-diagonal relative overflow-hidden">
+        <div class="pointer-events-none absolute right-[-100px] top-[-150px] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.06)_0%,transparent_70%)]"></div>
         <div class="relative z-10 p-8 sm:p-12">
-          <span class="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-4">Why CodeInk?</span>
+          <span class="section-kicker inline-block mb-4">Why CodeInk?</span>
           <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-8">The Markdown editor that respects your privacy</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-muted-foreground">
             <div class="flex gap-3">
@@ -300,52 +302,52 @@ const techLogos = [
     <!-- FAQ Section -->
     <section class="relative z-10 max-w-4xl mx-auto px-6 pb-16">
       <div class="text-center mb-14">
-        <span class="inline-block font-mono text-sm uppercase tracking-[0.2em] text-primary/60 mb-4">FAQ</span>
+        <span class="section-kicker inline-block mb-4">FAQ</span>
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Frequently asked questions</h2>
       </div>
       <div class="max-w-3xl mx-auto">
-        <details class="faq-item group" open>
-          <summary class="faq-summary">
+        <details class="group border-b border-border first:border-t" open>
+          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Is CodeInk free?</span>
-            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-answer">
+          <div class="pb-5 text-[0.9375rem] leading-[1.7] text-muted-foreground">
             <p>Yes, CodeInk is 100% free and open source. There are no premium tiers, no paywalls, and no feature restrictions. The full source code is available on <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">GitHub</a>.</p>
           </div>
         </details>
-        <details class="faq-item group">
-          <summary class="faq-summary">
+        <details class="group border-b border-border first:border-t">
+          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Does CodeInk require an account?</span>
-            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-answer">
+          <div class="pb-5 text-[0.9375rem] leading-[1.7] text-muted-foreground">
             <p>No. Zero signup required. Open the editor and start writing. Your documents are saved locally in your browser via IndexedDB.</p>
           </div>
         </details>
-        <details class="faq-item group">
-          <summary class="faq-summary">
+        <details class="group border-b border-border first:border-t">
+          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Is my data private in CodeInk?</span>
-            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-answer">
+          <div class="pb-5 text-[0.9375rem] leading-[1.7] text-muted-foreground">
             <p>Your documents never leave your browser. CodeInk runs 100% client-side with zero tracking and zero cookies. Nothing is stored on any server.</p>
           </div>
         </details>
-        <details class="faq-item group">
-          <summary class="faq-summary">
+        <details class="group border-b border-border first:border-t">
+          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Does CodeInk support Mermaid diagrams?</span>
-            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-answer">
+          <div class="pb-5 text-[0.9375rem] leading-[1.7] text-muted-foreground">
             <p>Yes. CodeInk renders Mermaid diagrams in real-time directly in the preview pane. Supported types include flowcharts, sequence diagrams, ER diagrams, Gantt charts, class diagrams, and more. Learn more in our <a href="/mermaid-diagrams-guide" class="text-primary hover:underline">Mermaid diagrams guide</a>.</p>
           </div>
         </details>
-        <details class="faq-item group">
-          <summary class="faq-summary">
+        <details class="group border-b border-border first:border-t">
+          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Does CodeInk support math equations?</span>
-            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
-          <div class="faq-answer">
+          <div class="pb-5 text-[0.9375rem] leading-[1.7] text-muted-foreground">
             <p>Yes. CodeInk supports KaTeX for rendering LaTeX math expressions inline and in display mode. Check out our <a href="/katex-math-guide" class="text-primary hover:underline">KaTeX math guide</a> for syntax examples.</p>
           </div>
         </details>
@@ -354,271 +356,6 @@ const techLogos = [
 
     <Footer />
   </div>
-
-  <style>
-    .hero-glow {
-      position: absolute;
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      pointer-events: none;
-    }
-
-    .landing-nav-glow {
-      box-shadow:
-        0 0 0 1px rgba(245, 158, 11, 0.05),
-        0 4px 24px rgba(0, 0, 0, 0.4),
-        0 0 48px rgba(245, 158, 11, 0.04);
-    }
-
-    #nav-cta.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted-foreground);
-      transition: border-color 0.2s ease;
-    }
-
-    .badge:hover {
-      border-color: rgba(245, 158, 11, 0.3);
-    }
-
-    .code-preview {
-      position: relative;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      background: var(--card);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    }
-
-    .mock-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 14px;
-      border-bottom: 1px solid var(--border);
-      background: color-mix(in srgb, var(--surface) 80%, transparent);
-      backdrop-filter: blur(12px);
-    }
-
-    .mock-view-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
-      border-radius: var(--radius);
-      font-size: 9px;
-      font-weight: 500;
-      color: var(--muted-foreground);
-    }
-
-    .mock-view-btn.active {
-      color: var(--primary);
-      background: rgba(245, 158, 11, 0.1);
-      box-shadow: 0 0 10px rgba(245, 158, 11, 0.12);
-    }
-
-    .mock-pane-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 4px 12px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(38, 38, 38, 0.5);
-      min-height: 24px;
-    }
-
-    .mock-pane-label {
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--muted-foreground);
-      font-family: var(--font-mono);
-    }
-
-    .mock-pane-meta {
-      font-size: 8px;
-      color: var(--muted-foreground);
-      opacity: 0.5;
-      font-family: var(--font-mono);
-    }
-
-    .mock-status-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      height: 22px;
-      border-top: 1px solid var(--border);
-      background: color-mix(in srgb, var(--surface) 80%, transparent);
-    }
-
-    .mock-status-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 8px;
-      color: var(--muted-foreground);
-      font-family: var(--font-mono);
-      opacity: 0.6;
-    }
-
-    /* Feature cards — 2x2 grid with ruled borders */
-    .feature-card {
-      position: relative;
-      padding: 2rem 2rem 2.5rem;
-      border: 1px solid var(--border);
-      margin: -0.5px;
-      transition: background 0.3s ease;
-    }
-
-    .feature-card:hover {
-      background: rgba(245, 158, 11, 0.03);
-    }
-
-    .feature-card-number {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--primary);
-      opacity: 0.4;
-      letter-spacing: 0.05em;
-      margin-bottom: 1.25rem;
-      transition: opacity 0.3s ease;
-    }
-
-    .feature-card:hover .feature-card-number {
-      opacity: 0.8;
-    }
-
-    .feature-card-icon {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.25rem;
-      color: var(--primary);
-      border: 1px solid var(--border);
-      background: rgba(245, 158, 11, 0.05);
-      transition: background 0.3s ease, border-color 0.3s ease;
-    }
-
-    .feature-card:hover .feature-card-icon {
-      background: rgba(245, 158, 11, 0.1);
-      border-color: rgba(245, 158, 11, 0.2);
-    }
-
-    /* Why CodeInk — bordered container with corner glow */
-    .why-codeink-container {
-      position: relative;
-      border: 1px solid var(--border);
-      background: var(--background);
-      overflow: hidden;
-    }
-
-    .why-codeink-container::before,
-    .why-codeink-container::after {
-      content: "";
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      pointer-events: none;
-    }
-
-    .why-codeink-container::before {
-      top: -1px;
-      left: -1px;
-      border-top: 2px solid var(--primary);
-      border-left: 2px solid var(--primary);
-    }
-
-    .why-codeink-container::after {
-      bottom: -1px;
-      right: -1px;
-      border-bottom: 2px solid var(--primary);
-      border-right: 2px solid var(--primary);
-    }
-
-    .why-codeink-glow {
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
-      top: -150px;
-      right: -100px;
-      pointer-events: none;
-    }
-
-    /* FAQ accordion */
-    .faq-item {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .faq-item:first-child {
-      border-top: 1px solid var(--border);
-    }
-
-    .faq-summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 0;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--foreground);
-      list-style: none;
-      transition: color 0.2s ease;
-    }
-
-    .faq-summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .faq-summary::marker {
-      content: "";
-    }
-
-    .faq-summary:hover {
-      color: var(--primary);
-    }
-
-    .faq-chevron {
-      flex-shrink: 0;
-      color: var(--muted-foreground);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
-    }
-
-    details[open] .faq-chevron {
-      transform: rotate(180deg);
-      color: var(--primary);
-    }
-
-    .faq-answer {
-      padding-bottom: 1.25rem;
-      color: var(--muted-foreground);
-      font-size: 0.9375rem;
-      line-height: 1.7;
-    }
-  </style>
 
   <script>
     import { initLandingNavCta } from "@/scripts/landing-nav-cta"
