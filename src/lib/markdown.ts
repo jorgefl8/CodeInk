@@ -4,18 +4,28 @@ import markedFootnote from "marked-footnote"
 import markedKatex from "marked-katex-extension"
 import { gfmHeadingId } from "marked-gfm-heading-id"
 import { highlightCode } from "@/lib/shiki/highlight"
+import { extractTitle } from "@/lib/markdown-title"
 
 let highlightMap = new Map<string, string>()
 
 const renderer = {
   code({ text, lang }: Tokens.Code) {
-    if (lang === "mermaid") {
+    const normalizedLang = (lang || "").toLowerCase()
+
+    if (normalizedLang === "mermaid" || normalizedLang === "mmd") {
       return `<div class="mermaid">${text}</div>`
     }
 
     const highlighted = highlightMap.get(text) ?? text
-    const label = lang || "text"
-    const iconLabel = label === "tf" || label === "tfvars" ? "terraform" : label
+    const label = normalizedLang || "text"
+    const iconLabel =
+      label === "tf" || label === "tfvars"
+        ? "terraform"
+        : label === "mmd"
+          ? "mermaid"
+        : label === "tex"
+          ? "latex"
+          : label
     
     // Handle "text" fallback - don't try to load text.svg, use default directly
     const iconPath = iconLabel === "text" 
@@ -63,7 +73,8 @@ marked.use(
     async walkTokens(token: Token) {
       if (token.type === "code") {
         const codeToken = token as Tokens.Code
-        if (codeToken.lang !== "mermaid") {
+        const normalizedLang = (codeToken.lang || "").toLowerCase()
+        if (normalizedLang !== "mermaid" && normalizedLang !== "mmd") {
           const html = await highlightCode(codeToken.text, codeToken.lang)
           highlightMap.set(codeToken.text, html)
         }
@@ -72,14 +83,11 @@ marked.use(
   },
 )
 
-export function extractTitle(content: string): string {
-  const match = content.match(/^#\s+(.+)$/m)
-  return match ? match[1].trim() : "Untitled"
-}
-
 export async function renderMarkdown(content: string): Promise<string> {
   highlightMap = new Map()
   const result = await marked.parse(content)
   highlightMap = new Map()
   return result
 }
+
+export { extractTitle }

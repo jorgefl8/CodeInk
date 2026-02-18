@@ -1,4 +1,3 @@
-import { renderMarkdown } from "@/lib/markdown"
 import { renderMermaidDiagrams } from "@/scripts/mermaid-renderer"
 import { initCopyButtons } from "@/scripts/copy-handler"
 
@@ -6,6 +5,12 @@ const DEBOUNCE_MS = 300
 
 let debounceTimer: ReturnType<typeof setTimeout> | null = null
 let cleanupCopy: (() => void) | null = null
+let markdownModulePromise: Promise<typeof import("@/lib/markdown")> | null = null
+
+function getMarkdownModule() {
+  markdownModulePromise ??= import("@/lib/markdown")
+  return markdownModulePromise
+}
 
 export function initPreview(target: HTMLElement) {
   const handleEditorChange = (e: CustomEvent<{ content: string }>) => {
@@ -43,6 +48,7 @@ export function initPreview(target: HTMLElement) {
 
 export async function renderPreview(content: string, target: HTMLElement) {
   try {
+    const { renderMarkdown } = await getMarkdownModule()
     const html = await renderMarkdown(content)
     target.innerHTML = html
     await renderMermaidDiagrams(target)

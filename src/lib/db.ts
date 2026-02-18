@@ -21,26 +21,24 @@ function openDB(): Promise<IDBDatabase> {
   })
 }
 
-function withStore<T>(
+async function withStore<T>(
   mode: IDBTransactionMode,
   operation: (store: IDBObjectStore) => IDBRequest,
   transform?: (result: unknown) => T,
 ): Promise<T> {
-  return openDB().then(
-    (db) =>
-      new Promise<T>((resolve, reject) => {
-        const tx = db.transaction(STORE_NAME, mode)
-        const req = operation(tx.objectStore(STORE_NAME))
-        req.onerror = () => {
-          db.close()
-          reject(req.error)
-        }
-        req.onsuccess = () => {
-          db.close()
-          resolve(transform ? transform(req.result) : (req.result as T))
-        }
-      }),
-  )
+  const db = await openDB()
+  return new Promise<T>((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, mode)
+    const req = operation(tx.objectStore(STORE_NAME))
+    req.onerror = () => {
+      db.close()
+      reject(req.error)
+    }
+    req.onsuccess = () => {
+      db.close()
+      resolve(transform ? transform(req.result) : (req.result as T))
+    }
+  })
 }
 
 export function getAllDocs(): Promise<Document[]> {
@@ -62,5 +60,4 @@ export function saveDoc(doc: Document): Promise<void> {
 export function deleteDoc(id: string): Promise<void> {
   return withStore("readwrite", (store) => store.delete(id))
 }
-
 
