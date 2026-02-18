@@ -1,9 +1,15 @@
 const SMOOTH_TAU = 0.25
+const COVERAGE_MULTIPLIER = 2
 
 function initLogoLoop(root: HTMLElement) {
-  const track = root.querySelector<HTMLDivElement>(".logo-loop-track")
-  const seq = root.querySelector<HTMLElement>(".logo-loop-measure")
-  if (!track || !seq) return
+  if (root.dataset.logoLoopReady === "true") return
+  root.dataset.logoLoopReady = "true"
+
+  const trackNode = root.querySelector<HTMLDivElement>(".logo-loop-track")
+  const seqNode = root.querySelector<HTMLElement>(".logo-loop-measure")
+  if (!trackNode || !seqNode) return
+  const track = trackNode
+  const seq = seqNode
 
   const prefersReduced =
     window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
@@ -19,9 +25,48 @@ function initLogoLoop(root: HTMLElement) {
   let hovered = false
   let lastTs: number | null = null
   let raf: number | null = null
+  let resizeRaf: number | null = null
 
   function measure() {
-    seqWidth = seq!.getBoundingClientRect().width
+    seqWidth = seq.getBoundingClientRect().width
+  }
+
+  function clearClones() {
+    track.querySelectorAll<HTMLElement>("[data-logo-loop-clone]").forEach((clone) => clone.remove())
+  }
+
+  function buildClones() {
+    measure()
+    clearClones()
+    if (seqWidth <= 0) return
+
+    const rootWidth = root.getBoundingClientRect().width
+    const requiredWidth = Math.max(rootWidth * COVERAGE_MULTIPLIER, seqWidth * 2)
+    let totalWidth = seqWidth
+
+    while (totalWidth < requiredWidth) {
+      const clone = seq.cloneNode(true) as HTMLElement
+      clone.dataset.logoLoopClone = "true"
+      clone.setAttribute("aria-hidden", "true")
+      clone.querySelectorAll<HTMLAnchorElement>("a").forEach((link) => {
+        link.tabIndex = -1
+      })
+      track.append(clone)
+      totalWidth += seqWidth
+    }
+  }
+
+  function scheduleRebuild() {
+    if (resizeRaf !== null) return
+    resizeRaf = requestAnimationFrame(() => {
+      resizeRaf = null
+      buildClones()
+      if (seqWidth > 0) {
+        offset = (((offset % seqWidth) + seqWidth) % seqWidth) || 0
+      } else {
+        offset = 0
+      }
+    })
   }
 
   function animate(ts: number) {
@@ -42,9 +87,9 @@ function initLogoLoop(root: HTMLElement) {
   }
 
   function start() {
-    measure()
+    buildClones()
     if (prefersReduced) {
-      track!.style.transform = "translate3d(0, 0, 0)"
+      track.style.transform = "translate3d(0, 0, 0)"
       return
     }
     if (!raf) raf = requestAnimationFrame(animate)
@@ -70,7 +115,9 @@ function initLogoLoop(root: HTMLElement) {
   }
 
   if (window.ResizeObserver) {
-    new ResizeObserver(measure).observe(root)
+    new ResizeObserver(scheduleRebuild).observe(root)
+  } else {
+    window.addEventListener("resize", scheduleRebuild, { passive: true })
   }
 
   if (shouldPause) {

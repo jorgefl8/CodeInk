@@ -19,8 +19,67 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" data-theme="dark">
   <head>
+    <script is:inline>
+      (() => {
+        const w = window
+        if (w.__codeinkThemeInit === true) return
+        w.__codeinkThemeInit = true
+
+        const storageKey = "codeink-theme"
+        const getRoot = () => document.documentElement
+
+        const applyTheme = (theme) => {
+          if (theme !== "light" && theme !== "dark") return
+          const root = getRoot()
+          const prevTheme = root.getAttribute("data-theme")
+          root.setAttribute("data-theme", theme)
+          if (prevTheme !== theme) {
+            window.dispatchEvent(new CustomEvent("codeink-theme-change", { detail: { theme } }))
+          }
+        }
+
+        const resolveTheme = () => {
+          try {
+            const stored = localStorage.getItem(storageKey)
+            if (stored === "light" || stored === "dark") return stored
+          } catch {}
+          return "dark"
+        }
+
+        const hydrateTheme = () => {
+          applyTheme(resolveTheme())
+        }
+
+        w.codeinkTheme = {
+          get() {
+            return getRoot().getAttribute("data-theme") === "dark" ? "dark" : "light"
+          },
+          set(theme) {
+            if (theme !== "light" && theme !== "dark") return
+            applyTheme(theme)
+            try {
+              localStorage.setItem(storageKey, theme)
+            } catch {}
+          },
+          toggle() {
+            const nextTheme = this.get() === "dark" ? "light" : "dark"
+            this.set(nextTheme)
+            return nextTheme
+          },
+        }
+
+        hydrateTheme()
+
+        const rehydrateAfterSwap = () => {
+          hydrateTheme()
+        }
+
+        document.addEventListener("astro:after-swap", rehydrateAfterSwap)
+        document.addEventListener("astro:page-load", rehydrateAfterSwap)
+      })()
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
@@ -54,7 +113,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Structured data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "CodeInk",
@@ -83,4 +142,3 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <slot />
   </body>
 </html>
-

@@ -1,4 +1,4 @@
-import { createEditor, destroyEditor, getEditorContent, setEditorContent } from "@/scripts/codemirror-setup"
+import { createEditor, destroyEditor, getEditorContent, setEditorContent, setEditorTheme } from "@/scripts/codemirror-setup"
 import { fixMarkdown } from "@/scripts/markdown-linter"
 import { initPreview, renderPreview } from "@/scripts/preview"
 import { initMermaid } from "@/scripts/mermaid-renderer"
@@ -11,7 +11,7 @@ import {
   saveDoc,
   type Document,
 } from "@/lib/db"
-import { extractTitle } from "@/lib/markdown"
+import { extractTitle } from "@/lib/markdown-title"
 import DEFAULT_MARKDOWN from "@/lib/default-markdown.md?raw"
 
 let editorAbort: AbortController | null = null
@@ -111,6 +111,8 @@ export function initEditor() {
     return
   }
 
+  const previewTarget = previewEl
+
   const viewMode = createViewModeController(editorRoot)
 
   async function loadAndInit() {
@@ -133,8 +135,8 @@ export function initEditor() {
       }
     }
 
-    if (editorRoot && cmMount && previewEl) {
-      await initializeEditor(cmMount, previewEl, editorRoot, initialContent)
+    if (editorRoot && cmMount && previewTarget) {
+      await initializeEditor(cmMount, previewTarget, editorRoot, initialContent)
     }
 
     const saveEl = document.getElementById("status-save")
@@ -159,6 +161,21 @@ export function initEditor() {
 
     const cleanupAutoSave = setupAutoSave(docId, createdAt, customTitle, setSaveState, signal)
     signal.addEventListener("abort", cleanupAutoSave)
+
+    const handleThemeChange = ((e: CustomEvent<{ theme: "light" | "dark" }>) => {
+      const nextTheme = e.detail?.theme === "light" ? "light" : "dark"
+      setEditorTheme(nextTheme)
+
+      const mermaidNodes = previewTarget.querySelectorAll(".mermaid[data-processed]")
+      for (const node of Array.from(mermaidNodes)) {
+        node.removeAttribute("data-processed")
+      }
+
+      window.dispatchEvent(new Event("mermaid-rerender"))
+      renderPreview(getEditorContent(), previewTarget)
+    }) as EventListener
+
+    window.addEventListener("codeink-theme-change", handleThemeChange, { signal })
   }
 
   loadAndInit()

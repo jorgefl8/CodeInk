@@ -1,13 +1,53 @@
-import { EditorState } from "@codemirror/state"
+import { Compartment, EditorState, type Extension } from "@codemirror/state"
 import { EditorView } from "@codemirror/view"
 import { basicSetup } from "codemirror"
 import { markdown } from "@codemirror/lang-markdown"
-import { languages } from "@codemirror/language-data"
 import { oneDark } from "@codemirror/theme-one-dark"
 import { linter, diagnosticCount } from "@codemirror/lint"
 import { markdownLint } from "@/scripts/markdown-linter"
 
 let editorView: EditorView | null = null
+const themeCompartment = new Compartment()
+
+function resolveTheme(theme: string | null | undefined): "light" | "dark" {
+  return theme === "light" ? "light" : "dark"
+}
+
+function getDocumentTheme(): "light" | "dark" {
+  if (typeof document === "undefined") return "dark"
+  return resolveTheme(document.documentElement.getAttribute("data-theme"))
+}
+
+const lightTheme = EditorView.theme(
+  {
+    "&": {
+      backgroundColor: "var(--background)",
+      color: "var(--foreground)",
+    },
+    ".cm-content": {
+      caretColor: "var(--primary)",
+    },
+    ".cm-gutters": {
+      backgroundColor: "var(--surface)",
+      color: "var(--muted-foreground)",
+      borderRight: "1px solid var(--border)",
+    },
+    ".cm-activeLineGutter": {
+      backgroundColor: "color-mix(in srgb, var(--primary) 12%, transparent)",
+    },
+    ".cm-activeLine": {
+      backgroundColor: "color-mix(in srgb, var(--primary) 6%, transparent)",
+    },
+    ".cm-selectionBackground": {
+      backgroundColor: "color-mix(in srgb, var(--primary) 20%, transparent)",
+    },
+  },
+  { dark: false },
+)
+
+function getEditorThemeExtension(theme: "light" | "dark"): Extension {
+  return theme === "light" ? lightTheme : oneDark
+}
 
 export function destroyEditor() {
   if (editorView) {
@@ -24,10 +64,9 @@ export function createEditor(parent: HTMLElement, initialDoc: string) {
     extensions: [
       basicSetup,
       markdown({
-        codeLanguages: languages,
         addKeymap: true,
       }),
-      oneDark,
+      themeCompartment.of(getEditorThemeExtension(getDocumentTheme())),
       linter(markdownLint, { delay: 500 }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
@@ -54,6 +93,13 @@ export function createEditor(parent: HTMLElement, initialDoc: string) {
   })
 
   return editorView
+}
+
+export function setEditorTheme(theme: "light" | "dark") {
+  if (!editorView) return
+  editorView.dispatch({
+    effects: themeCompartment.reconfigure(getEditorThemeExtension(theme)),
+  })
 }
 
 export function getEditorContent(): string {

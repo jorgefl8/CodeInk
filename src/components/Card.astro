@@ -13,7 +13,14 @@ const { href, title, description, class: className = "" } = Astro.props
   href={href}
   target="_blank"
   rel="noopener noreferrer"
-  class:list={["corner-accent card", className]}
+  class:list={[
+    "corner-accent flex cursor-pointer flex-col p-0 text-foreground no-underline outline-none",
+    "[&_.card-inner]:block [&_.card-inner]:flex-1 [&_.card-inner]:px-7 [&_.card-inner]:py-8",
+    "[&_.card-icon]:mb-5 [&_.card-icon]:flex [&_.card-icon]:h-10 [&_.card-icon]:w-10 [&_.card-icon]:items-center [&_.card-icon]:justify-center [&_.card-icon]:rounded-[var(--radius)] [&_.card-icon]:border [&_.card-icon]:border-border [&_.card-icon]:bg-primary/10 [&_.card-icon]:text-primary",
+    "[&_.card-icon_svg]:h-5 [&_.card-icon_svg]:w-5",
+    "[&.card-compact_.card-inner]:px-6 [&.card-compact_.card-inner]:py-5 [&.card-compact_.card-icon]:mb-3.5 [&.card-compact_.card-icon]:h-[34px] [&.card-compact_.card-icon]:w-[34px] [&.card-compact_.card-icon_svg]:h-[17px] [&.card-compact_.card-icon_svg]:w-[17px]",
+    className,
+  ]}
 >
   <span class="corner-accent-inner card-inner">
     <div class="card-icon">
@@ -23,55 +30,3 @@ const { href, title, description, class: className = "" } = Astro.props
     <p class="text-sm text-muted-foreground leading-relaxed font-mono">{description}</p>
   </span>
 </a>
-
-<style>
-  .card {
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    text-decoration: none;
-    color: var(--foreground);
-    cursor: pointer;
-    outline: none;
-  }
-
-  .card-inner {
-    flex: 1;
-    display: block;
-    padding: 2rem 1.75rem;
-  }
-
-  .card-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.25rem;
-    font-size: 20px;
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--primary);
-  }
-
-  .card-icon :global(svg) {
-    width: 20px;
-    height: 20px;
-  }
-
-  :global(.card-compact) .card-inner {
-    padding: 1.25rem 1.5rem;
-  }
-
-  :global(.card-compact) .card-icon {
-    width: 34px;
-    height: 34px;
-    margin-bottom: 0.875rem;
-  }
-
-  :global(.card-compact) .card-icon :global(svg) {
-    width: 17px;
-    height: 17px;
-  }
-</style>

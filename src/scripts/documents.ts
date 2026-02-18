@@ -28,17 +28,17 @@ function buildCardHtml(doc: { id: string; title: string; customTitle?: string; c
   const time = formatRelativeTime(doc.updatedAt)
   return `
     <div class="doc-card-wrapper group relative" data-doc-id="${escapeHtml(doc.id)}">
-      <a href="/editor#${escapeHtml(doc.id)}" class="corner-accent doc-card">
-        <span class="corner-accent-inner doc-card-inner">
+      <a href="/editor#${escapeHtml(doc.id)}" class="corner-accent block no-underline text-inherit cursor-pointer transition-[background,box-shadow] duration-200 hover:[box-shadow:0_0_0_1px_rgba(245,158,11,0.15),0_8px_32px_rgba(0,0,0,0.3)]">
+        <span class="corner-accent-inner block p-6">
           <h3 class="doc-title font-semibold text-foreground truncate mb-1">${escapeHtml(displayTitle)}</h3>
           <p class="text-xs text-muted-foreground line-clamp-2 mb-3">${escapeHtml(preview)}</p>
           <span class="text-xs text-muted-foreground/70">${escapeHtml(time)}</span>
         </span>
       </a>
-      <button type="button" class="doc-rename" aria-label="Rename">
+      <button type="button" class="doc-rename absolute top-3 right-10 p-1.5 rounded-lg border-none bg-transparent opacity-0 text-muted-foreground cursor-pointer transition-all duration-200 group-hover:opacity-100 hover:text-primary hover:bg-primary/10" aria-label="Rename">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
       </button>
-      <button type="button" class="doc-delete" aria-label="Delete">
+      <button type="button" class="doc-delete absolute top-3 right-3 p-1.5 rounded-lg border-none bg-transparent opacity-0 text-muted-foreground cursor-pointer transition-all duration-200 group-hover:opacity-100 hover:text-error hover:bg-[rgba(239,68,68,0.1)]" aria-label="Delete">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
       </button>
     </div>
@@ -83,7 +83,7 @@ function handleRename(wrapper: HTMLElement, id: string, rerender: () => void) {
   input.type = "text"
   input.value = currentTitle
   input.maxLength = MAX_TITLE_LENGTH
-  input.className = "doc-rename-input"
+  input.className = "max-w-full text-inherit font-semibold font-inherit text-foreground bg-muted border border-primary rounded-sm px-1.5 py-0.5 outline-none mb-1"
   input.size = Math.max(currentTitle.length, 1)
 
   h3.replaceWith(input)

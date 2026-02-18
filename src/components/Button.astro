@@ -21,27 +21,10 @@ const sizeClasses = {
 <Tag
   {...href ? { href } : { type }}
   {...id ? { id } : {}}
-  class:list={["corner-accent corner-btn", className]}
+  class:list={["corner-accent inline-flex font-semibold text-foreground no-underline cursor-pointer outline-none", className]}
   {...rest}
 >
-  <span class:list={["corner-accent-inner corner-btn-inner", sizeClasses[size]]}>
+  <span class:list={["corner-accent-inner inline-flex items-center whitespace-nowrap", sizeClasses[size]]}>
     <slot />
   </span>
 </Tag>
-
-<style>
-  .corner-btn {
-    display: inline-flex;
-    font-weight: 600;
-    color: var(--foreground);
-    text-decoration: none;
-    cursor: pointer;
-    outline: none;
-  }
-
-  .corner-btn-inner {
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-  }
-</style>

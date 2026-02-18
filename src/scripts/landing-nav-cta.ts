@@ -23,7 +23,7 @@ export function initLandingNavCta() {
     flyClone = null
     if (navCta) {
       navCta.style.transition = "none"
-      navCta.classList.remove("visible")
+      navCta.classList.remove("opacity-100", "pointer-events-auto")
       navCta.offsetHeight
       navCta.style.transition = ""
     }
@@ -48,12 +48,12 @@ export function initLandingNavCta() {
     if (!entry.isIntersecting && !isInNav) {
       // Skip fly animation on mobile or when hero rect was never captured
       // (e.g. page reloaded while scrolled past the hero)
-      if (window.innerWidth < 640 || lastHeroRect.width === 0) {
-        navCta.style.opacity = ""
-        navCta.classList.add("visible")
-        isInNav = true
-        return
-      }
+        if (window.innerWidth < 640 || lastHeroRect.width === 0) {
+          navCta.style.opacity = ""
+          navCta.classList.add("opacity-100", "pointer-events-auto")
+          isInNav = true
+          return
+        }
 
       // Compensate for CSS zoom on <html> — getBoundingClientRect() returns
       // screen pixels (already zoomed), but position:fixed inside the zoomed
@@ -96,7 +96,7 @@ export function initLandingNavCta() {
       setTimeout(() => {
         navCta.style.transition = "none"
         navCta.style.opacity = ""
-        navCta.classList.add("visible")
+        navCta.classList.add("opacity-100", "pointer-events-auto")
         navCta.offsetHeight
         navCta.style.transition = ""
         flyClone?.remove()
@@ -104,7 +104,7 @@ export function initLandingNavCta() {
         isInNav = true
       }, 470)
     } else if (entry.isIntersecting && isInNav) {
-      navCta.classList.remove("visible")
+      navCta.classList.remove("opacity-100", "pointer-events-auto")
       isInNav = false
     }
   }, { threshold: 0 })

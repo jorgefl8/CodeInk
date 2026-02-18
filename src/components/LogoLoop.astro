@@ -25,112 +25,41 @@ const {
 } = Astro.props;
 ---
 
-<div class:list={["logo-slider", className]} data-speed={speed} data-gap={gap}>
-  <div class="logo-track">
-    {/* Original logos */}
-    {logos.map((logo) => {
-      const Svg = logo.Svg;
-      return (
-        <div class="logo-item">
-          {logo.href ? (
-            <a href={logo.href} target="_blank" rel="noopener noreferrer">
-              <Svg width={logoHeight} height={logoHeight} aria-label={logo.alt} />
-              {logo.label && <span class="logo-label">{logo.label}</span>}
-            </a>
-          ) : (
-            <>
-              <Svg width={logoHeight} height={logoHeight} aria-label={logo.alt} />
-              {logo.label && <span class="logo-label">{logo.label}</span>}
-            </>
-          )}
-        </div>
-      );
-    })}
-    {/* Cloned logos for infinite loop */}
-    {logos.map((logo) => {
-      const Svg = logo.Svg;
-      return (
-        <div class="logo-item" aria-hidden="true">
-          {logo.href ? (
-            <a href={logo.href} target="_blank" rel="noopener noreferrer" tabindex="-1">
-              <Svg width={logoHeight} height={logoHeight} aria-label={logo.alt} />
-              {logo.label && <span class="logo-label">{logo.label}</span>}
-            </a>
-          ) : (
-            <>
-              <Svg width={logoHeight} height={logoHeight} aria-label={logo.alt} />
-              {logo.label && <span class="logo-label">{logo.label}</span>}
-            </>
-          )}
-        </div>
-      );
-    })}
+<div
+  class:list={["logo-loop w-full overflow-hidden whitespace-nowrap", className]}
+  data-speed={speed}
+  data-pause="true"
+  style={`--logo-gap:${gap}px; --logo-height:${logoHeight}px`}
+>
+  <div class="logo-loop-track inline-flex whitespace-nowrap will-change-transform [transform:translate3d(0,0,0)]">
+    <div class="logo-loop-measure inline-flex items-center whitespace-nowrap">
+      {logos.map((logo) => {
+        const Svg = logo.Svg;
+        return (
+          <div
+            class="inline-flex h-[var(--logo-height)] items-center gap-2 align-middle opacity-50 transition-opacity duration-300 hover:opacity-100"
+            style={`margin-inline: calc(var(--logo-gap) / 2)`}
+          >
+            {logo.href ? (
+              <a href={logo.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2">
+                <Svg width={logoHeight} height={logoHeight} aria-label={logo.alt} />
+                {logo.label && <span class="font-mono text-[18px] text-muted-foreground">{logo.label}</span>}
+              </a>
+            ) : (
+              <>
+                <Svg width={logoHeight} height={logoHeight} aria-label={logo.alt} />
+                {logo.label && <span class="font-mono text-[18px] text-muted-foreground">{logo.label}</span>}
+              </>
+            )}
+          </div>
+        );
+      })}
+    </div>
   </div>
 </div>
 
-<style>
-  .logo-slider {
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100%;
-  }
-  
-  .logo-track {
-    display: inline-flex;
-    white-space: nowrap;
-    animation: scroll 60s linear infinite;
-  }
-  
-  .logo-item {
-    height: 32px;
-    margin: 0 24px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-    vertical-align: middle;
-  }
-  
-  .logo-item:hover {
-    opacity: 1;
-  }
-  
-  .logo-label {
-    font-size: 18px;
-    font-family: var(--font-mono);
-    color: var(--muted-foreground);
-  }
-  
-  @keyframes scroll {
-    0% {
-      transform: translateX(-50%);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-</style>
-
 <script>
-  // Clone logos for infinite scroll
-  document.querySelectorAll('.logo-slider').forEach((slider) => {
-    const track = slider.querySelector('.logo-track');
-    if (!track) return;
-    
-    const logos = Array.from(track.children);
-    logos.forEach((logo) => {
-      const clone = logo.cloneNode(true);
-      track.appendChild(clone);
-    });
-    
-    // Pause on hover
-    slider.addEventListener('mouseenter', () => {
-      (track as HTMLElement).style.animationPlayState = 'paused';
-    });
-    
-    slider.addEventListener('mouseleave', () => {
-      (track as HTMLElement).style.animationPlayState = 'running';
-    });
-  });
+  import { initAllLogoLoops } from "@/scripts/logo-loop"
+  document.addEventListener("astro:page-load", initAllLogoLoops)
+  initAllLogoLoops()
 </script>
