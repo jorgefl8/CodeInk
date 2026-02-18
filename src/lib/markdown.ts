@@ -15,11 +15,12 @@ const renderer = {
 
     const highlighted = highlightMap.get(text) ?? text
     const label = lang || "text"
+    const iconLabel = label === "tf" || label === "tfvars" ? "terraform" : label
     
     // Handle "text" fallback - don't try to load text.svg, use default directly
-    const iconPath = label === "text" 
+    const iconPath = iconLabel === "text" 
       ? `/icons/lang/default.svg` 
-      : `/icons/lang/${label}.svg`
+      : `/icons/lang/${iconLabel}.svg`
     const fallbackIcon = `/icons/lang/default.svg`
     const displayLabel = label.charAt(0).toUpperCase() + label.slice(1)
     const showLabel = label !== "text"
