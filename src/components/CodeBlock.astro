@@ -4,42 +4,21 @@ interface Props {
   code?: string
 }
 
-const LANG_ICON_MAP: Record<string, string> = {
-  typescript: "ts",
-  javascript: "js",
-  tsx: "ts",
-  jsx: "js",
-  bash: "bash",
-  sh: "bash",
-  shell: "bash",
-  yml: "yaml",
-  dockerfile: "dockerfile",
-  docker: "dockerfile",
-}
-
-const LANG_LABEL_MAP: Record<string, string> = {
-  js: "Javascript",
-  ts: "TypeScript",
-  tsx: "React (TS)",
-  jsx: "React (JS)",
-  sh: "Bash",
-  yml: "YAML",
-}
-
 const { lang, code } = Astro.props
 
 const label = lang || "text"
-const iconLang = label === "text" ? "default" : (LANG_ICON_MAP[label] ?? label)
-const iconPath = `/icons/lang/${iconLang}.svg`
+const iconPath = label === "text" 
+  ? `/icons/lang/default.svg` 
+  : `/icons/lang/${label}.svg`
 const fallbackIcon = `/icons/lang/default.svg`
-const displayLabel = LANG_LABEL_MAP[label] ?? label.charAt(0).toUpperCase() + label.slice(1)
+const displayLabel = label.charAt(0).toUpperCase() + label.slice(1)
 const showLabel = label !== "text"
 ---
 
 <div class="code-block group" data-language={label}>
   <div class="code-block-header">
     <div class="code-block-lang-info">
-      <img src={iconPath} onerror={`this.src='${fallbackIcon}'`} width="18" height="18" alt="" class="code-block-lang-icon" />
+      <img src={iconPath} onerror={`this.src='${fallbackIcon}'`} width="20" height="20" alt="" class="code-block-lang-icon" />
       {showLabel && <span class="code-block-lang">{displayLabel}</span>}
     </div>
     <button class="copy-code-btn" type="button" data-copy-code="true" aria-label="Copy code">

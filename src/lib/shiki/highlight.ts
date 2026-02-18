@@ -7,10 +7,12 @@ import {
 
 import darkTheme from "@shikijs/themes/one-dark-pro"
 
+// All supported languages
 import html from "@shikijs/langs/html"
 import js from "@shikijs/langs/js"
 import ts from "@shikijs/langs/ts"
 import tsx from "@shikijs/langs/tsx"
+import jsx from "@shikijs/langs/jsx"
 import css from "@shikijs/langs/css"
 import json from "@shikijs/langs/json"
 import bash from "@shikijs/langs/bash"
@@ -23,6 +25,25 @@ import sql from "@shikijs/langs/sql"
 import rust from "@shikijs/langs/rust"
 import java from "@shikijs/langs/java"
 import xml from "@shikijs/langs/xml"
+import c from "@shikijs/langs/c"
+import cpp from "@shikijs/langs/cpp"
+import csharp from "@shikijs/langs/csharp"
+import dart from "@shikijs/langs/dart"
+import graphql from "@shikijs/langs/graphql"
+import kotlin from "@shikijs/langs/kotlin"
+import less from "@shikijs/langs/less"
+import lua from "@shikijs/langs/lua"
+import nginx from "@shikijs/langs/nginx"
+import php from "@shikijs/langs/php"
+import powershell from "@shikijs/langs/powershell"
+import r from "@shikijs/langs/r"
+import ruby from "@shikijs/langs/ruby"
+import sass from "@shikijs/langs/sass"
+import scss from "@shikijs/langs/scss"
+import svelte from "@shikijs/langs/svelte"
+import swift from "@shikijs/langs/swift"
+import toml from "@shikijs/langs/toml"
+import vue from "@shikijs/langs/vue"
 
 import { showLineNumbers, wordWrapContent, addLanguageProperty } from "@/lib/shiki/transformers"
 
@@ -45,8 +66,11 @@ const highlight = async (): Promise<HighlighterCore> => {
   highlighter ??= createHighlighterCore({
     themes: [darkTheme],
     langs: [
-      html, js, ts, tsx, css, json, bash, markdown,
+      html, js, ts, tsx, jsx, css, json, bash, markdown,
       python, yaml, go, dockerfile, sql, rust, java, xml,
+      c, cpp, csharp, dart, graphql, kotlin, less, lua,
+      nginx, php, powershell, r, ruby, sass, scss, svelte,
+      swift, toml, vue,
     ],
     engine: getJsEngine(),
   })

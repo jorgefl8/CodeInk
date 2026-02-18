@@ -7,19 +7,6 @@ import { highlightCode } from "@/lib/shiki/highlight"
 
 let highlightMap = new Map<string, string>()
 
-const LANG_ICON_MAP: Record<string, string> = {
-  typescript: "ts",
-  javascript: "js",
-  tsx: "ts",
-  jsx: "js",
-  bash: "bash",
-  sh: "bash",
-  shell: "bash",
-  yml: "yaml",
-  dockerfile: "dockerfile",
-  docker: "dockerfile",
-}
-
 const renderer = {
   code({ text, lang }: Tokens.Code) {
     if (lang === "mermaid") {
@@ -30,29 +17,18 @@ const renderer = {
     const label = lang || "text"
     
     // Handle "text" fallback - don't try to load text.svg, use default directly
-    const iconLang = label === "text" ? "default" : (LANG_ICON_MAP[label] ?? label)
-    const iconPath = `/icons/lang/${iconLang}.svg`
+    const iconPath = label === "text" 
+      ? `/icons/lang/default.svg` 
+      : `/icons/lang/${label}.svg`
     const fallbackIcon = `/icons/lang/default.svg`
-
-    const LANG_LABEL_MAP: Record<string, string> = {
-      js: "Javascript",
-      ts: "TypeScript",
-      tsx: "React (TS)",
-      jsx: "React (JS)",
-      sh: "Bash",
-      yml: "YAML",
-    }
-
-    const displayLabel = LANG_LABEL_MAP[label] ?? label.charAt(0).toUpperCase() + label.slice(1)
-    
-    // Only show label if it's not the generic "text" fallback
+    const displayLabel = label.charAt(0).toUpperCase() + label.slice(1)
     const showLabel = label !== "text"
 
     return `
       <div class="code-block group" data-language="${label}">
         <div class="code-block-header">
           <div class="code-block-lang-info">
-            <img src="${iconPath}" onerror="this.src='${fallbackIcon}'" width="18" height="18" alt="" class="code-block-lang-icon" />
+            <img src="${iconPath}" onerror="this.src='${fallbackIcon}'" width="20" height="20" alt="" class="code-block-lang-icon" />
             ${showLabel ? `<span class="code-block-lang">${displayLabel}</span>` : ""}
           </div>
           <button class="copy-code-btn" type="button" data-copy-code="true" aria-label="Copy code">
