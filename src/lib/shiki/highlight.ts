@@ -20,6 +20,7 @@ import markdown from "@shikijs/langs/markdown"
 import python from "@shikijs/langs/python"
 import yaml from "@shikijs/langs/yaml"
 import go from "@shikijs/langs/go"
+import hcl from "@shikijs/langs/hcl"
 import dockerfile from "@shikijs/langs/dockerfile"
 import sql from "@shikijs/langs/sql"
 import rust from "@shikijs/langs/rust"
@@ -42,6 +43,7 @@ import sass from "@shikijs/langs/sass"
 import scss from "@shikijs/langs/scss"
 import svelte from "@shikijs/langs/svelte"
 import swift from "@shikijs/langs/swift"
+import terraform from "@shikijs/langs/terraform"
 import toml from "@shikijs/langs/toml"
 import vue from "@shikijs/langs/vue"
 
@@ -55,6 +57,7 @@ const THEME = "one-dark-pro" as const
 type Languages =
   | "html" | "js" | "ts" | "tsx" | "css" | "json" | "bash"
   | "markdown" | "python" | "yaml" | "go" | "dockerfile"
+  | "hcl" | "terraform" | "tf" | "tfvars"
   | "sql" | "rust" | "java" | "xml" | "text" | "plaintext"
 
 const getJsEngine = (): RegexEngine => {
@@ -67,7 +70,7 @@ const highlight = async (): Promise<HighlighterCore> => {
     themes: [darkTheme],
     langs: [
       html, js, ts, tsx, jsx, css, json, bash, markdown,
-      python, yaml, go, dockerfile, sql, rust, java, xml,
+      python, yaml, go, hcl, terraform, dockerfile, sql, rust, java, xml,
       c, cpp, csharp, dart, graphql, kotlin, less, lua,
       nginx, php, powershell, r, ruby, sass, scss, svelte,
       swift, toml, vue,
