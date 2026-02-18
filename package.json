@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "lint": "astro check",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -39,6 +40,8 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
-    "@types/katex": "^0.16.8"
+    "@astrojs/check": "^0.9.6",
+    "@types/katex": "^0.16.8",
+    "typescript": "^5.9.3"
   }
 }
