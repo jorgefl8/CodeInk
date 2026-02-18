@@ -30,6 +30,7 @@ import cpp from "@shikijs/langs/cpp"
 import csharp from "@shikijs/langs/csharp"
 import dart from "@shikijs/langs/dart"
 import graphql from "@shikijs/langs/graphql"
+import hcl from "@shikijs/langs/hcl"
 import kotlin from "@shikijs/langs/kotlin"
 import less from "@shikijs/langs/less"
 import lua from "@shikijs/langs/lua"
@@ -55,7 +56,13 @@ const THEME = "one-dark-pro" as const
 type Languages =
   | "html" | "js" | "ts" | "tsx" | "css" | "json" | "bash"
   | "markdown" | "python" | "yaml" | "go" | "dockerfile"
-  | "sql" | "rust" | "java" | "xml" | "text" | "plaintext"
+  | "sql" | "rust" | "java" | "xml" | "hcl" | "terraform" | "tf" | "tfvars" | "text" | "plaintext"
+
+const LANGUAGE_ALIASES: Record<string, string> = {
+  terraform: "hcl",
+  tf: "hcl",
+  tfvars: "hcl",
+}
 
 const getJsEngine = (): RegexEngine => {
   jsEngine ??= createJavaScriptRegexEngine()
@@ -68,7 +75,7 @@ const highlight = async (): Promise<HighlighterCore> => {
     langs: [
       html, js, ts, tsx, jsx, css, json, bash, markdown,
       python, yaml, go, dockerfile, sql, rust, java, xml,
-      c, cpp, csharp, dart, graphql, kotlin, less, lua,
+      c, cpp, csharp, dart, graphql, hcl, kotlin, less, lua,
       nginx, php, powershell, r, ruby, sass, scss, svelte,
       swift, toml, vue,
     ],
@@ -80,7 +87,8 @@ const highlight = async (): Promise<HighlighterCore> => {
 async function highlightCode(code: string, lang?: string): Promise<string> {
   const h = await highlight()
   const loadedLangs = h.getLoadedLanguages()
-  const resolvedLang = lang && loadedLangs.includes(lang) ? lang : "text"
+  const normalizedLang = lang ? (LANGUAGE_ALIASES[lang] ?? lang) : undefined
+  const resolvedLang = normalizedLang && loadedLangs.includes(normalizedLang) ? normalizedLang : "text"
 
   return h.codeToHtml(code, {
     lang: resolvedLang,
