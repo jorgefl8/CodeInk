@@ -1,0 +1,20 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Button from "@/components/Button.astro"
+---
+
+<Layout title="Offline — CodeInk" bodyClass="min-h-dvh overflow-hidden grid place-items-center bg-background text-foreground">
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+
+  <main class="w-full max-w-xl px-6 text-center">
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-3">You are offline</h1>
+    <p class="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">
+      CodeInk can still open your saved documents from this device. Reconnect to sync static content that is not cached yet.
+    </p>
+    <div class="flex items-center justify-center gap-3">
+      <Button href="/documents" size="sm">Open documents</Button>
+      <Button href="/editor" size="sm">Open editor</Button>
+    </div>
+  </main>
+</Layout>
+

@@ -47,7 +47,7 @@
   html[data-theme="dark"] {
     color-scheme: dark;
   }
-  @media (max-width: 639px), (max-height: 500px) {
+  @media (max-width: 729px), (max-height: 500px) {
     html {
       zoom: 1;
     }

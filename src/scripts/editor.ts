@@ -16,6 +16,7 @@ import DEFAULT_MARKDOWN from "@/lib/default-markdown.md?raw"
 
 let editorAbort: AbortController | null = null
 const AUTO_SAVE_DEBOUNCE_MS = 1000
+const EDITOR_MOBILE_BREAKPOINT_PX = 730
 
 async function createNewDocument(): Promise<{ docId: string; createdAt: number }> {
   const docId = crypto.randomUUID()
@@ -183,6 +184,6 @@ export function initEditor() {
   viewMode.bindEvents(signal)
   setupMarkdownExport(signal)
 
-  const isMobile = window.innerWidth < 640
+  const isMobile = window.innerWidth < EDITOR_MOBILE_BREAKPOINT_PX
   viewMode.setViewMode(isMobile ? "editor" : "split")
 }

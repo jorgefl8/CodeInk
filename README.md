@@ -47,7 +47,9 @@
 - **Tables and footnotes** — full GFM support
 - **100% client-side** — your documents never leave your browser
 - **Zero tracking** — no analytics, no cookies, no accounts
+- **Installable PWA** — install CodeInk on desktop or mobile from supported browsers
 - **Local storage** — documents saved via IndexedDB
+- **Offline-ready** — `/editor` and `/documents` work offline after first load
 - **Markdown linting** — real-time diagnostics via remark-lint with one-click auto-fix
 - **Multiple view modes** — editor, split, and preview modes with resizable panes
 - **Export** — Markdown export
@@ -80,6 +82,20 @@ The development server will start at `http://localhost:4321`
 ```bash
 bun run build
 ```
+
+## PWA Notes
+
+- First load must happen online so the service worker can cache app routes and assets.
+- After that, `/editor` and `/documents` are available offline from cache + IndexedDB.
+- Other static routes are best-effort offline and may show `/offline` if not cached yet.
+
+### Test PWA Locally
+
+1. Run `bun dev` and open the app in Chrome.
+2. Visit `/editor` and `/documents` once while online.
+3. Open DevTools > Application > Service Workers and confirm registration.
+4. Switch DevTools Network to Offline and reload `/editor` or `/documents`.
+5. Verify install CTA appears when `beforeinstallprompt` is available.
 
 ## License
 

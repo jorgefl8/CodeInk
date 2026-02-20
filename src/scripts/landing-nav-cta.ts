@@ -11,22 +11,47 @@ export function initLandingNavCta() {
   const navCta = document.getElementById("nav-cta")
 
   if (!heroCta || !heroBtn || !navCta) return
+  const navCtaEl = navCta
 
   let lastHeroRect = { top: 0, left: 0, width: 0, height: 0 }
   let isInNav = false
   let flyClone: HTMLElement | null = null
   let navigating = false
+  let hideTimer: number | null = null
+
+  function clearHideTimer() {
+    if (hideTimer !== null) {
+      window.clearTimeout(hideTimer)
+      hideTimer = null
+    }
+  }
+
+  function showNavCta() {
+    clearHideTimer()
+    navCtaEl.style.opacity = ""
+    navCtaEl.classList.remove("invisible")
+    navCtaEl.classList.add("opacity-100")
+  }
+
+  function hideNavCta() {
+    clearHideTimer()
+    navCtaEl.classList.remove("opacity-100")
+    hideTimer = window.setTimeout(() => {
+      if (!isInNav) navCtaEl.classList.add("invisible")
+      hideTimer = null
+    }, 300)
+  }
 
   function cleanup() {
     navigating = true
+    clearHideTimer()
     flyClone?.remove()
     flyClone = null
-    if (navCta) {
-      navCta.style.transition = "none"
-      navCta.classList.remove("opacity-100", "pointer-events-auto")
-      navCta.offsetHeight
-      navCta.style.transition = ""
-    }
+    navCtaEl.style.transition = "none"
+    navCtaEl.classList.remove("opacity-100")
+    navCtaEl.classList.add("invisible")
+    navCtaEl.offsetHeight
+    navCtaEl.style.transition = ""
     isInNav = false
   }
 
@@ -48,12 +73,11 @@ export function initLandingNavCta() {
     if (!entry.isIntersecting && !isInNav) {
       // Skip fly animation on mobile or when hero rect was never captured
       // (e.g. page reloaded while scrolled past the hero)
-        if (window.innerWidth < 640 || lastHeroRect.width === 0) {
-          navCta.style.opacity = ""
-          navCta.classList.add("opacity-100", "pointer-events-auto")
-          isInNav = true
-          return
-        }
+      if (window.innerWidth < 640 || lastHeroRect.width === 0) {
+        showNavCta()
+        isInNav = true
+        return
+      }
 
       // Compensate for CSS zoom on <html> — getBoundingClientRect() returns
       // screen pixels (already zoomed), but position:fixed inside the zoomed
@@ -61,7 +85,7 @@ export function initLandingNavCta() {
       const zoom = parseFloat(getComputedStyle(document.documentElement).zoom) || 1
 
       const from = lastHeroRect
-      const toRaw = navCta.getBoundingClientRect()
+      const toRaw = navCtaEl.getBoundingClientRect()
 
       const scaleX = toRaw.width / from.width
       const scaleY = toRaw.height / from.height
@@ -94,17 +118,16 @@ export function initLandingNavCta() {
       flyClone.style.transform = `translate(${dx}px, ${dy}px) scale(${scaleX}, ${scaleY})`
 
       setTimeout(() => {
-        navCta.style.transition = "none"
-        navCta.style.opacity = ""
-        navCta.classList.add("opacity-100", "pointer-events-auto")
-        navCta.offsetHeight
-        navCta.style.transition = ""
+        navCtaEl.style.transition = "none"
+        showNavCta()
+        navCtaEl.offsetHeight
+        navCtaEl.style.transition = ""
         flyClone?.remove()
         flyClone = null
         isInNav = true
       }, 470)
     } else if (entry.isIntersecting && isInNav) {
-      navCta.classList.remove("opacity-100", "pointer-events-auto")
+      hideNavCta()
       isInNav = false
     }
   }, { threshold: 0 })
@@ -117,6 +140,7 @@ export function initLandingNavCta() {
     document.removeEventListener("astro:before-preparation", cleanup)
     flyClone?.remove()
     flyClone = null
+    clearHideTimer()
     navigating = false
     isInNav = false
   }

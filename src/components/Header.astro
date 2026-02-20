@@ -2,26 +2,41 @@
 import Logo from "@/assets/logo.svg"
 import ViewTabs from "@/components/ViewTabs.astro"
 import ThemeToggle from "@/components/ThemeToggle.astro"
+import PwaInstallButton from "@/components/PwaInstallButton.astro"
 
 interface Props {
   logoHref?: string
   showTabs?: boolean
   showBrand?: boolean
   showBrandOnMobile?: boolean
+  useWideMobileBreakpoint?: boolean
 }
 
-const { logoHref = "/", showTabs = false, showBrand = true, showBrandOnMobile = false } = Astro.props
+const {
+  logoHref = "/",
+  showTabs = false,
+  showBrand = true,
+  showBrandOnMobile = false,
+  useWideMobileBreakpoint = false,
+} = Astro.props
 ---
 
-<nav class="site-header sticky top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center px-3 sm:px-6 py-1.5 border-b border-border/50 [background:var(--surface)] [box-shadow:0_0_0_1px_rgba(245,158,11,0.05),0_4px_24px_rgba(0,0,0,0.4),0_0_48px_rgba(245,158,11,0.04)]">
-  <div class="flex items-center gap-2 sm:gap-3">
+<nav class:list={[
+  "site-header sticky top-0 z-50 grid grid-cols-[auto_1fr_auto] items-center px-3 py-1.5 border-b border-border/50 [background:var(--surface)] [box-shadow:0_0_0_1px_rgba(245,158,11,0.05),0_4px_24px_rgba(0,0,0,0.4),0_0_48px_rgba(245,158,11,0.04)]",
+  useWideMobileBreakpoint ? "min-[730px]:px-6" : "sm:px-6",
+]}>
+  <div class:list={["flex items-center gap-2", useWideMobileBreakpoint ? "min-[730px]:gap-3" : "sm:gap-3"]}>
     <a href={logoHref} class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
       <Logo class="w-7 h-7" aria-hidden="true" transition:name="logo" />
       {showBrand && (
         <span
           class:list={[
             "text-lg font-bold tracking-tight",
-            showBrandOnMobile ? "inline" : "hidden sm:inline",
+            showBrandOnMobile
+              ? "inline"
+              : useWideMobileBreakpoint
+                ? "hidden min-[730px]:inline"
+                : "hidden sm:inline",
           ]}
           transition:name="brand"
         >
@@ -33,10 +48,11 @@ const { logoHref = "/", showTabs = false, showBrand = true, showBrandOnMobile = 
   </div>
 
   <div class="flex items-center justify-center">
-    {showTabs ? <ViewTabs /> : <slot name="center" />}
+    {showTabs ? <ViewTabs useWideMobileBreakpoint={useWideMobileBreakpoint} /> : <slot name="center" />}
   </div>
 
   <div class="flex items-center justify-end gap-3">
+    <PwaInstallButton useWideMobileBreakpoint={useWideMobileBreakpoint} />
     <slot />
     <ThemeToggle />
   </div>

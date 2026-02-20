@@ -1,8 +1,8 @@
 <div
   id="status-bar"
-  class="flex shrink-0 items-center justify-between border-t border-border bg-[var(--surface)] px-2 pb-[env(safe-area-inset-bottom,0px)] h-[calc(32px+env(safe-area-inset-bottom,0px))] sm:px-4"
+  class="flex shrink-0 items-center justify-between border-t border-border bg-[var(--surface)] px-2 pb-[env(safe-area-inset-bottom,0px)] h-[calc(32px+env(safe-area-inset-bottom,0px))] min-[730px]:px-4"
 >
-  <div class="flex items-center gap-2 sm:gap-4">
+  <div class="flex items-center gap-2 min-[730px]:gap-4">
     <button
       class="inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-[12px] text-muted-foreground opacity-70 transition-[color,background,opacity] duration-200 hover:bg-primary/10 hover:text-primary hover:opacity-100 active:bg-primary/20"
       id="info-btn"
@@ -15,7 +15,7 @@
 
   <div class="flex items-center gap-3">
     <button
-      class="inline-flex items-center gap-1 rounded px-2 py-0.5 font-mono text-[12px] text-muted-foreground opacity-70 transition-[color,background,opacity] duration-200 hover:bg-primary/10 hover:text-primary hover:opacity-100 active:bg-primary/20"
+      class="hidden items-center gap-1 rounded px-2 py-0.5 font-mono text-[12px] text-muted-foreground opacity-70 transition-[color,background,opacity] duration-200 hover:bg-primary/10 hover:text-primary hover:opacity-100 active:bg-primary/20"
       id="lint-fix"
       title="Fix lint issues"
     >

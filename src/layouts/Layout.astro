@@ -84,8 +84,15 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0f1115" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1115" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="CodeInk" />
     <meta name="google-site-verification" content="0hb4M721vGuZTd59TPpHg_F26uKPsCyBILsWls5Ut04" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -140,5 +147,9 @@ const canonicalURL = new URL(Astro.url.pathname, siteURL).href
   </head>
   <body class:list={["antialiased grid-bg", bodyClass]}>
     <slot />
+    <script>
+      import { registerCodeinkServiceWorker } from "@/scripts/pwa/register-sw"
+      registerCodeinkServiceWorker()
+    </script>
   </body>
 </html>

@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "lint": "astro check",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "bunx wrangler dev --local --ip 127.0.0.1 --port 4321 --config wrangler.toml",
     "astro": "astro"
   },
   "dependencies": {
@@ -42,6 +42,12 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@types/katex": "^0.16.8",
-    "typescript": "^5.9.3"
+    "@vite-pwa/astro": "^1.2.0",
+    "typescript": "^5.9.3",
+    "workbox-expiration": "^7.4.0",
+    "workbox-precaching": "^7.4.0",
+    "workbox-routing": "^7.4.0",
+    "workbox-strategies": "^7.4.0",
+    "workbox-window": "^7.4.0"
   }
 }

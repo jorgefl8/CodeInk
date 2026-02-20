@@ -1,0 +1,29 @@
+---
+interface Props {
+  useWideMobileBreakpoint?: boolean
+}
+
+const { useWideMobileBreakpoint = false } = Astro.props
+const desktopLabelClass = useWideMobileBreakpoint ? "hidden min-[730px]:inline" : "hidden sm:inline"
+---
+
+<button
+  type="button"
+  class="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-primary/30 px-2.5 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-60"
+  data-pwa-install-btn
+  hidden
+  aria-label="Install app"
+  title="Install CodeInk"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 3v12" />
+    <path d="m7 10 5 5 5-5" />
+    <path d="M5 21h14" />
+  </svg>
+  <span class={desktopLabelClass}>Install</span>
+</button>
+
+<script>
+  import { initPwaInstallPrompt } from "@/scripts/pwa/install-prompt"
+  initPwaInstallPrompt()
+</script>

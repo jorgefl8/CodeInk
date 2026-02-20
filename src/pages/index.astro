@@ -83,13 +83,10 @@ const techLogos = [
           <span class="text-base font-bold tracking-tight" transition:name="brand">CodeInk</span>
         </div>
         <div class="flex items-center gap-3">
-          <Button href="/documents" size="md" id="nav-cta" class="opacity-0 transition-opacity duration-300 pointer-events-none">
+          <Button href="/documents" size="md" id="nav-cta" class="invisible opacity-0 transition-opacity duration-300">
               Get started
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
             </Button>
-          <a href="https://github.com/jorgefl8/CodeInk" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="inline-flex items-center justify-center p-1.5 rounded-lg text-primary hover:bg-primary/10 transition-colors">
-            <GitHubIcon size={18} />
-          </a>
           <ThemeToggle />
         </div>
       </nav>
@@ -307,7 +304,7 @@ const techLogos = [
       </div>
       <div class="max-w-3xl mx-auto">
         <details class="group border-b border-border first:border-t" open>
-          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
+          <summary class="cursor-pointer flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Is CodeInk free?</span>
             <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
@@ -316,7 +313,7 @@ const techLogos = [
           </div>
         </details>
         <details class="group border-b border-border first:border-t">
-          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
+          <summary class="cursor-pointer flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Does CodeInk require an account?</span>
             <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
@@ -325,7 +322,7 @@ const techLogos = [
           </div>
         </details>
         <details class="group border-b border-border first:border-t">
-          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
+          <summary class="cursor-pointer flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Is my data private in CodeInk?</span>
             <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
@@ -334,7 +331,7 @@ const techLogos = [
           </div>
         </details>
         <details class="group border-b border-border first:border-t">
-          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
+          <summary class="cursor-pointer flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Does CodeInk support Mermaid diagrams?</span>
             <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
@@ -343,7 +340,7 @@ const techLogos = [
           </div>
         </details>
         <details class="group border-b border-border first:border-t">
-          <summary class="flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
+          <summary class="cursor-pointer flex list-none items-center justify-between py-5 text-base font-semibold text-foreground transition-colors hover:text-primary [&::-webkit-details-marker]:hidden [&::marker]:content-['']">
             <span>Does CodeInk support math equations?</span>
             <svg class="shrink-0 text-muted-foreground transition-[transform,color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-open:rotate-180 group-open:text-primary" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </summary>

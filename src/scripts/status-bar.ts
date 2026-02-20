@@ -47,23 +47,35 @@ export function setupSaveStateManager(saveEl: HTMLElement | null, saveLabel: Ele
 }
 
 export function setupLintStatusManager(lintEl: HTMLElement | null, fixBtn: HTMLElement | null) {
+  function setFixButtonVisible(visible: boolean) {
+    if (!fixBtn) return
+    if (visible) {
+      fixBtn.classList.remove("hidden")
+      fixBtn.classList.add("inline-flex")
+    } else {
+      fixBtn.classList.add("hidden")
+      fixBtn.classList.remove("inline-flex")
+    }
+  }
+
   return function updateLintStatus(count: number) {
     if (!lintEl) return
     const countEl = lintEl.querySelector(".lint-count")
     const svg = lintEl.querySelector("svg")!
+    const normalizedCount = Number.isFinite(count) ? count : 0
 
-    if (count > 0) {
+    if (normalizedCount > 0) {
       lintEl.classList.add("has-issues")
       lintEl.classList.remove("no-issues")
       svg.outerHTML = getLintIcon("error")
-      if (countEl) countEl.textContent = `${count} issue${count === 1 ? "" : "s"}`
-      fixBtn?.classList.remove("hidden")
+      if (countEl) countEl.textContent = `${normalizedCount} issue${normalizedCount === 1 ? "" : "s"}`
+      setFixButtonVisible(true)
     } else {
       lintEl.classList.remove("has-issues")
       lintEl.classList.add("no-issues")
       svg.outerHTML = getLintIcon("success")
       if (countEl) countEl.textContent = "0 issues"
-      fixBtn?.classList.add("hidden")
+      setFixButtonVisible(false)
     }
   }
 }
